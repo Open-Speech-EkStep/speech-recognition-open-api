@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package speech_recognition;
+
+service SpeechRecognizer {
+  rpc recognize (RecognitionInput) returns (RecognitionOutput) {}
+}
+
+message RecognitionInput {
+  optional string audio_url = 1;
+  optional bytes audio_bytes = 2;
+}
+
+message RecognitionOutput {
+  string result = 1;
+}
