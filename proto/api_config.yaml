@@ -1,0 +1,15 @@
+type: google.api.Service
+config_version: 3
+name: speech_recognition.endpoints
+title: Speech Recognition API
+apis:
+  - name: ekstep.speech_recognition.SpeechRecognizer
+usage:
+  rules:
+  # ListShelves methods can be called without an API Key.
+  - selector: "*"
+    allow_unregistered_calls: true
+backend:
+  rules:
+    - selector: "*"
+      address: grpc://codmento.com/grpc-sr

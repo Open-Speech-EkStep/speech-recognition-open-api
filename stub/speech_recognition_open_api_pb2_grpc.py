@@ -15,7 +15,7 @@ class SpeechRecognizerStub(object):
             channel: A grpc.Channel.
         """
         self.recognize = channel.unary_unary(
-                '/speech_recognition.SpeechRecognizer/recognize',
+                '/ekstep.speech_recognition.SpeechRecognizer/recognize',
                 request_serializer=speech__recognition__open__api__pb2.RecognitionInput.SerializeToString,
                 response_deserializer=speech__recognition__open__api__pb2.RecognitionOutput.FromString,
                 )
@@ -40,7 +40,7 @@ def add_SpeechRecognizerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'speech_recognition.SpeechRecognizer', rpc_method_handlers)
+            'ekstep.speech_recognition.SpeechRecognizer', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -59,7 +59,7 @@ class SpeechRecognizer(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/speech_recognition.SpeechRecognizer/recognize',
+        return grpc.experimental.unary_unary(request, target, '/ekstep.speech_recognition.SpeechRecognizer/recognize',
             speech__recognition__open__api__pb2.RecognitionInput.SerializeToString,
             speech__recognition__open__api__pb2.RecognitionOutput.FromString,
             options, channel_credentials,

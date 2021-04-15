@@ -7,5 +7,5 @@ if __name__ == '__main__':
         stub = SpeechRecognizerStub(channel)
         url = "https://teest/s.mp3"
         response = stub.recognize(RecognitionInput(audio_url=url))
-        print("Successfully requested and response received" if response.result == url else "Not working ! Check again")
-        # print(response.result)
+        # print("Successfully requested and response received" if response.result == url else "Not working ! Check again")
+        print(response.result)
