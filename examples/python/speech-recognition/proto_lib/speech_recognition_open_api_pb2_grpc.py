@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import stub.speech_recognition_open_api_pb2 as speech__recognition__open__api__pb2
+import proto_lib.speech_recognition_open_api_pb2 as speech__recognition__open__api__pb2
 
 
 class SpeechRecognizerStub(object):
