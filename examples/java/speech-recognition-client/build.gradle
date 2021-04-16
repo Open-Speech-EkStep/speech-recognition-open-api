@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.15'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.15.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.37.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+group 'org.ekstep'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.37.0'
+    implementation 'io.grpc:grpc-protobuf:1.37.0'
+    implementation 'io.grpc:grpc-stub:1.37.0'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+//        proto {
+//
+//        }
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}

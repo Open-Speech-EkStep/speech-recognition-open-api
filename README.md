@@ -3,6 +3,10 @@ First install required libraries using the following command:
 pip install -r requirements.txt
 ```
 
+```
+git clone https://github.com/googleapis/googleapis
+```
+
 To generate stub files from .proto file, use the following command:
 ```
 python -m grpc_tools.protoc --proto_path=./proto ./proto/speech-recognition-open-api.proto --python_out=./stub --grpc_python_out=./stub
@@ -13,15 +17,30 @@ or
 python3 -m grpc_tools.protoc \
     --include_imports \
     --include_source_info \
+    --proto_path=<give googleapis folder path here> \
     --proto_path=./proto \
-    ./proto/google/api/http.proto \
-    ./proto/google/api/annotations.proto \
-    -I ./proto \
     --descriptor_set_out=api_descriptor.pb \
     --python_out=./stub \
     --grpc_python_out=./stub \
     ./proto/speech-recognition-open-api.proto
+    
+    
+or 
+
+
+python3 -m grpc_tools.protoc \
+    --include_imports \
+    --include_source_info \
+    --proto_path=./proto \
+    ./proto/google/api/http.proto \
+    ./proto/google/api/annotations.proto \
+    -I ./proto \
+    --descriptor_set_out=./proto/api_descriptor.pb \
+    --python_out=./stub \
+    --grpc_python_out=./stub \
+    ./proto/speech-recognition-open-api.proto
 ```
+
 
 To run tests, use the following command:
 ```
