@@ -12,4 +12,4 @@ usage:
 backend:
   rules:
     - selector: "*"
-      address: grpc://codmento.com/grpc-sr
+      address: grpc://codmento.com

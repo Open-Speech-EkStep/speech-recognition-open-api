@@ -3,3 +3,4 @@ examples
 .idea
 __pycache__/
 Dockerfile
+.DS_Store

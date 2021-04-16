@@ -1,5 +1,6 @@
 package com.ekstep.endpoints.speech_recognition;
 
+import com.google.protobuf.ByteString;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -14,23 +15,16 @@ public class SpeechRecognitionClient {
 
     private final SpeechRecognizerGrpc.SpeechRecognizerBlockingStub blockingStub;
 
-    /**
-     * Construct client for accessing HelloWorld server using the existing channel.
-     */
     public SpeechRecognitionClient(Channel channel) {
-        // 'channel' here is a Channel, not a ManagedChannel, so it is not this code's responsibility to
-        // shut it down.
-
-        // Passing Channels to code makes code easier to test and makes it easier to reuse Channels.
         blockingStub = SpeechRecognizerGrpc.newBlockingStub(channel);
     }
 
-    /**
-     * Say hello to server.
-     */
-    public RecognitionOutput transcribe(String audioUrl, String language) {
+    public RecognitionOutput transcribeUrl() {
+        String audioUrl = "https://codmento.com/ekstep/test/changed.wav";
+        String language = "hi";
+        String fileName = "hindi2.wav";
         logger.info("Will try to request " + audioUrl + " ...");
-        RecognitionInput request = RecognitionInput.newBuilder().setAudioUrl(audioUrl).setLanguage(language).build();
+        RecognitionInput request = RecognitionInput.newBuilder().setFileName(fileName).setAudioUrl(audioUrl).setLanguage(language).build();
         RecognitionOutput response;
         try {
             response = blockingStub.recognize(request);
@@ -41,32 +35,38 @@ public class SpeechRecognitionClient {
         }
     }
 
-    /**
-     * Greet server. If provided, the first element of {@code args} is the name to use in the
-     * greeting. The second argument is the target server.
-     */
-    public static void main(String[] args) throws Exception {
-        // Access a service running on the local machine on port 50051
-        String target = "localhost:50051";
-        String audioUrl = "https://abcd/a.mp3";
-        String language = "hindi";
+    public RecognitionOutput transcribeBytes() {
+        logger.info("Will try to request ...");
+        AudioFiles afiles = new AudioFiles();
+        String language = "hi";
+        String file = "/Users/nireshkumarr/Documents/ekstep/speech-recognition-open-api/examples/python/speech-recognition/changed.wav";
+        byte[] data2 = afiles.readAudioFileData(file);
+        ByteString byteString = ByteString.copyFrom(data2);
+        String fileName = "hindi2.wav";
+        RecognitionInput request = RecognitionInput.newBuilder().setFileName(fileName).setAudioBytes(byteString).setLanguage(language).build();
+        RecognitionOutput response;
+        try {
+            response = blockingStub.recognize(request);
+            return response;
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return RecognitionOutput.newBuilder().build();
+        }
+    }
 
-        // Create a communication channel to the server, known as a Channel. Channels are thread-safe
-        // and reusable. It is common to create channels at the beginning of your application and reuse
-        // them until the application shuts down.
+
+    public static void main(String[] args) throws Exception {
+        String target = "34.70.114.226:50051";
+
         ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
-                // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-                // needing certificates.
                 .usePlaintext()
                 .build();
         try {
             SpeechRecognitionClient client = new SpeechRecognitionClient(channel);
-            RecognitionOutput response = client.transcribe(audioUrl, language);
+            RecognitionOutput response = client.transcribeBytes();
+//            RecognitionOutput response = client.transcribeUrl();
             System.out.println(response.getResult());
         } finally {
-            // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
-            // resources the channel should be shut down when it will no longer be used. If it may be used
-            // again leave it running.
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
     }

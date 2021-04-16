@@ -11,42 +11,58 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from stub.google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='speech-recognition-open-api.proto',
-  package='speech_recognition',
+  package='ekstep.speech_recognition',
   syntax='proto3',
-  serialized_options=None,
+  serialized_options=b'\n\'com.ekstep.endpoints.speech_recognitionB\026SpeechRecognitionProtoP\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x12speech_recognition\"b\n\x10RecognitionInput\x12\x16\n\taudio_url\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0b\x61udio_bytes\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x42\x0c\n\n_audio_urlB\x0e\n\x0c_audio_bytes\"#\n\x11RecognitionOutput\x12\x0e\n\x06result\x18\x01 \x01(\t2n\n\x10SpeechRecognizer\x12Z\n\trecognize\x12$.speech_recognition.RecognitionInput\x1a%.speech_recognition.RecognitionOutput\"\x00\x62\x06proto3'
-)
+  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x19\x65kstep.speech_recognition\x1a\x1cgoogle/api/annotations.proto\"\x9a\x01\n\x10RecognitionInput\x12\x16\n\taudio_url\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0b\x61udio_bytes\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x12\x16\n\tfile_name\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x10\n\x08language\x18\x04 \x01(\tB\x0c\n\n_audio_urlB\x0e\n\x0c_audio_bytesB\x0c\n\n_file_name\"#\n\x11RecognitionOutput\x12\x0e\n\x06result\x18\x01 \x01(\t2\x91\x01\n\x10SpeechRecognizer\x12}\n\trecognize\x12+.ekstep.speech_recognition.RecognitionInput\x1a,.ekstep.speech_recognition.RecognitionOutput\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/recognizeBC\n\'com.ekstep.endpoints.speech_recognitionB\x16SpeechRecognitionProtoP\x01\x62\x06proto3'
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
 
 
 
 _RECOGNITIONINPUT = _descriptor.Descriptor(
   name='RecognitionInput',
-  full_name='speech_recognition.RecognitionInput',
+  full_name='ekstep.speech_recognition.RecognitionInput',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='audio_url', full_name='speech_recognition.RecognitionInput.audio_url', index=0,
+      name='audio_url', full_name='ekstep.speech_recognition.RecognitionInput.audio_url', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='audio_bytes', full_name='speech_recognition.RecognitionInput.audio_bytes', index=1,
+      name='audio_bytes', full_name='ekstep.speech_recognition.RecognitionInput.audio_bytes', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='file_name', full_name='ekstep.speech_recognition.RecognitionInput.file_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='language', full_name='ekstep.speech_recognition.RecognitionInput.language', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -59,31 +75,36 @@ _RECOGNITIONINPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='_audio_url', full_name='speech_recognition.RecognitionInput._audio_url',
+      name='_audio_url', full_name='ekstep.speech_recognition.RecognitionInput._audio_url',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_audio_bytes', full_name='speech_recognition.RecognitionInput._audio_bytes',
+      name='_audio_bytes', full_name='ekstep.speech_recognition.RecognitionInput._audio_bytes',
       index=1, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_file_name', full_name='ekstep.speech_recognition.RecognitionInput._file_name',
+      index=2, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=57,
-  serialized_end=155,
+  serialized_start=95,
+  serialized_end=249,
 )
 
 
 _RECOGNITIONOUTPUT = _descriptor.Descriptor(
   name='RecognitionOutput',
-  full_name='speech_recognition.RecognitionOutput',
+  full_name='ekstep.speech_recognition.RecognitionOutput',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='result', full_name='speech_recognition.RecognitionOutput.result', index=0,
+      name='result', full_name='ekstep.speech_recognition.RecognitionOutput.result', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -101,8 +122,8 @@ _RECOGNITIONOUTPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=157,
-  serialized_end=192,
+  serialized_start=251,
+  serialized_end=286,
 )
 
 _RECOGNITIONINPUT.oneofs_by_name['_audio_url'].fields.append(
@@ -111,6 +132,9 @@ _RECOGNITIONINPUT.fields_by_name['audio_url'].containing_oneof = _RECOGNITIONINP
 _RECOGNITIONINPUT.oneofs_by_name['_audio_bytes'].fields.append(
   _RECOGNITIONINPUT.fields_by_name['audio_bytes'])
 _RECOGNITIONINPUT.fields_by_name['audio_bytes'].containing_oneof = _RECOGNITIONINPUT.oneofs_by_name['_audio_bytes']
+_RECOGNITIONINPUT.oneofs_by_name['_file_name'].fields.append(
+  _RECOGNITIONINPUT.fields_by_name['file_name'])
+_RECOGNITIONINPUT.fields_by_name['file_name'].containing_oneof = _RECOGNITIONINPUT.oneofs_by_name['_file_name']
 DESCRIPTOR.message_types_by_name['RecognitionInput'] = _RECOGNITIONINPUT
 DESCRIPTOR.message_types_by_name['RecognitionOutput'] = _RECOGNITIONOUTPUT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -118,37 +142,38 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 RecognitionInput = _reflection.GeneratedProtocolMessageType('RecognitionInput', (_message.Message,), {
   'DESCRIPTOR' : _RECOGNITIONINPUT,
   '__module__' : 'speech_recognition_open_api_pb2'
-  # @@protoc_insertion_point(class_scope:speech_recognition.RecognitionInput)
+  # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.RecognitionInput)
   })
 _sym_db.RegisterMessage(RecognitionInput)
 
 RecognitionOutput = _reflection.GeneratedProtocolMessageType('RecognitionOutput', (_message.Message,), {
   'DESCRIPTOR' : _RECOGNITIONOUTPUT,
   '__module__' : 'speech_recognition_open_api_pb2'
-  # @@protoc_insertion_point(class_scope:speech_recognition.RecognitionOutput)
+  # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.RecognitionOutput)
   })
 _sym_db.RegisterMessage(RecognitionOutput)
 
 
+DESCRIPTOR._options = None
 
 _SPEECHRECOGNIZER = _descriptor.ServiceDescriptor(
   name='SpeechRecognizer',
-  full_name='speech_recognition.SpeechRecognizer',
+  full_name='ekstep.speech_recognition.SpeechRecognizer',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=194,
-  serialized_end=304,
+  serialized_start=289,
+  serialized_end=434,
   methods=[
   _descriptor.MethodDescriptor(
     name='recognize',
-    full_name='speech_recognition.SpeechRecognizer.recognize',
+    full_name='ekstep.speech_recognition.SpeechRecognizer.recognize',
     index=0,
     containing_service=None,
     input_type=_RECOGNITIONINPUT,
     output_type=_RECOGNITIONOUTPUT,
-    serialized_options=None,
+    serialized_options=b'\202\323\344\223\002\017\022\r/v1/recognize',
     create_key=_descriptor._internal_create_key,
   ),
 ])
