@@ -20,5 +20,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . /opt/speech_recognition_open_api
 EXPOSE 50051
-ENTRYPOINT ["/bin/bash", "/opt/speech_recognition_open_api/model_bootstrap.sh"]
-CMD ["start_server"]
+RUN sh /opt/speech_recognition_open_api/model_bootstrap.sh
+CMD ["python","/opt/speech_recognition_open_api/server.py"]
