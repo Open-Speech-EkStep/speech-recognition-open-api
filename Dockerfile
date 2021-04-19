@@ -1,6 +1,7 @@
 FROM python:3.8.6
 
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y sudo
 #RUN apt-get install -y wget
 #RUN apt-get install -y curl
 #RUN apk add --update --no-cache \
@@ -19,4 +20,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . /opt/speech_recognition_open_api
 EXPOSE 50051
-CMD ["python","/opt/speech_recognition_open_api/server.py"]
+ENTRYPOINT ["/bin/bash", "/opt/speech_recognition_open_api/model_bootstrap.sh"]
+CMD ["start_server"]
