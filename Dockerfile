@@ -19,7 +19,6 @@ WORKDIR /opt/speech_recognition_open_api/
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . /opt/speech_recognition_open_api
-RUN sudo chown 777 /opt/speech_recognition_open_api/model_bootstrap.sh
 EXPOSE 50051
-CMD ["sh","/opt/speech_recognition_open_api/model_bootstrap.sh"]
-CMD ["python","/opt/speech_recognition_open_api/server.py"]
+ENTRYPOINT ["/bin/bash", "/opt/speech_recognition_open_api/model_bootstrap.sh"]
+CMD ["start_server"]
