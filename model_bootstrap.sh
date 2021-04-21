@@ -2,8 +2,8 @@
 
 echo "Setting up model dependencies...."
 sudo apt-get update
-sudo apt-get install liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev
-sudo apt install build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev
+sudo apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev
+sudo apt install -y build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev
 sudo apt-get install -y ffmpeg
 
 git clone https://github.com/kpu/kenlm.git
@@ -22,7 +22,6 @@ cd ..
 
 git clone -b v0.2 https://github.com/facebookresearch/wav2letter.git
 cd wav2letter
-git checkout b1d1f89f586120a978a4666cffd45c55f0a2e564
 cd bindings/python
 pip install -e .
 # rm -rf wav2letter
