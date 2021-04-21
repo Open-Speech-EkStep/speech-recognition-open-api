@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+
 echo "Setting up model dependencies...."
 sudo apt-get update
 sudo apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev
 sudo apt install -y build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev netcat
-
+sudo apt-get install -y ffmpeg
 
 git clone https://github.com/kpu/kenlm.git
 cd kenlm
@@ -25,13 +26,12 @@ cd ../../../
 # rm -rf wav2letter
 
 
-git clone https://github.com/Open-Speech-EkStep/wav2vec-infer.git -b staging
+git clone https://github.com/Open-Speech-EkStep/wav2vec-infer.git -b modularization
 cd wav2vec-infer/wav2vec
 pip install -e .
 cd ../../
 
 # rm -rf wav2vec-infer
-
 if [ "$1" = "start_server" ];then
   echo "Starting the grpc server...."
   python /opt/speech_recognition_open_api/server.py

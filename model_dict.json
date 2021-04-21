@@ -1,10 +1,10 @@
 {
-    "en-IN":"/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/indian_english/combined_model.pt",
-    "hi" : "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/hindi/hindi.pt",
-    "ta" : "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/tamil/tamil.pt",
-    "te" : "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/telugu/telugu.pt",
-    "kn" : "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/kannada/kannada_v2.pt",
-    "kn-lm" : "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/kannada/kannada_v2.pt",
-    "or": "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/odia/odia_v1.pt",
-    "gu": "/opt/speech_recognition_open_api/wav2vec-infer/deployed_models/gujarati/gujarati.pt"
+    "en-IN":"/opt/speech_recognition_open_api/deployed_models/indian_english/combined_model.pt",
+    "hi" : "/opt/speech_recognition_open_api/deployed_models/hindi/hindi.pt",
+    "ta" : "/opt/speech_recognition_open_api/deployed_models/tamil/tamil.pt",
+    "te" : "/opt/speech_recognition_open_api/deployed_models/telugu/telugu.pt",
+    "kn" : "/opt/speech_recognition_open_api/deployed_models/kannada/kannada_v2.pt",
+    "kn-lm" : "/opt/speech_recognition_open_api/deployed_models/kannada/kannada_v2.pt",
+    "or": "/opt/speech_recognition_open_api/deployed_models/odia/odia_v1.pt",
+    "gu": "/opt/speech_recognition_open_api/deployed_models/gujarati/gujarati.pt"
 }
