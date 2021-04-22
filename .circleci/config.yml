@@ -68,7 +68,7 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-          name: build image
+          name: start server
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
             pip install google_compute_engine
