@@ -7,7 +7,7 @@ parameters:
     default: true
   build_and_deploy_image:
     type: boolean
-    default: true
+    default: false
   image_name:
     type: string
     default: speech_recognition_model_api
@@ -46,11 +46,8 @@ jobs:
             - run:
                 name: deploy image to registry
                 command: |
+                  echo "Deploy ..."
                   gcloud docker -- push us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>
-            - run:
-                name: trigger docker container in remote host
-                command: |
-                  ssh -oStrictHostKeyChecking=no -v circleci@<< pipeline.parameters.inference_host_name >> "sudo gcloud docker -- pull us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> && sudo docker run --cpus=10 -m 20000m -itd -p 50051:50051 -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>"
             - run:
                 name: Remove account details
                 command: |
@@ -61,16 +58,44 @@ jobs:
             - run:
                 name: image deployment not set to true
                 command: |
-                  echo 'Image not deployed'
+                  echo 'New Image not built and deployed'
 
+  start_server:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/project/
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: build image
+          command: |
+            echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+            pip install google_compute_engine
+            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            gcloud --quiet config set project ${GCP_PROJECT}
+            echo "Trigger via ssh ..."
+            ssh -oStrictHostKeyChecking=no -v circleci@<< pipeline.parameters.inference_host_name >> "sudo gcloud docker -- pull us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> && sudo docker run --cpus=10 -m 20000m -itd -p 50051:50051 -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>"
+      - run:
+          name: Remove account details
+          command: |
+            rm ${HOME}/gcp-key.json ; ls
 
 workflows:
   version: 2
 
-  build_and_deploy_image:
+  build_deploy_and_run_image:
     when: << pipeline.parameters.trigger_pipeline >>
     jobs:
       - build_and_deploy_image:
+          name: build_and_deploy_image
           filters:
             branches:
               only: master
+      - start_server:
+          name: start_server
+          filters:
+            branches:
+              only: master
+          requires:
+            - build_and_deploy_image
