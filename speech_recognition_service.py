@@ -22,3 +22,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         #     return RecognitionOutput(result=request.audio_url)
         # else:
         #     return RecognitionOutput(result=str(request.audio_bytes))
+
+    def recognizeV2(self, request, context):
+        print("Called", request)
+        print(Language.LanguageCode.Name(request.config.language.value))
+        return SpeechRecognitionResult(status='SUCCESS')

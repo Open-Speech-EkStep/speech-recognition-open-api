@@ -60,7 +60,7 @@ message RecognitionConfig {
     PCM = 1;
     MP3 = 2;
   }
-  enum DOMAIN {
+  enum Domain {
     GENERAL = 0;
     NEWS = 1;
     EDUCATION = 2 ;
@@ -71,28 +71,28 @@ message RecognitionConfig {
     SUBTITLES = 7;
     SPORTS = 8;
   }
-  enum MODEL {
+  enum Model {
     COMMAND_AND_SEARCH = 0;
     PHONE_CALL = 1;
     VIDEO = 2;
     DEFAULT = 3;
   }
 
-  LANGUAGE language = 1;
+  Language language = 1;
   optional AudioFormat audioFormat = 2;
   optional AudioChannel channel = 3;
   optional AudioSampleRate samplingRate = 4;
   optional AudioBitsPerSample bitsPerSample = 5;
   optional TranscriptionFormat transcriptionFormat = 6;
   optional bool profanityFilter = 7;
-  optional DOMAIN domain = 8;
+  optional Domain domain = 8;
   optional bool detailed = 9;
   optional string punctuation = 10;
-  optional MODEL  model = 11;
+  optional Model model = 11;
 }
 
-message LANGUAGE {
-  enum LANGUAGE_CODE {
+message Language {
+  enum LanguageCode {
     en = 0;
     hi = 1;
     mr = 2;
@@ -124,7 +124,7 @@ message LANGUAGE {
     sa = 29;
   }
   optional string name = 1;
-  LANGUAGE_CODE value = 2;
+  LanguageCode value = 2;
 }
 
 message RecognitionAudio {
