@@ -4,6 +4,7 @@ from utilities import download_from_url_to_file, create_wav_file_using_bytes, ge
 import os
 from model_service import ModelService
 
+
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
 
     def __init__(self):
@@ -12,7 +13,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         print("Loaded successfully")
 
     def recognize(self, request, context):
-        print("Received", request.language, request.file_name)
         if len(request.audio_url) != 0:
             audio_path = download_from_url_to_file(request.file_name, request.audio_url)
         else:
@@ -20,10 +20,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         response = self.model_service.transcribe(audio_path, request.language)
         os.remove(audio_path)
         return RecognitionOutput(result=response['transcription'])
-        # if len(request.audio_url) != 0:
-        #     return RecognitionOutput(result=request.audio_url)
-        # else:
-        #     return RecognitionOutput(result=str(request.audio_bytes))
 
     def recognizeV2(self, request, context):
         language = Language.LanguageCode.Name(request.config.language.value)
