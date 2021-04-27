@@ -1,7 +1,7 @@
 import os
 
 import pytest
-
+from unittest.mock import patch
 from stub.speech_recognition_open_api_pb2 import RecognitionInput, SpeechRecognitionRequest, RecognitionConfig, \
     RecognitionAudio, Language, SpeechRecognitionResult
 
@@ -13,8 +13,10 @@ def grpc_add_to_server():
 
 
 @pytest.fixture(scope='module')
-def grpc_servicer():
+@patch('speech_recognition_service.ModelService')
+def grpc_servicer(model_mock):
     from speech_recognition_service import SpeechRecognizer
+    model_mock.return_value.transcribe.return_value = {'transcription': 'Hello world'}
     return SpeechRecognizer()
 
 
@@ -24,17 +26,11 @@ def grpc_stub_cls(grpc_channel):
     return SpeechRecognizerStub
 
 
-def transcribe_mock(self, audio_path, language):
-    response = {'transcription': 'Hello world'}
-    return response
-
-
 def test_if_audio_url_is_handled(grpc_stub, mocker):
     def download_mock(file_name, audio_uri):
         return '/home/test'
 
     mocker.patch('os.remove')
-    mocker.patch('speech_recognition_service.ModelService.transcribe', transcribe_mock)
     mocker.patch('speech_recognition_service.download_from_url_to_file', download_mock)
     audio_url = "http://localhost/audio.mp3"
     request = RecognitionInput(audio_url=audio_url)
@@ -48,7 +44,6 @@ def test_if_audio_bytes_is_handled(grpc_stub, mocker):
         return '/home/test'
 
     mocker.patch('os.remove')
-    mocker.patch('speech_recognition_service.ModelService.transcribe', transcribe_mock)
     mocker.patch('speech_recognition_service.create_wav_file_using_bytes', save_mock)
     audio_bytes = b"http://localhost/audio.mp3"
     request = RecognitionInput(audio_bytes=audio_bytes)
@@ -58,7 +53,6 @@ def test_if_audio_bytes_is_handled(grpc_stub, mocker):
 
 
 def test_recognize_v2(grpc_stub, mocker):
-    mocker.patch('speech_recognition_service.ModelService.transcribe', transcribe_mock)
     audio_bytes = b"http://localhost/audio.mp3"
     lang = Language(value='en', name='English')
     config = RecognitionConfig(language=lang, transcriptionFormat='SRT', samplingRate='_44KHZ')
