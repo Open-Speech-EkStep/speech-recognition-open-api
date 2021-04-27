@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package ekstep.speech_recognition;
+
+option java_multiple_files = true;
+option java_outer_classname = "SpeechRecognitionProto";
+option java_package = "com.ekstep.endpoints.speech_recognition";
+
+import "google/api/annotations.proto";
+
+service SpeechRecognizer {
+  rpc recognize (RecognitionInput) returns (RecognitionOutput) {
+    option (google.api.http) = {get: "/v1/recognize"};
+  }
+  rpc recognizeV2 (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
+    option (google.api.http) = {get: "/v2/recognize"};
+  }
+}
+
+message RecognitionInput {
+  optional string audio_url = 1;
+  optional bytes audio_bytes = 2;
+  optional string file_name = 3;
+  string language = 4;
+}
+
+message RecognitionOutput {
+  string result = 1;
+}
+
+message SpeechRecognitionRequest {
+  RecognitionConfig config = 1;
+  RecognitionAudio audio = 2;
+}
+
+
+message RecognitionConfig {
+  enum TranscriptionFormat {
+    SRT = 0;
+    TRANSCRIPT = 1;
+    ALTERNATIVES = 2;
+  }
+  enum AudioSampleRate {
+    _44KHZ = 0;
+    _48KHZ = 1;
+    _22KHZ = 2;
+    _8KHZ = 3;
+    _16KHZ = 4;
+  }
+  enum AudioBitsPerSample {
+    SIXTEEN = 0;
+    EIGHT = 1;
+  }
+  enum AudioChannel {
+    MONO = 0;
+    STEREO = 1;
+  }
+  enum AudioFormat {
+    WAV = 0;
+    PCM = 1;
+    MP3 = 2;
+  }
+  enum Domain {
+    GENERAL = 0;
+    NEWS = 1;
+    EDUCATION = 2 ;
+    LEGAL = 3 ;
+    GOVERNMENT_PRESS_RELEASE = 4;
+    HEALTHCARE = 5;
+    MOVIES = 6;
+    SUBTITLES = 7;
+    SPORTS = 8;
+  }
+  enum Model {
+    COMMAND_AND_SEARCH = 0;
+    PHONE_CALL = 1;
+    VIDEO = 2;
+    DEFAULT = 3;
+  }
+
+  Language language = 1;
+  optional AudioFormat audioFormat = 2;
+  optional AudioChannel channel = 3;
+  optional AudioSampleRate samplingRate = 4;
+  optional AudioBitsPerSample bitsPerSample = 5;
+  optional TranscriptionFormat transcriptionFormat = 6;
+  optional bool profanityFilter = 7;
+  optional Domain domain = 8;
+  optional bool detailed = 9;
+  optional string punctuation = 10;
+  optional Model model = 11;
+}
+
+message Language {
+  enum LanguageCode {
+    en = 0;
+    hi = 1;
+    mr = 2;
+    ta = 3 ;
+    te = 4;
+    kn = 5;
+    gu = 6;
+    pa = 7;
+    bn = 8;
+    ml = 9;
+    as = 10;
+    brx = 11;
+    doi = 12;
+    ks = 13;
+    kok = 14;
+    mai = 15;
+    mni = 16;
+    ne = 17;
+    or = 18;
+    sd = 19;
+    si = 20;
+    ur = 21;
+    sat = 23;
+    lus = 24;
+    njz = 25;
+    pnr = 26;
+    kha = 27;
+    grt = 28;
+    sa = 29;
+  }
+  optional string name = 1;
+  LanguageCode value = 2;
+}
+
+message RecognitionAudio {
+  optional string audioUri = 1;
+  optional bytes audioContent = 2;
+  optional string fileId = 3;
+}
+
+message SpeechRecognitionResult {
+  enum Status {
+    SUCCESS = 0;
+    NO_MATCH = 1;
+    INITIAL_SILENCE_TIMEOUT = 2;
+    BABBLE_TIMEOUT = 3;
+    ERROR = 4;
+  }
+  Status status = 1;
+  optional string transcript = 2;
+  optional string srt = 3;
+  optional RecognitionDetails details = 4;
+  repeated Alternative alternatives = 5;
+}
+
+message RecognitionDetails {
+  int32 channelTag = 1;
+  string languageCode = 2;
+  int32 snr = 3;
+  int32 samplingRate = 4;
+  int32 bitsPerSample = 5;
+}
+
+message Alternative {
+  string word = 1;
+  string startTime = 2;
+  string endTime = 3;
+}
