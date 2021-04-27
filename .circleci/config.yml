@@ -7,7 +7,7 @@ parameters:
     default: true
   build_and_deploy_image:
     type: boolean
-    default: false
+    default: true
   image_name:
     type: string
     default: speech_recognition_model_api
