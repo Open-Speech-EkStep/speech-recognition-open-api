@@ -78,17 +78,17 @@ jobs:
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
 
-            sudo gcloud docker -- pull us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>  > start_server.sh
+            echo 'sudo gcloud docker -- pull us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> '  > start_server.sh
 
-            sudo docker ps -q --filter "name=<< pipeline.parameters.image_name >>" | grep -q . && sudo docker stop "<< pipeline.parameters.image_name >>" && sudo docker rm -fv "<< pipeline.parameters.image_name >>" >> start_server.sh
+            echo 'sudo docker ps -q --filter "name=<< pipeline.parameters.image_name >>" | grep -q . && sudo docker stop "<< pipeline.parameters.image_name >>" && sudo docker rm -fv "<< pipeline.parameters.image_name >>"' >> start_server.sh
 
             if [ << pipeline.parameters.image_name >>:<< pipeline.parameters.is_gpu_host >> = true ]; then
 
-            sudo docker run --cpus=10 -m 20000m -itd -p 50051:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> >> start_server.sh
+            echo 'sudo docker run --cpus=10 -m 20000m -itd -p 50051:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>' >> start_server.sh
 
             else
 
-            sudo docker run --ipc=host --shm-size 16G --gpus all --cpus=10 -m 20000m -itd -p 50051:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> >> start_server.sh
+            echo 'sudo docker run --ipc=host --shm-size 16G --gpus all --cpus=10 -m 20000m -itd -p 50051:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>' >> start_server.sh
 
             fi
             echo "Trigger via ssh ..."
