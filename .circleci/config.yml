@@ -43,6 +43,8 @@ jobs:
             - run:
                 name: run tests
                 command: |
+                  sudo apt-get update
+                  python --version
                   pip install --upgrade pip
                   pip install --no-cache-dir -r requirements.txt
                   sh model_bootstrap.sh
