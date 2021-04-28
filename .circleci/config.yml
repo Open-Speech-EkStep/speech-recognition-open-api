@@ -18,7 +18,7 @@ parameters:
     type: string
     default: 34.70.114.226
   inference_host_port:
-    type: string
+    type: integer
     default: 50051
   is_gpu_host:
     type: boolean
