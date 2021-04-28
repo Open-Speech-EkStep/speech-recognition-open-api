@@ -24,6 +24,7 @@ git clone -b v0.2 https://github.com/facebookresearch/wav2letter.git
 cd wav2letter
 cd bindings/python
 pip3 install -e .
+cd ../../../
 # rm -rf wav2letter
 
 
@@ -31,4 +32,7 @@ git clone https://github.com/Open-Speech-EkStep/wav2vec-infer.git -b modularizat
 cd wav2vec-infer/wav2vec
 pip3 install -e .
 cd ../../
+rm -rf kenlm
+rm -rf wav2letter
+
 
