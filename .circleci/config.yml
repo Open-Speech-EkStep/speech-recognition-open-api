@@ -32,7 +32,7 @@ executors:
 jobs:
   build_and_deploy_image:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     working_directory: ~/project/
     steps:
       - when:
@@ -43,6 +43,7 @@ jobs:
             - run:
                 name: run tests
                 command: |
+                  pip install --upgrade pip
                   pip install --no-cache-dir -r requirements.txt
                   sh model_bootstrap.sh
                   py.test --grpc-fake-server
