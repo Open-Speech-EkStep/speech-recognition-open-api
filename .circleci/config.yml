@@ -42,8 +42,8 @@ jobs:
                   sudo apt-get update
                   python --version
                   python3 --version
-                  pip install --upgrade pip
-                  pip install --no-cache-dir -r requirements.txt
+                  pip3 install --upgrade pip
+                  pip3 install --no-cache-dir -r requirements.txt
                   sh model_bootstrap.sh
                   py.test --grpc-fake-server
             - run:
