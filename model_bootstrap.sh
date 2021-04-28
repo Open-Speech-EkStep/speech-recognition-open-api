@@ -32,7 +32,6 @@ git clone https://github.com/Open-Speech-EkStep/wav2vec-infer.git -b modularizat
 cd wav2vec-infer/wav2vec
 pip3 install -e .
 cd ../../
-rm -rf kenlm
-rm -rf wav2letter
+
 
 
