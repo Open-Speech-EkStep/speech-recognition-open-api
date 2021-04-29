@@ -64,3 +64,23 @@ def test_if_audio_bytes_is_handled(grpc_stub, mocker):
     assert resp.transcript == 'Hello world'
     os.remove.assert_called_once_with('/home/test')
 
+def test_if_given_language_not_implemented(grpc_stub, mocker):
+    def handle_request(request):
+        raise NotImplementedError('Language not implemented yet')
+    mocker.patch('speech_recognition_service.handle_request', handle_request)
+    request = SpeechRecognitionRequest()
+
+    resp = grpc_stub.recognize(request)
+
+    assert SpeechRecognitionResult.Status.Name(resp.status) == 'ERROR'
+
+
+def test_if_given_out_format_not_implemented(grpc_stub, mocker):
+    def handle_request(request):
+        raise NotImplementedError('Transcription Format not implemented yet')
+    mocker.patch('speech_recognition_service.handle_request', handle_request)
+    request = SpeechRecognitionRequest()
+
+    resp = grpc_stub.recognize(request)
+
+    assert SpeechRecognitionResult.Status.Name(resp.status) == 'ERROR'

@@ -4,6 +4,7 @@ from model_service import ModelService
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
+from speech_recognition_service_handler import handle_request
 
 
 # add error message field to status
@@ -17,6 +18,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         print("Loaded successfully")
 
     def recognize(self, request, context):
+        try:
+            handle_request(request)
+        except NotImplementedError:
+            return SpeechRecognitionResult(status='ERROR')
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
