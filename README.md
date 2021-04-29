@@ -34,6 +34,7 @@ python3 -m grpc_tools.protoc \
     --proto_path=./proto \
     ./proto/google/api/http.proto \
     ./proto/google/api/annotations.proto \
+    ./proto/google/protobuf/descriptor.proto \
     -I ./proto \
     --descriptor_set_out=./proto/api_descriptor.pb \
     --python_out=./stub \

@@ -16,11 +16,6 @@ class SpeechRecognizerStub(object):
         """
         self.recognize = channel.unary_unary(
                 '/ekstep.speech_recognition.SpeechRecognizer/recognize',
-                request_serializer=speech__recognition__open__api__pb2.RecognitionInput.SerializeToString,
-                response_deserializer=speech__recognition__open__api__pb2.RecognitionOutput.FromString,
-                )
-        self.recognizeV2 = channel.unary_unary(
-                '/ekstep.speech_recognition.SpeechRecognizer/recognizeV2',
                 request_serializer=speech__recognition__open__api__pb2.SpeechRecognitionRequest.SerializeToString,
                 response_deserializer=speech__recognition__open__api__pb2.SpeechRecognitionResult.FromString,
                 )
@@ -35,22 +30,11 @@ class SpeechRecognizerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def recognizeV2(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_SpeechRecognizerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'recognize': grpc.unary_unary_rpc_method_handler(
                     servicer.recognize,
-                    request_deserializer=speech__recognition__open__api__pb2.RecognitionInput.FromString,
-                    response_serializer=speech__recognition__open__api__pb2.RecognitionOutput.SerializeToString,
-            ),
-            'recognizeV2': grpc.unary_unary_rpc_method_handler(
-                    servicer.recognizeV2,
                     request_deserializer=speech__recognition__open__api__pb2.SpeechRecognitionRequest.FromString,
                     response_serializer=speech__recognition__open__api__pb2.SpeechRecognitionResult.SerializeToString,
             ),
@@ -76,23 +60,6 @@ class SpeechRecognizer(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/ekstep.speech_recognition.SpeechRecognizer/recognize',
-            speech__recognition__open__api__pb2.RecognitionInput.SerializeToString,
-            speech__recognition__open__api__pb2.RecognitionOutput.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def recognizeV2(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ekstep.speech_recognition.SpeechRecognizer/recognizeV2',
             speech__recognition__open__api__pb2.SpeechRecognitionRequest.SerializeToString,
             speech__recognition__open__api__pb2.SpeechRecognitionResult.FromString,
             options, channel_credentials,

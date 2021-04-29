@@ -1,5 +1,5 @@
 from stub import speech_recognition_open_api_pb2_grpc
-from stub.speech_recognition_open_api_pb2 import RecognitionOutput, SpeechRecognitionResult, Language, RecognitionConfig
+from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 import os
 from model_service import ModelService
@@ -13,15 +13,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         print("Loaded successfully")
 
     def recognize(self, request, context):
-        if len(request.audio_url) != 0:
-            audio_path = download_from_url_to_file(request.file_name, request.audio_url)
-        else:
-            audio_path = create_wav_file_using_bytes(request.file_name, request.audio_bytes)
-        response = self.model_service.transcribe(audio_path, request.language)
-        os.remove(audio_path)
-        return RecognitionOutput(result=response['transcription'])
-
-    def recognizeV2(self, request, context):
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())

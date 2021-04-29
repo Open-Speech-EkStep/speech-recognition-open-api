@@ -9,23 +9,9 @@ option java_package = "com.ekstep.endpoints.speech_recognition";
 import "google/api/annotations.proto";
 
 service SpeechRecognizer {
-  rpc recognize (RecognitionInput) returns (RecognitionOutput) {
-    option (google.api.http) = {get: "/v1/recognize"};
+  rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
+    option (google.api.http) = {post: "/v1/recognize", body: "*"};
   }
-  rpc recognizeV2 (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
-    option (google.api.http) = {get: "/v2/recognize"};
-  }
-}
-
-message RecognitionInput {
-  optional string audio_url = 1;
-  optional bytes audio_bytes = 2;
-  optional string file_name = 3;
-  string language = 4;
-}
-
-message RecognitionOutput {
-  string result = 1;
 }
 
 message SpeechRecognitionRequest {
