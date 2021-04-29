@@ -1,8 +1,9 @@
+import os
+
+from model_service import ModelService
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
-import os
-from model_service import ModelService
 
 
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
