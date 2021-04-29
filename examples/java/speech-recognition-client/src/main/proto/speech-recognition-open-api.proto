@@ -22,16 +22,16 @@ message SpeechRecognitionRequest {
 
 message RecognitionConfig {
   enum TranscriptionFormat {
-    SRT = 0;
-    TRANSCRIPT = 1;
+    TRANSCRIPT = 0;
+    SRT = 1;
     ALTERNATIVES = 2;
   }
   enum AudioSampleRate {
-    _44KHZ = 0;
+    _16KHZ = 0;
     _48KHZ = 1;
     _22KHZ = 2;
     _8KHZ = 3;
-    _16KHZ = 4;
+    _44KHZ = 4;
   }
   enum AudioBitsPerSample {
     SIXTEEN = 0;
