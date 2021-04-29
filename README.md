@@ -44,7 +44,7 @@ python3 -m grpc_tools.protoc \
 
 To run tests, use the following command:
 ```
-py.test --grpc-fake-server
+py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
 ```
 
 `DOC: https://cloud.google.com/api-gateway/docs/get-started-cloud-run-grpc#before_you_begin`

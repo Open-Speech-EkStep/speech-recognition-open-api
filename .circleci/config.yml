@@ -57,7 +57,7 @@ jobs:
                 name: deploy image to registry
                 command: |
                   echo "Deploy ..."
-                  gcloud docker -- push us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>
+                  gcloud docker -- push us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
             - run:
                 name: Remove account details
                 command: |
