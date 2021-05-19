@@ -12,6 +12,7 @@ pytest==6.2.3
 pytest-grpc==0.8.0
 six==1.15.0
 toml==0.10.2
+grpc-interceptor==0.13.0
 requests
 responses
 pytest-mock
