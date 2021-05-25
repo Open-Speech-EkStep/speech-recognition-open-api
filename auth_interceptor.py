@@ -12,11 +12,11 @@ class AuthInterceptor(grpc.ServerInterceptor):
 
     def intercept_service(self, continuation, handler_call_details):
         meta = handler_call_details.invocation_metadata
-        print(handler_call_details)
-        print("\n\n")
-        print(meta)
-        print("\n\n")
-        print(self._valid_metadata)
+        # print(handler_call_details)
+        # print("\n\n")
+        # print(meta)
+        # print("\n\n")
+        # print(self._valid_metadata)
         if meta and meta[0] == self._valid_metadata:
             return continuation(handler_call_details)
         else:

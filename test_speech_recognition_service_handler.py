@@ -21,12 +21,14 @@ def test_should_not_support_given_languages():
     assert not is_language_supported('ml')
 
 
-def test_should_support_given_out_formats():
+def test_should_support_given_out_formats_transcript():
     assert is_out_format_supported('TRANSCRIPT')
 
+def test_should_support_given_out_formats_srt():
+    assert is_out_format_supported('SRT')
 
 def test_should_not_support_given_out_formats():
-    assert not is_out_format_supported('SRT')
+    assert not is_out_format_supported('ALTERNATIVES')
 
 
 def test_should_throw_language_not_implemented_error_on_handle():
@@ -45,13 +47,17 @@ def test_should_not_throw_language_not_implemented_error_on_handle():
 
 
 def test_should_throw_transcript_not_implemented_error_on_handle():
-    request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='SRT'))
+    request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='ALTERNATIVES'))
     with pytest.raises(NotImplementedError) as e:
         handle_request(request)
 
     assert e.value.args[0] == 'Transcription Format not implemented yet'
 
 
-def test_should_not_throw_transcript_not_implemented_error_on_handle():
+def test_should_not_throw_transcript_not_implemented_error_on_handle_transcript():
     request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='TRANSCRIPT'))
+    handle_request(request)
+
+def test_should_not_throw_transcript_not_implemented_error_on_handle_srt():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='SRT'))
     handle_request(request)

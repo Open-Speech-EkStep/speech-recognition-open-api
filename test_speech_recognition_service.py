@@ -17,6 +17,7 @@ def grpc_add_to_server():
 def grpc_servicer(model_mock):
     from speech_recognition_service import SpeechRecognizer
     model_mock.return_value.transcribe.return_value = {'transcription': 'Hello world'}
+    model_mock.return_value.get_srt.return_value = {'srt': '1\n00:00:01,29 --> 00:00:04,88\nHello how are you\n\n'}
     return SpeechRecognizer()
 
 
@@ -36,13 +37,12 @@ def test_if_audio_url_is_handled(grpc_stub, mocker):
     audio_url = "http://localhost/audio.mp3"
 
     lang = Language(value='en', name='English')
-    config = RecognitionConfig(language=lang, transcriptionFormat='TRANSCRIPT', samplingRate='_44KHZ')
+    config = RecognitionConfig(language=lang, transcriptionFormat='SRT', samplingRate='_44KHZ')
     audio = RecognitionAudio(audioUri=audio_url)
     request = SpeechRecognitionRequest(audio=audio, config=config)
     resp = grpc_stub.recognize(request)
-
     assert SpeechRecognitionResult.Status.Name(resp.status) == 'SUCCESS'
-    assert resp.transcript == 'Hello world'
+    assert resp.srt == '1\n00:00:01,29 --> 00:00:04,88\nHello how are you\n\n'
     os.remove.assert_called_once_with('/home/test')
 
 

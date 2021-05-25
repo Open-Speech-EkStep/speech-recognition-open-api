@@ -38,4 +38,9 @@ pip3 install -e .
 cd ../../
 
 
+if [ ! -d denoiser ]; then
+  git clone https://github.com/facebookresearch/denoiser.git
+fi
+
+
 

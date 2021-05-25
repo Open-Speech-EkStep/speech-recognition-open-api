@@ -15,4 +15,4 @@ def is_language_supported(language):
 
 
 def is_out_format_supported(out_format):
-    return out_format == 'TRANSCRIPT'
+    return out_format in ['TRANSCRIPT', 'SRT']

@@ -9,7 +9,7 @@ from auth_interceptor import AuthInterceptor
 def run():
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=10),
-        interceptors=(AuthInterceptor('Bearer mysecrettoken'),)
+        # interceptors=(AuthInterceptor('Bearer mysecrettoken'),)
     )
     add_SpeechRecognizerServicer_to_server(SpeechRecognizer(), server)
     server.add_insecure_port('[::]:50051')
