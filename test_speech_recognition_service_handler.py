@@ -1,6 +1,7 @@
 import pytest
 
-from speech_recognition_service_handler import is_out_format_supported, is_language_supported, handle_request
+from speech_recognition_service_handler import is_out_format_supported, is_audio_format_supported, \
+    is_language_supported, handle_request
 from stub.speech_recognition_open_api_pb2 import RecognitionConfig, Language, SpeechRecognitionRequest
 
 
@@ -21,11 +22,20 @@ def test_should_not_support_given_languages():
     assert not is_language_supported('ml')
 
 
-def test_should_support_given_out_formats_transcript():
+def test_should_support_given_out_formats():
     assert is_out_format_supported('TRANSCRIPT')
-
-def test_should_support_given_out_formats_srt():
     assert is_out_format_supported('SRT')
+
+
+def test_should_support_given_audio_formats():
+    assert is_audio_format_supported('WAV')
+    assert is_audio_format_supported('MP3')
+    assert is_audio_format_supported('PCM')
+
+
+def test_should_not_support_given_audio_formats():
+    assert not is_audio_format_supported('OGG')
+
 
 def test_should_not_support_given_out_formats():
     assert not is_out_format_supported('ALTERNATIVES')
@@ -58,6 +68,54 @@ def test_should_not_throw_transcript_not_implemented_error_on_handle_transcript(
     request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='TRANSCRIPT'))
     handle_request(request)
 
+
 def test_should_not_throw_transcript_not_implemented_error_on_handle_srt():
     request = SpeechRecognitionRequest(config=RecognitionConfig(transcriptionFormat='SRT'))
     handle_request(request)
+
+
+def test_should_not_throw_audio_format_not_implemented_error_on_handle_wav():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='WAV'))
+    handle_request(request)
+
+
+def test_should_not_throw_audio_and_transcript_format_not_implemented_error_on_handle_mp3_srt():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='MP3', transcriptionFormat='SRT'))
+    handle_request(request)
+
+
+def test_should_not_throw_audio_and_transcript_format_not_implemented_error_on_handle_pcm_srt():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='PCM', transcriptionFormat='SRT'))
+    handle_request(request)
+
+
+def test_should_throw_audio_format_not_implemented_error_on_handle():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='OGG'))
+    with pytest.raises(NotImplementedError) as e:
+        handle_request(request)
+
+    assert e.value.args[0] == 'Audio Format not implemented yet'
+
+
+def test_should_throw_audio_and_transcript_format_not_implemented_error_on_handle_mp3_transcript():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='MP3'))
+    with pytest.raises(NotImplementedError) as e:
+        handle_request(request)
+
+    assert e.value.args[0] == 'Audio Format and Transcription Format combination not implemented yet'
+
+
+def test_should_throw_audio_and_transcript_format_not_implemented_error_on_handle_pcm_transcript():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='PCM'))
+    with pytest.raises(NotImplementedError) as e:
+        handle_request(request)
+
+    assert e.value.args[0] == 'Audio Format and Transcription Format combination not implemented yet'
+
+
+def test_should_throw_audio_and_transcript_format_not_implemented_error_on_handle_ogg_srt():
+    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='OGG', transcriptionFormat='SRT'))
+    with pytest.raises(NotImplementedError) as e:
+        handle_request(request)
+
+    assert e.value.args[0] == 'Audio Format not implemented yet'
