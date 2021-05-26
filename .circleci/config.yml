@@ -95,7 +95,7 @@ jobs:
 
             else
 
-            echo "sudo docker run --cpus=10 -m 20000m -itd -p << pipeline.parameters.inference_host_port >>:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>" >> start_server.sh
+            echo "sudo docker run --cpus=6 -m 20000m -itd -p << pipeline.parameters.inference_host_port >>:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>" >> start_server.sh
 
             fi
             echo "Transfer via ssh ..."
