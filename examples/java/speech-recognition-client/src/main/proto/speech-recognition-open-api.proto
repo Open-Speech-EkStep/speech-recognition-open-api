@@ -45,6 +45,7 @@ message RecognitionConfig {
     WAV = 0;
     PCM = 1;
     MP3 = 2;
+    OGG = 3;
   }
   enum Domain {
     GENERAL = 0;
