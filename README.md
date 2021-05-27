@@ -9,23 +9,6 @@ git clone https://github.com/googleapis/googleapis
 
 To generate stub files from .proto file, use the following command:
 ```
-python -m grpc_tools.protoc --proto_path=./proto ./proto/speech-recognition-open-api.proto --python_out=./stub --grpc_python_out=./stub
-
-or
-
-
-python3 -m grpc_tools.protoc \
-    --include_imports \
-    --include_source_info \
-    --proto_path=<give googleapis folder path here> \
-    --proto_path=./proto \
-    --descriptor_set_out=api_descriptor.pb \
-    --python_out=./stub \
-    --grpc_python_out=./stub \
-    ./proto/speech-recognition-open-api.proto
-    
-    
-or 
 
 
 python3 -m grpc_tools.protoc \
