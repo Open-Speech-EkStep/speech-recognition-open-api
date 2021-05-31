@@ -1,7 +1,84 @@
-First install required libraries using the following command:
+#Speech Recogntition Open API
+
+## Getting started guide:
+
+### Setup the grpc server:
+#### Without docker
+1.Create and activate a new enviroment :
+
+```conda create --name <env> python=3.8 && conda activate <env>```
+
+2.Install required libraries using the following command:
+
 ```
 pip install -r requirements.txt
 ```
+
+3.Bootstrap the model code and other models as pre requisites:
+
+```
+sh model_bootstrap.sh
+```
+5. Download models and update the right model paths in model_dict.json
+
+6.Start the server at port 50051:
+
+```
+python /opt/speech_recognition_open_api/server.py
+```
+#### With docker
+
+```
+docker build -t speech_recognition_model_api .
+```
+
+```
+sudo docker run --cpus=6 -m 20000m -itd -p <<host_port>>:50051 --name speech_recognition_model_api -v <<host_model_path>>/deployed_models:<<container_model_path>>/deployed_models/ -i -t speech_recognition_model_api
+```
+
+### Using the model api as part of client code:
+In python,
+```
+python examples/python/speech-recognition/main.py
+```
+### Using the model api as part of REST call using api-gateway:
+
+#### Create api config in api gateway:
+```
+gcloud api-gateway api-configs create CONFIG_ID \
+--api=API_ID --project=PROJECT_ID \
+--grpc-files=api_descriptor.pb,api_config.yaml
+```
+
+#### Deploy gateway in api gateway:
+```
+gcloud api-gateway gateways create GATEWAY_ID \
+  --api=API_ID --api-config=CONFIG_ID \
+  --location=GCP_REGION --project=PROJECT_ID
+```
+### View gateway information:
+```
+gcloud api-gateway gateways describe GATEWAY_ID \
+  --location=GCP_REGION --project=PROJECT_ID
+```
+
+### Test the REST api using a POST request:
+```
+{
+    "config":{
+        "language": {
+            "value":"hi"
+        },
+        "transcriptionFormat": "TRANSCRIPT",
+        "audioFormat": "WAV"
+    },
+    "audio":{
+        "audioUri": "https://codmento.com/ekstep/test/changed.wav"
+    }
+}
+```
+
+### Developer Guide
 
 ```
 git clone https://github.com/googleapis/googleapis
@@ -33,24 +110,7 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 
 `DOC: https://cloud.google.com/api-gateway/docs/get-started-cloud-run-grpc#before_you_begin`
 
-#### Create api config in api gateway:
-```
-gcloud api-gateway api-configs create CONFIG_ID \
---api=API_ID --project=PROJECT_ID \
---grpc-files=api_descriptor.pb,api_config.yaml
-```
 
-#### Deploy gateway in api gateway:
-```
-gcloud api-gateway gateways create GATEWAY_ID \
-  --api=API_ID --api-config=CONFIG_ID \
-  --location=GCP_REGION --project=PROJECT_ID
-```
-### View gateway information:
-```
-gcloud api-gateway gateways describe GATEWAY_ID \
-  --location=GCP_REGION --project=PROJECT_ID
-```
 #### Note:
 In case you get a error such as, ModuleNotFoundError: No module named 'speech_recognition_open_api_pb2',
 do the following:
