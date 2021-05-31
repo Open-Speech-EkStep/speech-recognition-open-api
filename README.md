@@ -1,31 +1,30 @@
-#Speech Recogntition Open API
+# Speech Recogntition Open API
 
 ## Getting started guide:
 
 ### Setup the grpc server:
 #### Without docker
-1.Create and activate a new enviroment :
+1. Create and activate a new enviroment :
 
-```conda create --name <env> python=3.8 && conda activate <env>```
+    ```conda create --name <env> python=3.8 && conda activate <env>```
 
-2.Install required libraries using the following command:
+2. Install required libraries using the following command:
 
-```
-pip install -r requirements.txt
-```
+    ```
+    pip install -r requirements.txt
+    ```
 
-3.Bootstrap the model code and other models as pre requisites:
+3. Bootstrap the model code and other models as pre requisites:
 
-```
-sh model_bootstrap.sh
-```
-5. Download models and update the right model paths in model_dict.json
+    ```
+    sh model_bootstrap.sh
+    ```
+4. Download models and update the right model paths in model_dict.json.
+5. Start the server at port 50051:
 
-6.Start the server at port 50051:
-
-```
-python /opt/speech_recognition_open_api/server.py
-```
+    ```
+    python server.py
+    ```
 #### With docker
 
 ```
@@ -41,6 +40,8 @@ In python,
 ```
 python examples/python/speech-recognition/main.py
 ```
+
+
 ### Using the model api as part of REST call using api-gateway:
 
 #### Create api config in api gateway:
@@ -80,14 +81,13 @@ gcloud api-gateway gateways describe GATEWAY_ID \
 
 ### Developer Guide
 
+The api, protobuf are taken from google folder from the below repo:
 ```
-git clone https://github.com/googleapis/googleapis
-```
-
-To generate stub files from .proto file, use the following command:
+https://github.com/googleapis/googleapis
 ```
 
-
+Generated stub files from .proto file, using the following command:
+```
 python3 -m grpc_tools.protoc \
     --include_imports \
     --include_source_info \
