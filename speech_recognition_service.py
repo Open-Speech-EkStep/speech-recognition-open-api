@@ -31,8 +31,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 audio_path = download_from_url_to_file(file_name, request.audio.audioUri)
             elif len(request.audio.fileId) != 0:
                 return SpeechRecognitionResult(status='NO_MATCH')
-            else:
+            elif len(request.audio.audioContent) != 0:
                 audio_path = create_wav_file_using_bytes(file_name, request.audio.audioContent)
+            else:
+                return SpeechRecognitionResult(status='NO_MATCH')
             if out_format == 'SRT':
                 response = self.model_service.get_srt(audio_path, language)
                 result = SpeechRecognitionResult(status='SUCCESS', srt=response['srt'])
@@ -42,4 +44,4 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             os.remove(audio_path)
             return result
         except Exception as e:
-            print("An exception has occured.Please verify inputs...")
+            raise RuntimeError("An unknown error has occurred.Please try again.")

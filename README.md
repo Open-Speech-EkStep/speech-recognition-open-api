@@ -4,7 +4,7 @@
 
 ### Setup the grpc server:
 #### Without docker
-1. Create and activate a new enviroment :
+1. Create and activate a new environment :
 
     ```conda create --name <env> python=3.8 && conda activate <env>```
 
@@ -40,7 +40,6 @@ In python,
 ```
 python examples/python/speech-recognition/main.py
 ```
-
 
 ### Using the model api as part of REST call using api-gateway:
 
