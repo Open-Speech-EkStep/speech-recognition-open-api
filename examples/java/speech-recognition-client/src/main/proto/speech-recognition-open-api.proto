@@ -80,8 +80,8 @@ message RecognitionConfig {
 
 message Language {
   enum LanguageCode {
-    en = 0;
-    hi = 1;
+    hi = 0;
+    en = 1;
     mr = 2;
     ta = 3 ;
     te = 4;

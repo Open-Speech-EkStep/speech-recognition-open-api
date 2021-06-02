@@ -13,10 +13,13 @@ def handle_request(request):
         raise NotImplementedError('Audio Format not implemented yet')
     if not is_audio_format_and_out_format_supported(audio_format, out_format):
         raise NotImplementedError('Audio Format and Transcription Format combination not implemented yet')
+    audio_source_valid_flag, err_msg = check_audio_source_valid(request.audio)
+    if not audio_source_valid_flag:
+        raise NotImplementedError(err_msg)
 
 
 def is_language_supported(language):
-    return language in ['en', 'hi', 'ta', 'te', 'kn', 'or', 'gu', 'en-IN']
+    return language in ['hi', 'ta', 'te', 'kn', 'or', 'gu', 'en-IN']
 
 
 def is_out_format_supported(out_format):
@@ -33,3 +36,18 @@ def is_audio_format_and_out_format_supported(audio_format, out_format):
     elif out_format == 'SRT' and audio_format in ['WAV', 'MP3', 'PCM']:
         return True
     return False
+
+
+def check_audio_source_valid(audioconfigobj):
+    if len(getattr(audioconfigobj, 'audioUri', '')) == 0:
+        if len(getattr(audioconfigobj, 'audioContent', b'')) == 0:
+            if len(getattr(audioconfigobj, 'fileId', '')) == 0:
+                return False, 'empty audio source is not implemented yet, send valid attributes only for audioUri or audioContent'
+            else:
+                return False, 'fileId is not implemented yet'
+        else:
+            return True, ''
+    else:
+        return True, ''
+
+

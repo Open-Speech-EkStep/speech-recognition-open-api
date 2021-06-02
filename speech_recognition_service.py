@@ -18,10 +18,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         print("Loaded successfully")
 
     def recognize(self, request, context):
-        try:
-            handle_request(request)
-        except NotImplementedError:
-            return SpeechRecognitionResult(status='ERROR')
+        handle_request(request)
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
@@ -29,12 +26,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         try:
             if len(request.audio.audioUri) != 0:
                 audio_path = download_from_url_to_file(file_name, request.audio.audioUri)
-            elif len(request.audio.fileId) != 0:
-                return SpeechRecognitionResult(status='NO_MATCH')
             elif len(request.audio.audioContent) != 0:
                 audio_path = create_wav_file_using_bytes(file_name, request.audio.audioContent)
-            else:
-                return SpeechRecognitionResult(status='NO_MATCH')
             if out_format == 'SRT':
                 response = self.model_service.get_srt(audio_path, language)
                 result = SpeechRecognitionResult(status='SUCCESS', srt=response['srt'])
