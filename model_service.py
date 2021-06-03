@@ -15,8 +15,9 @@ class ModelService:
         result['transcription'] = self.apply_puncuation(result['transcription'], language, punctuate)
         return result
 
-    def get_srt(self, file_name, language):
+    def get_srt(self, file_name, language, punctuate=True):
         result = self.inference.get_srt(file_name, language, os.path.dirname(__file__) + '/denoiser')
+        result['srt'] = self.apply_puncuation(result['srt'], language, punctuate)
         return result
 
     def apply_puncuation(self, text_to_punctuate, language, punctuate=True):

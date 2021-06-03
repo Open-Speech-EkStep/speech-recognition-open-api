@@ -20,7 +20,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     def recognize(self, request, context):
         handle_request(request)
         punctuate = request.config.punctuate
-        print("***",punctuate)
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
@@ -31,7 +30,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             elif len(request.audio.audioContent) != 0:
                 audio_path = create_wav_file_using_bytes(file_name, request.audio.audioContent)
             if out_format == 'SRT':
-                response = self.model_service.get_srt(audio_path, language)
+                response = self.model_service.get_srt(audio_path, language, punctuate)
                 result = SpeechRecognitionResult(status='SUCCESS', srt=response['srt'])
             else:
                 response = self.model_service.transcribe(audio_path, language, punctuate)

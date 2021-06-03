@@ -6,8 +6,8 @@ sudo apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libop
 sudo apt install -y build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev
 sudo apt-get install -y ffmpeg
 
-pip install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
-pip install ray[tune]
+pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
+pip3 install ray[tune]
 
 if [ ! -d kenlm ]; then
   git clone https://github.com/kpu/kenlm.git
