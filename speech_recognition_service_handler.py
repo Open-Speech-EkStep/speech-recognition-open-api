@@ -5,6 +5,9 @@ def handle_request(request):
     language = Language.LanguageCode.Name(request.config.language.value)
     if not is_language_supported(language):
         raise NotImplementedError('Language not implemented yet')
+    punctuate = request.config.punctuate
+    if not is_language_punctuation_supported(language, punctuate):
+        raise NotImplementedError('Language and punctuation not implemented yet. Only Hindi is supported.')
     out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
     if not is_out_format_supported(out_format):
         raise NotImplementedError('Transcription Format not implemented yet')
@@ -19,8 +22,14 @@ def handle_request(request):
 
 
 def is_language_supported(language):
-    return language in ['hi', 'ta', 'te', 'kn', 'or', 'gu', 'en-IN']
+    return language in ['hi', 'ta', 'te', 'kn', 'or', 'gu', 'en']
 
+
+def is_language_punctuation_supported(language, punctuate):
+    if punctuate:
+        return language == 'hi'
+    else:
+        return True
 
 def is_out_format_supported(out_format):
     return out_format in ['TRANSCRIPT', 'SRT']
@@ -49,5 +58,3 @@ def check_audio_source_valid(audioconfigobj):
             return True, ''
     else:
         return True, ''
-
-

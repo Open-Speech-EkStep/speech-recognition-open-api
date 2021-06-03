@@ -5,9 +5,10 @@ import time
 
 
 def download_from_url_to_file(file_name, url):
-    r = requests.get(url, allow_redirects=True)
+    response = requests.get(url, allow_redirects=True)
+    response.raise_for_status()
     with open(file_name, 'wb') as f:
-        f.write(r.content)
+        f.write(response.content)
     return os.path.join(os.getcwd(), file_name)
 
 

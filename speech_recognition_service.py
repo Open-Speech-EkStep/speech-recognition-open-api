@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from model_service import ModelService
 from stub import speech_recognition_open_api_pb2_grpc
@@ -19,6 +19,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
 
     def recognize(self, request, context):
         handle_request(request)
+        punctuate = request.config.punctuate
+        print("***",punctuate)
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
@@ -32,9 +34,11 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 response = self.model_service.get_srt(audio_path, language)
                 result = SpeechRecognitionResult(status='SUCCESS', srt=response['srt'])
             else:
-                response = self.model_service.transcribe(audio_path, language)
+                response = self.model_service.transcribe(audio_path, language, punctuate)
                 result = SpeechRecognitionResult(status='SUCCESS', transcript=response['transcription'])
             os.remove(audio_path)
             return result
+        except requests.exceptions.RequestException as e:
+            raise RuntimeError(e)
         except Exception as e:
             raise RuntimeError("An unknown error has occurred.Please try again.")
