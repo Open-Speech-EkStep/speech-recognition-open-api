@@ -1,5 +1,5 @@
 {
-    "en-IN":"/opt/speech_recognition_open_api/deployed_models/indian_english/combined_model.pt",
+    "en":"/opt/speech_recognition_open_api/deployed_models/indian_english/combined_model.pt",
     "hi" : "/opt/speech_recognition_open_api/deployed_models/hindi/hindi.pt",
     "ta" : "/opt/speech_recognition_open_api/deployed_models/tamil/tamil.pt",
     "te" : "/opt/speech_recognition_open_api/deployed_models/telugu/telugu.pt",
