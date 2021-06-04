@@ -43,7 +43,7 @@ jobs:
                   pip3 install --upgrade pip
                   pip3 install --no-cache-dir -r requirements.txt
                   sh model_bootstrap.sh
-                  py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
+#                  python -m py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
             - run:
                 name: build image
                 command: |

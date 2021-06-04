@@ -7,7 +7,10 @@ def handle_request(request):
         raise NotImplementedError('Language not implemented yet')
     punctuate = request.config.punctuate
     if not is_language_punctuation_supported(language, punctuate):
-        raise NotImplementedError('Language and punctuation not implemented yet. Only Hindi is supported.')
+        raise NotImplementedError('Language and punctuation not implemented yet. Only Hindi and English is supported.')
+    itn = request.config.itn
+    if not is_language_itn_supported(language, itn):
+        raise NotImplementedError('Language and itn not implemented yet. Only Hindi and English is supported.')
     out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
     if not is_out_format_supported(out_format):
         raise NotImplementedError('Transcription Format not implemented yet')
@@ -27,9 +30,17 @@ def is_language_supported(language):
 
 def is_language_punctuation_supported(language, punctuate):
     if punctuate:
-        return language == 'hi'
+        return language in ['hi', 'en']
     else:
         return True
+
+
+def is_language_itn_supported(language, itn):
+    if itn:
+        return language in ['hi', 'en']
+    else:
+        return True
+
 
 def is_out_format_supported(out_format):
     return out_format in ['TRANSCRIPT', 'SRT']
