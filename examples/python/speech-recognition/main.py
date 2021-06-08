@@ -43,26 +43,33 @@ def read_audio():
 
 
 def transcribe_audio_bytes(stub):
-    language = "hi"
+    language = "gu"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='TRANSCRIPT', punctuate=1)
+    config = RecognitionConfig(language=lang, audioFormat='MP3', transcriptionFormat='TRANSCRIPT',
+                               enableAutomaticPunctuation=1)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 
     # creds = grpc.metadata_call_credentials(
     #     metadata_plugin=GrpcAuth('access_key')
     # )
-    response = stub.recognize(request)
+    try:
+        response = stub.recognize(request)
 
-    print(response.transcript)
+        print(response.transcript)
+    except grpc.RpcError as e:
+        e.details()
+        status_code = e.code()
+        print(status_code.name)
+        print(status_code.value)
 
 
 def transcribe_audio_url(stub):
     language = "hi"
     url = "https://codmento.com/ekstep/test/changed.wav"
     lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', punctuate=0)
+    config = RecognitionConfig(language=lang, audioFormat='WAV', enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioUri=url)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 
@@ -75,7 +82,8 @@ def get_srt_audio_bytes(stub):
     language = "hi"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT')
+    config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
+                               enableInverseTextNormalization=True)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 

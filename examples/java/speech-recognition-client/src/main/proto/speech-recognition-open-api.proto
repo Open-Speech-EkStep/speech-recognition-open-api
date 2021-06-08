@@ -76,8 +76,8 @@ message RecognitionConfig {
   optional bool detailed = 9;
   optional string punctuation = 10;
   optional Model model = 11;
-  optional bool punctuate = 12;
-  optional bool itn = 13;
+  optional bool enableAutomaticPunctuation = 12;
+  optional bool enableInverseTextNormalization = 13;
 }
 
 message Language {

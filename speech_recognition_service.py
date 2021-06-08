@@ -1,5 +1,5 @@
 import os, requests
-
+import grpc
 from model_service import ModelService
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
@@ -18,9 +18,14 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         print("Loaded successfully")
 
     def recognize(self, request, context):
-        handle_request(request)
-        punctuate = request.config.punctuate
-        itn = request.config.itn
+        try:
+            handle_request(request)
+        except NotImplementedError as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            return None
+        punctuate = request.config.enableAutomaticPunctuation
+        itn = request.config.enableInverseTextNormalization
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
@@ -39,6 +44,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             os.remove(audio_path)
             return result
         except requests.exceptions.RequestException as e:
-            raise RuntimeError(e)
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            return None
         except Exception as e:
-            raise RuntimeError("An unknown error has occurred.Please try again.")
+            context.set_details("An unknown error has occurred.Please try again.")
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            return None
