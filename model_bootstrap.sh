@@ -8,11 +8,11 @@ apt install -y build-essential cmake libboost-system-dev libboost-thread-dev lib
 apt-get install -y libsndfile1 ffmpeg
 
 
-pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
+pip install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 conda install -c conda-forge pynini==2.1.4 -y
-pip3 install ray[tune]
-pip3 install Cython
-pip3 install nemo_toolkit[all]==v1.0.0
+pip install ray[default]
+pip install Cython
+pip install nemo_toolkit[all]==v1.0.0
 
 if [ ! -d kenlm ]; then
   git clone https://github.com/kpu/kenlm.git
@@ -34,7 +34,7 @@ if [ ! -d wav2letter ]; then
 fi
 cd wav2letter
 cd bindings/python
-pip3 install -e .
+pip install -e .
 cd ../../../
 # rm -rf wav2letter
 
@@ -42,7 +42,7 @@ if [ ! -d wav2vec-infer ]; then
   git clone https://github.com/Open-Speech-EkStep/wav2vec-infer.git -b modularization
 fi
 cd wav2vec-infer/wav2vec
-pip3 install -e .
+pip install -e .
 cd ../../
 
 
