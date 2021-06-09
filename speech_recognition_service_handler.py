@@ -17,8 +17,8 @@ def handle_request(request):
     audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
     if not is_audio_format_supported(audio_format):
         raise NotImplementedError('Audio Format not implemented yet')
-    if not is_audio_format_and_out_format_supported(audio_format, out_format):
-        raise NotImplementedError('Audio Format and Transcription Format combination not implemented yet')
+    # if not is_audio_format_and_out_format_supported(audio_format, out_format):
+    #     raise NotImplementedError('Audio Format and Transcription Format combination not implemented yet')
     audio_source_valid_flag, err_msg = check_audio_source_valid(request.audio)
     if not audio_source_valid_flag:
         raise NotImplementedError(err_msg)
@@ -50,12 +50,12 @@ def is_audio_format_supported(audio_format):
     return audio_format in ['WAV', 'MP3', 'PCM']
 
 
-def is_audio_format_and_out_format_supported(audio_format, out_format):
-    if out_format == 'TRANSCRIPT' and audio_format == 'WAV':
-        return True
-    elif out_format == 'SRT' and audio_format in ['WAV', 'MP3', 'PCM']:
-        return True
-    return False
+# def is_audio_format_and_out_format_supported(audio_format, out_format):
+#     if out_format == 'TRANSCRIPT' and audio_format == 'WAV':
+#         return True
+#     elif out_format == 'SRT' and audio_format in ['WAV', 'MP3', 'PCM']:
+#         return True
+#     return False
 
 
 def check_audio_source_valid(audioconfigobj):

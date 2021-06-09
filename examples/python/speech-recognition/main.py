@@ -43,7 +43,7 @@ def read_audio():
 
 
 def transcribe_audio_bytes(stub):
-    language = "gu"
+    language = "hi"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
     config = RecognitionConfig(language=lang, audioFormat='MP3', transcriptionFormat='TRANSCRIPT',
