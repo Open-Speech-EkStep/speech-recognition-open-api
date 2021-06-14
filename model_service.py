@@ -13,14 +13,18 @@ class ModelService:
 
     def transcribe(self, file_name, language, punctuate, itn):
         result = self.inference.get_inference(file_name, language)
+        print("Before Punctuation**** ", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
         result['transcription'] = self.apply_itn(result['transcription'], language, itn)
+        print("After Punctuation**** ", result['transcription'])
         return result
 
     def get_srt(self, file_name, language, punctuate, itn):
         result = self.inference.get_srt(file_name, language, os.path.dirname(__file__) + '/denoiser')
+        print("Before Punctuation**** ", result['srt'])
         result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
         result['srt'] = self.apply_itn(result['srt'], language, itn)
+        print("After Punctuation**** ", result['srt'])
         return result
 
     def apply_punctuation(self, text_to_punctuate, language, punctuate):
