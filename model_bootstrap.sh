@@ -15,7 +15,7 @@ conda install -c conda-forge pynini==2.1.4 -y
 pip3 install ray[tune]
 pip3 install 'ray[default]'
 pip3 install Cython
-pip3 install nemo_toolkit[all]==v1.0.0
+#pip3 install nemo_toolkit[all]==v1.0.0
 
 if [ ! -d kenlm ]; then
   git clone https://github.com/kpu/kenlm.git
