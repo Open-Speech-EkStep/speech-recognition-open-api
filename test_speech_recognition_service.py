@@ -1,9 +1,23 @@
 import os
 
 import pytest
-from unittest.mock import patch
+import unittest.mock as mock
+from unittest.mock import patch, Mock
+from grpc import ServicerContext
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionRequest, RecognitionConfig, \
     RecognitionAudio, Language, SpeechRecognitionResult
+from pytest_grpc.plugin import FakeContext
+
+#
+# class Context(Mock):
+#     def __init__(self, *args):
+#         pass
+#
+#     def set_code(self, e):
+#         print(e)
+#
+#     def set_details(self, text):
+#         print(text)
 
 
 @pytest.fixture(scope='module')
@@ -52,7 +66,7 @@ def test_if_audio_bytes_is_handled(grpc_stub, mocker):
 
     mocker.patch('os.remove')
     mocker.patch('speech_recognition_service.create_wav_file_using_bytes', save_mock)
-    
+
     audio_bytes = b"http://localhost/audio.mp3"
     lang = Language(value='en', name='English')
     config = RecognitionConfig(language=lang, transcriptionFormat='TRANSCRIPT', samplingRate='_44KHZ')
@@ -64,23 +78,28 @@ def test_if_audio_bytes_is_handled(grpc_stub, mocker):
     assert resp.transcript == 'Hello world'
     os.remove.assert_called_once_with('/home/test')
 
+
 def test_if_given_language_not_implemented(grpc_stub, mocker):
     def handle_request(request):
         raise NotImplementedError('Language not implemented yet')
+
     mocker.patch('speech_recognition_service.handle_request', handle_request)
+    Context = mock.MagicMock()
+    mocker.patch('pytest_grpc.plugin.FakeContext', Context)
     request = SpeechRecognitionRequest()
-
     resp = grpc_stub.recognize(request)
-
     assert SpeechRecognitionResult.Status.Name(resp.status) == 'ERROR'
 
 
 def test_if_given_out_format_not_implemented(grpc_stub, mocker):
     def handle_request(request):
         raise NotImplementedError('Transcription Format not implemented yet')
+
     mocker.patch('speech_recognition_service.handle_request', handle_request)
+    Context = mock.MagicMock()
+    mocker.patch('pytest_grpc.plugin.FakeContext', Context)
     request = SpeechRecognitionRequest()
 
     resp = grpc_stub.recognize(request)
-
     assert SpeechRecognitionResult.Status.Name(resp.status) == 'ERROR'
+    # print(resp.status_text)

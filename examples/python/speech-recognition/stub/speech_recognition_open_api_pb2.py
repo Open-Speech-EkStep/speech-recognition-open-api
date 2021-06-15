@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\'com.ekstep.endpoints.speech_recognitionB\026SpeechRecognitionProtoP\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x19\x65kstep.speech_recognition\x1a\x1cgoogle/api/annotations.proto\"\x94\x01\n\x18SpeechRecognitionRequest\x12<\n\x06\x63onfig\x18\x01 \x01(\x0b\x32,.ekstep.speech_recognition.RecognitionConfig\x12:\n\x05\x61udio\x18\x02 \x01(\x0b\x32+.ekstep.speech_recognition.RecognitionAudio\"\x90\x0c\n\x11RecognitionConfig\x12\x35\n\x08language\x18\x01 \x01(\x0b\x32#.ekstep.speech_recognition.Language\x12R\n\x0b\x61udioFormat\x18\x02 \x01(\x0e\x32\x38.ekstep.speech_recognition.RecognitionConfig.AudioFormatH\x00\x88\x01\x01\x12O\n\x07\x63hannel\x18\x03 \x01(\x0e\x32\x39.ekstep.speech_recognition.RecognitionConfig.AudioChannelH\x01\x88\x01\x01\x12W\n\x0csamplingRate\x18\x04 \x01(\x0e\x32<.ekstep.speech_recognition.RecognitionConfig.AudioSampleRateH\x02\x88\x01\x01\x12[\n\rbitsPerSample\x18\x05 \x01(\x0e\x32?.ekstep.speech_recognition.RecognitionConfig.AudioBitsPerSampleH\x03\x88\x01\x01\x12\x62\n\x13transcriptionFormat\x18\x06 \x01(\x0e\x32@.ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatH\x04\x88\x01\x01\x12\x1c\n\x0fprofanityFilter\x18\x07 \x01(\x08H\x05\x88\x01\x01\x12H\n\x06\x64omain\x18\x08 \x01(\x0e\x32\x33.ekstep.speech_recognition.RecognitionConfig.DomainH\x06\x88\x01\x01\x12\x15\n\x08\x64\x65tailed\x18\t \x01(\x08H\x07\x88\x01\x01\x12\x18\n\x0bpunctuation\x18\n \x01(\tH\x08\x88\x01\x01\x12\x46\n\x05model\x18\x0b \x01(\x0e\x32\x32.ekstep.speech_recognition.RecognitionConfig.ModelH\t\x88\x01\x01\x12\'\n\x1a\x65nableAutomaticPunctuation\x18\x0c \x01(\x08H\n\x88\x01\x01\x12+\n\x1e\x65nableInverseTextNormalization\x18\r \x01(\x08H\x0b\x88\x01\x01\"@\n\x13TranscriptionFormat\x12\x0e\n\nTRANSCRIPT\x10\x00\x12\x07\n\x03SRT\x10\x01\x12\x10\n\x0c\x41LTERNATIVES\x10\x02\"L\n\x0f\x41udioSampleRate\x12\n\n\x06_16KHZ\x10\x00\x12\n\n\x06_48KHZ\x10\x01\x12\n\n\x06_22KHZ\x10\x02\x12\t\n\x05_8KHZ\x10\x03\x12\n\n\x06_44KHZ\x10\x04\",\n\x12\x41udioBitsPerSample\x12\x0b\n\x07SIXTEEN\x10\x00\x12\t\n\x05\x45IGHT\x10\x01\"$\n\x0c\x41udioChannel\x12\x08\n\x04MONO\x10\x00\x12\n\n\x06STEREO\x10\x01\"1\n\x0b\x41udioFormat\x12\x07\n\x03WAV\x10\x00\x12\x07\n\x03PCM\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x07\n\x03OGG\x10\x03\"\x8e\x01\n\x06\x44omain\x12\x0b\n\x07GENERAL\x10\x00\x12\x08\n\x04NEWS\x10\x01\x12\r\n\tEDUCATION\x10\x02\x12\t\n\x05LEGAL\x10\x03\x12\x1c\n\x18GOVERNMENT_PRESS_RELEASE\x10\x04\x12\x0e\n\nHEALTHCARE\x10\x05\x12\n\n\x06MOVIES\x10\x06\x12\r\n\tSUBTITLES\x10\x07\x12\n\n\x06SPORTS\x10\x08\"G\n\x05Model\x12\x16\n\x12\x43OMMAND_AND_SEARCH\x10\x00\x12\x0e\n\nPHONE_CALL\x10\x01\x12\t\n\x05VIDEO\x10\x02\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x03\x42\x0e\n\x0c_audioFormatB\n\n\x08_channelB\x0f\n\r_samplingRateB\x10\n\x0e_bitsPerSampleB\x16\n\x14_transcriptionFormatB\x12\n\x10_profanityFilterB\t\n\x07_domainB\x0b\n\t_detailedB\x0e\n\x0c_punctuationB\x08\n\x06_modelB\x1d\n\x1b_enableAutomaticPunctuationB!\n\x1f_enableInverseTextNormalization\"\xeb\x02\n\x08Language\x12\x11\n\x04name\x18\x01 \x01(\tH\x00\x88\x01\x01\x12?\n\x05value\x18\x02 \x01(\x0e\x32\x30.ekstep.speech_recognition.Language.LanguageCode\"\x81\x02\n\x0cLanguageCode\x12\x06\n\x02hi\x10\x00\x12\x06\n\x02\x65n\x10\x01\x12\x06\n\x02mr\x10\x02\x12\x06\n\x02ta\x10\x03\x12\x06\n\x02te\x10\x04\x12\x06\n\x02kn\x10\x05\x12\x06\n\x02gu\x10\x06\x12\x06\n\x02pa\x10\x07\x12\x06\n\x02\x62n\x10\x08\x12\x06\n\x02ml\x10\t\x12\x06\n\x02\x61s\x10\n\x12\x07\n\x03\x62rx\x10\x0b\x12\x07\n\x03\x64oi\x10\x0c\x12\x06\n\x02ks\x10\r\x12\x07\n\x03kok\x10\x0e\x12\x07\n\x03mai\x10\x0f\x12\x07\n\x03mni\x10\x10\x12\x06\n\x02ne\x10\x11\x12\x06\n\x02or\x10\x12\x12\x06\n\x02sd\x10\x13\x12\x06\n\x02si\x10\x14\x12\x06\n\x02ur\x10\x15\x12\x07\n\x03sat\x10\x17\x12\x07\n\x03lus\x10\x18\x12\x07\n\x03njz\x10\x19\x12\x07\n\x03pnr\x10\x1a\x12\x07\n\x03kha\x10\x1b\x12\x07\n\x03grt\x10\x1c\x12\x06\n\x02sa\x10\x1d\x42\x07\n\x05_name\"\x82\x01\n\x10RecognitionAudio\x12\x15\n\x08\x61udioUri\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x19\n\x0c\x61udioContent\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x12\x13\n\x06\x66ileId\x18\x03 \x01(\tH\x02\x88\x01\x01\x42\x0b\n\t_audioUriB\x0f\n\r_audioContentB\t\n\x07_fileId\"\x96\x03\n\x17SpeechRecognitionResult\x12I\n\x06status\x18\x01 \x01(\x0e\x32\x39.ekstep.speech_recognition.SpeechRecognitionResult.Status\x12\x17\n\ntranscript\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03srt\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x43\n\x07\x64\x65tails\x18\x04 \x01(\x0b\x32-.ekstep.speech_recognition.RecognitionDetailsH\x02\x88\x01\x01\x12<\n\x0c\x61lternatives\x18\x05 \x03(\x0b\x32&.ekstep.speech_recognition.Alternative\"_\n\x06Status\x12\x0b\n\x07SUCCESS\x10\x00\x12\x0c\n\x08NO_MATCH\x10\x01\x12\x1b\n\x17INITIAL_SILENCE_TIMEOUT\x10\x02\x12\x12\n\x0e\x42\x41\x42\x42LE_TIMEOUT\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x42\r\n\x0b_transcriptB\x06\n\x04_srtB\n\n\x08_details\"x\n\x12RecognitionDetails\x12\x12\n\nchannelTag\x18\x01 \x01(\x05\x12\x14\n\x0clanguageCode\x18\x02 \x01(\t\x12\x0b\n\x03snr\x18\x03 \x01(\x05\x12\x14\n\x0csamplingRate\x18\x04 \x01(\x05\x12\x15\n\rbitsPerSample\x18\x05 \x01(\x05\"?\n\x0b\x41lternative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x11\n\tstartTime\x18\x02 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x03 \x01(\t2\xa3\x01\n\x10SpeechRecognizer\x12\x8e\x01\n\trecognize\x12\x33.ekstep.speech_recognition.SpeechRecognitionRequest\x1a\x32.ekstep.speech_recognition.SpeechRecognitionResult\"\x18\x82\xd3\xe4\x93\x02\x12\"\r/v1/recognize:\x01*BC\n\'com.ekstep.endpoints.speech_recognitionB\x16SpeechRecognitionProtoP\x01\x62\x06proto3'
+  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x19\x65kstep.speech_recognition\x1a\x1cgoogle/api/annotations.proto\"\x94\x01\n\x18SpeechRecognitionRequest\x12<\n\x06\x63onfig\x18\x01 \x01(\x0b\x32,.ekstep.speech_recognition.RecognitionConfig\x12:\n\x05\x61udio\x18\x02 \x01(\x0b\x32+.ekstep.speech_recognition.RecognitionAudio\"\x90\x0c\n\x11RecognitionConfig\x12\x35\n\x08language\x18\x01 \x01(\x0b\x32#.ekstep.speech_recognition.Language\x12R\n\x0b\x61udioFormat\x18\x02 \x01(\x0e\x32\x38.ekstep.speech_recognition.RecognitionConfig.AudioFormatH\x00\x88\x01\x01\x12O\n\x07\x63hannel\x18\x03 \x01(\x0e\x32\x39.ekstep.speech_recognition.RecognitionConfig.AudioChannelH\x01\x88\x01\x01\x12W\n\x0csamplingRate\x18\x04 \x01(\x0e\x32<.ekstep.speech_recognition.RecognitionConfig.AudioSampleRateH\x02\x88\x01\x01\x12[\n\rbitsPerSample\x18\x05 \x01(\x0e\x32?.ekstep.speech_recognition.RecognitionConfig.AudioBitsPerSampleH\x03\x88\x01\x01\x12\x62\n\x13transcriptionFormat\x18\x06 \x01(\x0e\x32@.ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatH\x04\x88\x01\x01\x12\x1c\n\x0fprofanityFilter\x18\x07 \x01(\x08H\x05\x88\x01\x01\x12H\n\x06\x64omain\x18\x08 \x01(\x0e\x32\x33.ekstep.speech_recognition.RecognitionConfig.DomainH\x06\x88\x01\x01\x12\x15\n\x08\x64\x65tailed\x18\t \x01(\x08H\x07\x88\x01\x01\x12\x18\n\x0bpunctuation\x18\n \x01(\tH\x08\x88\x01\x01\x12\x46\n\x05model\x18\x0b \x01(\x0e\x32\x32.ekstep.speech_recognition.RecognitionConfig.ModelH\t\x88\x01\x01\x12\'\n\x1a\x65nableAutomaticPunctuation\x18\x0c \x01(\x08H\n\x88\x01\x01\x12+\n\x1e\x65nableInverseTextNormalization\x18\r \x01(\x08H\x0b\x88\x01\x01\"@\n\x13TranscriptionFormat\x12\x0e\n\nTRANSCRIPT\x10\x00\x12\x07\n\x03SRT\x10\x01\x12\x10\n\x0c\x41LTERNATIVES\x10\x02\"L\n\x0f\x41udioSampleRate\x12\n\n\x06_16KHZ\x10\x00\x12\n\n\x06_48KHZ\x10\x01\x12\n\n\x06_22KHZ\x10\x02\x12\t\n\x05_8KHZ\x10\x03\x12\n\n\x06_44KHZ\x10\x04\",\n\x12\x41udioBitsPerSample\x12\x0b\n\x07SIXTEEN\x10\x00\x12\t\n\x05\x45IGHT\x10\x01\"$\n\x0c\x41udioChannel\x12\x08\n\x04MONO\x10\x00\x12\n\n\x06STEREO\x10\x01\"1\n\x0b\x41udioFormat\x12\x07\n\x03WAV\x10\x00\x12\x07\n\x03PCM\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x07\n\x03OGG\x10\x03\"\x8e\x01\n\x06\x44omain\x12\x0b\n\x07GENERAL\x10\x00\x12\x08\n\x04NEWS\x10\x01\x12\r\n\tEDUCATION\x10\x02\x12\t\n\x05LEGAL\x10\x03\x12\x1c\n\x18GOVERNMENT_PRESS_RELEASE\x10\x04\x12\x0e\n\nHEALTHCARE\x10\x05\x12\n\n\x06MOVIES\x10\x06\x12\r\n\tSUBTITLES\x10\x07\x12\n\n\x06SPORTS\x10\x08\"G\n\x05Model\x12\x16\n\x12\x43OMMAND_AND_SEARCH\x10\x00\x12\x0e\n\nPHONE_CALL\x10\x01\x12\t\n\x05VIDEO\x10\x02\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x03\x42\x0e\n\x0c_audioFormatB\n\n\x08_channelB\x0f\n\r_samplingRateB\x10\n\x0e_bitsPerSampleB\x16\n\x14_transcriptionFormatB\x12\n\x10_profanityFilterB\t\n\x07_domainB\x0b\n\t_detailedB\x0e\n\x0c_punctuationB\x08\n\x06_modelB\x1d\n\x1b_enableAutomaticPunctuationB!\n\x1f_enableInverseTextNormalization\"\xeb\x02\n\x08Language\x12\x11\n\x04name\x18\x01 \x01(\tH\x00\x88\x01\x01\x12?\n\x05value\x18\x02 \x01(\x0e\x32\x30.ekstep.speech_recognition.Language.LanguageCode\"\x81\x02\n\x0cLanguageCode\x12\x06\n\x02hi\x10\x00\x12\x06\n\x02\x65n\x10\x01\x12\x06\n\x02mr\x10\x02\x12\x06\n\x02ta\x10\x03\x12\x06\n\x02te\x10\x04\x12\x06\n\x02kn\x10\x05\x12\x06\n\x02gu\x10\x06\x12\x06\n\x02pa\x10\x07\x12\x06\n\x02\x62n\x10\x08\x12\x06\n\x02ml\x10\t\x12\x06\n\x02\x61s\x10\n\x12\x07\n\x03\x62rx\x10\x0b\x12\x07\n\x03\x64oi\x10\x0c\x12\x06\n\x02ks\x10\r\x12\x07\n\x03kok\x10\x0e\x12\x07\n\x03mai\x10\x0f\x12\x07\n\x03mni\x10\x10\x12\x06\n\x02ne\x10\x11\x12\x06\n\x02or\x10\x12\x12\x06\n\x02sd\x10\x13\x12\x06\n\x02si\x10\x14\x12\x06\n\x02ur\x10\x15\x12\x07\n\x03sat\x10\x17\x12\x07\n\x03lus\x10\x18\x12\x07\n\x03njz\x10\x19\x12\x07\n\x03pnr\x10\x1a\x12\x07\n\x03kha\x10\x1b\x12\x07\n\x03grt\x10\x1c\x12\x06\n\x02sa\x10\x1d\x42\x07\n\x05_name\"\x82\x01\n\x10RecognitionAudio\x12\x15\n\x08\x61udioUri\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x19\n\x0c\x61udioContent\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x12\x13\n\x06\x66ileId\x18\x03 \x01(\tH\x02\x88\x01\x01\x42\x0b\n\t_audioUriB\x0f\n\r_audioContentB\t\n\x07_fileId\"\xc0\x03\n\x17SpeechRecognitionResult\x12I\n\x06status\x18\x01 \x01(\x0e\x32\x39.ekstep.speech_recognition.SpeechRecognitionResult.Status\x12\x17\n\ntranscript\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03srt\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x43\n\x07\x64\x65tails\x18\x04 \x01(\x0b\x32-.ekstep.speech_recognition.RecognitionDetailsH\x02\x88\x01\x01\x12<\n\x0c\x61lternatives\x18\x05 \x03(\x0b\x32&.ekstep.speech_recognition.Alternative\x12\x18\n\x0bstatus_text\x18\x06 \x01(\tH\x03\x88\x01\x01\"_\n\x06Status\x12\x0b\n\x07SUCCESS\x10\x00\x12\x0c\n\x08NO_MATCH\x10\x01\x12\x1b\n\x17INITIAL_SILENCE_TIMEOUT\x10\x02\x12\x12\n\x0e\x42\x41\x42\x42LE_TIMEOUT\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x42\r\n\x0b_transcriptB\x06\n\x04_srtB\n\n\x08_detailsB\x0e\n\x0c_status_text\"x\n\x12RecognitionDetails\x12\x12\n\nchannelTag\x18\x01 \x01(\x05\x12\x14\n\x0clanguageCode\x18\x02 \x01(\t\x12\x0b\n\x03snr\x18\x03 \x01(\x05\x12\x14\n\x0csamplingRate\x18\x04 \x01(\x05\x12\x15\n\rbitsPerSample\x18\x05 \x01(\x05\"?\n\x0b\x41lternative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x11\n\tstartTime\x18\x02 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x03 \x01(\t2\xa3\x01\n\x10SpeechRecognizer\x12\x8e\x01\n\trecognize\x12\x33.ekstep.speech_recognition.SpeechRecognitionRequest\x1a\x32.ekstep.speech_recognition.SpeechRecognitionResult\"\x18\x82\xd3\xe4\x93\x02\x12\"\r/v1/recognize:\x01*BC\n\'com.ekstep.endpoints.speech_recognitionB\x16SpeechRecognitionProtoP\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -471,8 +471,8 @@ _SPEECHRECOGNITIONRESULT_STATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2576,
-  serialized_end=2671,
+  serialized_start=2602,
+  serialized_end=2697,
 )
 _sym_db.RegisterEnumDescriptor(_SPEECHRECOGNITIONRESULT_STATUS)
 
@@ -848,6 +848,13 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult.status_text', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -875,9 +882,14 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
       index=2, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult._status_text',
+      index=3, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=2300,
-  serialized_end=2706,
+  serialized_end=2748,
 )
 
 
@@ -936,8 +948,8 @@ _RECOGNITIONDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2708,
-  serialized_end=2828,
+  serialized_start=2750,
+  serialized_end=2870,
 )
 
 
@@ -982,8 +994,8 @@ _ALTERNATIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2830,
-  serialized_end=2893,
+  serialized_start=2872,
+  serialized_end=2935,
 )
 
 _SPEECHRECOGNITIONREQUEST.fields_by_name['config'].message_type = _RECOGNITIONCONFIG
@@ -1066,6 +1078,9 @@ _SPEECHRECOGNITIONRESULT.fields_by_name['srt'].containing_oneof = _SPEECHRECOGNI
 _SPEECHRECOGNITIONRESULT.oneofs_by_name['_details'].fields.append(
   _SPEECHRECOGNITIONRESULT.fields_by_name['details'])
 _SPEECHRECOGNITIONRESULT.fields_by_name['details'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_details']
+_SPEECHRECOGNITIONRESULT.oneofs_by_name['_status_text'].fields.append(
+  _SPEECHRECOGNITIONRESULT.fields_by_name['status_text'])
+_SPEECHRECOGNITIONRESULT.fields_by_name['status_text'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_status_text']
 DESCRIPTOR.message_types_by_name['SpeechRecognitionRequest'] = _SPEECHRECOGNITIONREQUEST
 DESCRIPTOR.message_types_by_name['RecognitionConfig'] = _RECOGNITIONCONFIG
 DESCRIPTOR.message_types_by_name['Language'] = _LANGUAGE
@@ -1134,8 +1149,8 @@ _SPEECHRECOGNIZER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2896,
-  serialized_end=3059,
+  serialized_start=2938,
+  serialized_end=3101,
   methods=[
   _descriptor.MethodDescriptor(
     name='recognize',

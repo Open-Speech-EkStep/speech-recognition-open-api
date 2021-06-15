@@ -114,7 +114,7 @@ if __name__ == '__main__':
     with grpc.insecure_channel('34.70.114.226:50051') as channel:
         channel = grpc.intercept_channel(channel, *interceptors)
         stub = SpeechRecognizerStub(channel)
-        transcribe_audio_url(stub)
-        transcribe_audio_bytes(stub)
+        # transcribe_audio_url(stub)
+        # transcribe_audio_bytes(stub)
         get_srt_audio_url(stub)
         get_srt_audio_bytes(stub)

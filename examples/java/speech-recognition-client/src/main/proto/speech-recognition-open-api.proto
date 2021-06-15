@@ -135,6 +135,7 @@ message SpeechRecognitionResult {
   optional string srt = 3;
   optional RecognitionDetails details = 4;
   repeated Alternative alternatives = 5;
+  optional string status_text = 6;
 }
 
 message RecognitionDetails {

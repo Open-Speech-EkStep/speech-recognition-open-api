@@ -38,7 +38,7 @@ class ModelService:
     def apply_itn(self, text_to_itn, language, itn):
         result = text_to_itn
         if itn:
-            enabled_itn = self.punc_models_dict.get(language, None)
+            enabled_itn = self.enabled_itn_lang_dict.get(language, None)
             if enabled_itn != None:
                 result = inverse_normalize_text([text_to_itn], language)[0]
         return result
