@@ -29,7 +29,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y sudo wget python3-pip
 COPY requirements.txt .
 #RUN pip3 install --upgrade pip3
-RUN pip3 install --no-cache-dir -r requirements.txt
+#RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . /opt/speech_recognition_open_api
 EXPOSE 50051
 RUN sh /opt/speech_recognition_open_api/model_bootstrap.sh

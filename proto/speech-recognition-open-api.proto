@@ -10,7 +10,7 @@ import "google/api/annotations.proto";
 
 service SpeechRecognizer {
   rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
-    option (google.api.http) = {post: "/v1/recognize", body: "*"};
+    option (google.api.http) = {post: "/v2/recognize", body: "*"};
   }
 }
 
@@ -66,18 +66,18 @@ message RecognitionConfig {
   }
 
   Language language = 1;
-  optional AudioFormat audioFormat = 2;
-  optional AudioChannel channel = 3;
-  optional AudioSampleRate samplingRate = 4;
-  optional AudioBitsPerSample bitsPerSample = 5;
-  optional TranscriptionFormat transcriptionFormat = 6;
-  optional bool profanityFilter = 7;
-  optional Domain domain = 8;
-  optional bool detailed = 9;
-  optional string punctuation = 10;
-  optional Model model = 11;
-  optional bool enableAutomaticPunctuation = 12;
-  optional bool enableInverseTextNormalization = 13;
+  repeated AudioFormat audioFormat = 2;
+  repeated AudioChannel channel = 3;
+  repeated AudioSampleRate samplingRate = 4;
+  repeated AudioBitsPerSample bitsPerSample = 5;
+  repeated TranscriptionFormat transcriptionFormat = 6;
+  repeated bool profanityFilter = 7;
+  repeated Domain domain = 8;
+  repeated bool detailed = 9;
+  repeated string punctuation = 10;
+  repeated Model model = 11;
+  repeated bool enableAutomaticPunctuation = 12;
+  repeated bool enableInverseTextNormalization = 13;
 }
 
 message Language {
@@ -112,14 +112,14 @@ message Language {
     grt = 28;
     sa = 29;
   }
-  optional string name = 1;
+  repeated string name = 1;
   LanguageCode value = 2;
 }
 
 message RecognitionAudio {
-  optional string audioUri = 1;
-  optional bytes audioContent = 2;
-  optional string fileId = 3;
+  repeated string audioUri = 1;
+  repeated bytes audioContent = 2;
+  repeated string fileId = 3;
 }
 
 message SpeechRecognitionResult {
@@ -131,11 +131,11 @@ message SpeechRecognitionResult {
     ERROR = 4;
   }
   Status status = 1;
-  optional string transcript = 2;
-  optional string srt = 3;
-  optional RecognitionDetails details = 4;
+  repeated string transcript = 2;
+  repeated string srt = 3;
+  repeated RecognitionDetails details = 4;
   repeated Alternative alternatives = 5;
-  optional string status_text = 6;
+  repeated string status_text = 6;
 }
 
 message RecognitionDetails {

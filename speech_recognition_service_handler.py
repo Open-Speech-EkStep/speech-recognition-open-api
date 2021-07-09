@@ -25,7 +25,7 @@ def handle_request(request):
 
 
 def is_language_supported(language):
-    return language in ['hi', 'ta', 'te', 'kn', 'or', 'gu', 'en']
+    return language in ['hi', 'ta', 'bn', 'kn', 'ne','en']
 
 
 # def is_language_punctuation_supported(language, punctuate):

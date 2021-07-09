@@ -16,3 +16,8 @@ grpc-interceptor==0.13.0
 requests
 responses
 pytest-mock
+webrtcvad
+pydub
+tqdm
+torchaudio==0.7.2
+numpy==1.20.0

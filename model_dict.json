@@ -1,10 +1,8 @@
 {
-    "en":"/opt/speech_recognition_open_api/deployed_models/indian_english/combined_model.pt",
+    "en":"/opt/speech_recognition_open_api/deployed_models/indian_english/final_model.pt",
     "hi" : "/opt/speech_recognition_open_api/deployed_models/hindi/hindi.pt",
-    "ta" : "/opt/speech_recognition_open_api/deployed_models/tamil/tamil.pt",
-    "te" : "/opt/speech_recognition_open_api/deployed_models/telugu/telugu.pt",
-    "kn" : "/opt/speech_recognition_open_api/deployed_models/kannada/kannada_v2.pt",
-    "kn-lm" : "/opt/speech_recognition_open_api/deployed_models/kannada/kannada_v2.pt",
-    "or": "/opt/speech_recognition_open_api/deployed_models/odia/odia_v1.pt",
-    "gu": "/opt/speech_recognition_open_api/deployed_models/gujarati/gujarati.pt"
+    "ta" : "/opt/speech_recognition_open_api/deployed_models/tamil/final_model.pt",
+    "bn" : "/opt/speech_recognition_open_api/deployed_models/bengali/final_model.pt",
+    "ne" : "/opt/speech_recognition_open_api/deployed_models/nepali/final_model.pt",
+    "kn" : "/opt/speech_recognition_open_api/deployed_models/kannada/final_model.pt"
 }

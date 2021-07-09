@@ -1,18 +1,45 @@
 from inference_module import InferenceService
 from punctuate.punctuate_text import Punctuation
 from inverse_text_normalization.run_predict import inverse_normalize_text
+from lib.inference_lib import load_model_and_generator, get_results
+from srt.infer import response_alignment
+from srt.subtitle_generator import get_srt
+from model_item import ModelItem
 import os
-
+import json
 
 class ModelService:
 
-    def __init__(self, model_dict_path):
-        self.inference = InferenceService(model_dict_path)
+    def __init__(self, model_config_path, decoder_type, cuda, half):
+        with open(model_config_path,'r') as f:
+            model_config = json.load(f)
+        self.model_items = {}
+        self.cuda = cuda
+        self.half = half
+        for language_code, path in model_config.items():
+            path_split = path.split("/")
+            base_path = "/".join(path_split[:-1])
+            model_file_name = path_split[-1]
+            model_item = ModelItem(base_path, model_file_name, language_code)
+
+            model, generator = load_model_and_generator(model_item, self.cuda, decoder=decoder_type, half=self.half)
+            model_item.set_model(model)
+            model_item.set_generator(generator)
+            self.model_items[language_code] = model_item
         self.punc_models_dict = {'hi': Punctuation('hi'), 'en': Punctuation('en')}
         self.enabled_itn_lang_dict = {'hi': 1, 'en': 1}
 
     def transcribe(self, file_name, language, punctuate, itn):
-        result = self.inference.get_inference(file_name, language)
+        model_item = self.model_items[language]
+        result = get_results(
+            wav_path=file_name,
+            dict_path=model_item.get_dict_file_path(),
+            generator=model_item.get_generator(),
+            use_cuda=self.cuda,
+            model=model_item.get_model(),
+            half=self.half
+        )
+        # result = self.inference.get_inference(file_name, language)
         print("Before Punctuation**** ", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
         result['transcription'] = self.apply_itn(result['transcription'], language, itn)
@@ -20,7 +47,14 @@ class ModelService:
         return result
 
     def get_srt(self, file_name, language, punctuate, itn):
-        result = self.inference.get_srt(file_name, language, os.path.dirname(__file__) + '/denoiser')
+        model_item = self.model_items[language]
+        model = model_item.get_model()
+        generator = model_item.get_generator()
+        dict_file_path = model_item.get_dict_file_path()
+        result = get_srt(file_name, model, generator, dict_file_path,
+                os.path.dirname(__file__) + '/denoiser', audio_threshold=15,
+                language=language, half=self.half)
+        # result = self.inference.get_srt(file_name, language, os.path.dirname(__file__) + '/denoiser')
         print("Before Punctuation**** ", result['srt'])
         result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
         result['srt'] = self.apply_itn(result['srt'], language, itn)
