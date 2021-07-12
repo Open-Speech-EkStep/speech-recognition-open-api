@@ -83,7 +83,7 @@ def get_srt_audio_bytes(stub):
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
     config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
-                               enableInverseTextNormalization=True)
+                               enableInverseTextNormalization=True,enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 
