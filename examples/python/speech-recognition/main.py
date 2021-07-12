@@ -46,7 +46,7 @@ def transcribe_audio_bytes(stub):
     language = "hi"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, audioFormat='MP3', transcriptionFormat='TRANSCRIPT',
+    config = RecognitionConfig(language=lang,  transcriptionFormat='TRANSCRIPT',
                                enableAutomaticPunctuation=1)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
@@ -69,7 +69,7 @@ def transcribe_audio_url(stub):
     language = "hi"
     url = "https://codmento.com/ekstep/test/changed.wav"
     lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', enableAutomaticPunctuation=True)
+    config = RecognitionConfig(language=lang, enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioUri=url)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 
@@ -111,7 +111,7 @@ def get_srt_audio_url(stub):
 if __name__ == '__main__':
     key = "mysecrettoken"
     # interceptors = [MetadataClientInterceptor(key)]
-    with grpc.insecure_channel('34.135.3.179:50052') as channel:
+    with grpc.insecure_channel('localhost:50051') as channel:
         # channel = grpc.intercept_channel(channel, *interceptors)
         stub = SpeechRecognizerStub(channel)
         transcribe_audio_url(stub)

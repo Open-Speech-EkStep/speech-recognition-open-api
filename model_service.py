@@ -1,6 +1,6 @@
-from inference_module import InferenceService
+# from inference_module import InferenceService
 from punctuate.punctuate_text import Punctuation
-from inverse_text_normalization.run_predict import inverse_normalize_text
+# from inverse_text_normalization.run_predict import inverse_normalize_text
 from lib.inference_lib import load_model_and_generator, get_results
 from srt.infer import response_alignment
 from srt.subtitle_generator import get_srt
@@ -42,7 +42,7 @@ class ModelService:
         # result = self.inference.get_inference(file_name, language)
         print("Before Punctuation**** ", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
-        result['transcription'] = self.apply_itn(result['transcription'], language, itn)
+        # result['transcription'] = self.apply_itn(result['transcription'], language, itn)
         print("After Punctuation**** ", result['transcription'])
         return result
 
@@ -57,7 +57,7 @@ class ModelService:
         # result = self.inference.get_srt(file_name, language, os.path.dirname(__file__) + '/denoiser')
         print("Before Punctuation**** ", result['srt'])
         result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
-        result['srt'] = self.apply_itn(result['srt'], language, itn)
+        # result['srt'] = self.apply_itn(result['srt'], language, itn)
         print("After Punctuation**** ", result['srt'])
         return result
 
@@ -69,10 +69,10 @@ class ModelService:
                 result = punc_model_obj.punctuate_text([text_to_punctuate])[0]
         return result
 
-    def apply_itn(self, text_to_itn, language, itn):
-        result = text_to_itn
-        if itn:
-            enabled_itn = self.enabled_itn_lang_dict.get(language, None)
-            if enabled_itn != None:
-                result = inverse_normalize_text([text_to_itn], language)[0]
-        return result
+    # def apply_itn(self, text_to_itn, language, itn):
+    #     result = text_to_itn
+    #     if itn:
+    #         enabled_itn = self.enabled_itn_lang_dict.get(language, None)
+    #         if enabled_itn != None:
+    #             result = inverse_normalize_text([text_to_itn], language)[0]
+    #     return result
