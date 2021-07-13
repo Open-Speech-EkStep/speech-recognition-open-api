@@ -66,9 +66,9 @@ def transcribe_audio_bytes(stub):
 
 
 def transcribe_audio_url(stub):
-    language = "hi"
+    language = "bn"
     url = "https://codmento.com/ekstep/test/changed.wav"
-    lang = Language(value=language, name='Hindi')
+    lang = Language(value=language, name='Bengali')
     config = RecognitionConfig(language=lang, enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioUri=url)
     request = SpeechRecognitionRequest(audio=audio, config=config)
