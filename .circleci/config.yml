@@ -13,7 +13,7 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: 1.0.0
+    default: 2.0.0
   inference_host_name:
     type: string
     default: 34.70.114.226
@@ -115,13 +115,13 @@ workflows:
     jobs:
       - build_and_deploy_image:
           name: build_and_deploy_image
-          filters:
-            branches:
-              only: master
+#          filters:
+#            branches:
+#              only: master
       - start_server:
           name: start_server
-          filters:
-            branches:
-              only: master
+#          filters:
+#            branches:
+#              only: master
           requires:
             - build_and_deploy_image
