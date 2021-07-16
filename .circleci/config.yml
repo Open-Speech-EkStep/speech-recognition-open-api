@@ -29,6 +29,7 @@ jobs:
   build_and_deploy_image:
     machine:
       image: ubuntu-2004:202101-01
+      resource_class: 2xlarge
     working_directory: ~/project/
     steps:
       - when:
@@ -73,6 +74,7 @@ jobs:
   start_server:
     machine:
       image: ubuntu-2004:202101-01
+      resource_class: large
     working_directory: ~/project/
     steps:
       - checkout:
