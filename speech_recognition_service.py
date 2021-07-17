@@ -14,7 +14,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
 
     def __init__(self):
         model_dict_path = "model_dict.json"
-        self.model_service = ModelService(model_dict_path, 'kenlm', True, False)
+        gpu = os.environ.get('gpu', False)
+        self.model_service = ModelService(model_dict_path, 'kenlm', gpu, False)
         print("Loaded models successfully")
 
     def recognize(self, request, context):
