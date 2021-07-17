@@ -3,32 +3,35 @@ import itertools
 import json
 import os
 
+from punctuate.punctuate_text import Punctuation
+from srt.subtitle_generator import get_srt
+
 # from inverse_text_normalization.run_predict import inverse_normalize_text
 from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
-from punctuate.punctuate_text import Punctuation
-from srt.infer import response_alignment
-from srt.subtitle_generator import get_srt
 
 
 class ModelService:
 
     def __init__(self, model_config_path, decoder_type, cuda, half):
+        languages = os.environ.get('languages', ['all'])
         with open(model_config_path, 'r') as f:
             model_config = json.load(f)
         self.model_items = {}
         self.cuda = cuda
         self.half = half
         for language_code, path in model_config.items():
-            path_split = path.split("/")
-            base_path = "/".join(path_split[:-1])
-            model_file_name = path_split[-1]
-            model_item = ModelItem(base_path, model_file_name, language_code)
+            if language_code in languages or 'all' in languages:
+                path_split = path.split("/")
+                base_path = "/".join(path_split[:-1])
+                model_file_name = path_split[-1]
+                model_item = ModelItem(base_path, model_file_name, language_code)
 
-            model, generator = load_model_and_generator(model_item, self.cuda, decoder=decoder_type, half=self.half)
-            model_item.set_model(model)
-            model_item.set_generator(generator)
-            self.model_items[language_code] = model_item
+                model, generator = load_model_and_generator(model_item, self.cuda, decoder=decoder_type, half=self.half)
+                model_item.set_model(model)
+                model_item.set_generator(generator)
+                self.model_items[language_code] = model_item
+                print(f"Loaded {language_code} model")
         self.punc_models_dict = {'hi': Punctuation('hi'), 'en': Punctuation('en')}
         self.enabled_itn_lang_dict = {'hi': 1, 'en': 1}
 
