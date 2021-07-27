@@ -79,9 +79,9 @@ def transcribe_audio_url(stub):
 
 
 def get_srt_audio_bytes(stub):
-    language = "hi"
+    language = "ta"
     audio_bytes = read_audio()
-    lang = Language(value=language, name='Hindi')
+    lang = Language(value=language, name='Tamil')
     config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
                                enableInverseTextNormalization=True,enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioContent=audio_bytes)
@@ -111,7 +111,7 @@ def get_srt_audio_url(stub):
 if __name__ == '__main__':
     key = "mysecrettoken"
     # interceptors = [MetadataClientInterceptor(key)]
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel('34.70.114.226:50051') as channel:
         # channel = grpc.intercept_channel(channel, *interceptors)
         stub = SpeechRecognizerStub(channel)
         transcribe_audio_url(stub)
