@@ -13,17 +13,22 @@ from model_item import ModelItem
 
 class ModelService:
 
-    def __init__(self, model_config_path, decoder_type, cuda, half):
+    def __init__(self, model_base_path, decoder_type, cuda, half):
         languages = os.environ.get('languages', ['all'])
-        with open(model_config_path, 'r') as f:
-            model_config = json.load(f)
+        model_config_file_path = model_base_path + 'model_dict.json'
+        if os.path.exists(model_config_file_path):
+            with open(model_config_file_path, 'r') as f:
+                model_config = json.load(f)
+        else:
+            raise Exception(f'Model configuration file is missing at {model_config_file_path}')
         self.model_items = {}
         self.cuda = cuda
         self.half = half
+        self.supported_languages = list(model_config.keys())
         for language_code, path in model_config.items():
             if language_code in languages or 'all' in languages:
                 path_split = path.split("/")
-                base_path = "/".join(path_split[:-1])
+                base_path = model_base_path[:-1] + "/".join(path_split[:-1])
                 model_file_name = path_split[-1]
                 model_item = ModelItem(base_path, model_file_name, language_code)
 

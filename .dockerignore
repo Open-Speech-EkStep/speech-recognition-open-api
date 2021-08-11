@@ -4,3 +4,4 @@ examples
 __pycache__/
 Dockerfile
 .DS_Store
+model_dict.json

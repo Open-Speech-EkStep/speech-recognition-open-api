@@ -1,26 +1,28 @@
-import os, requests
+import os
+
 import grpc
+import requests
+
 from model_service import ModelService
+from speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
-from speech_recognition_service_handler import handle_request
 
 
 # add error message field to status
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
-
+    MODEL_BASE_PATH = os.environ.get('models_base_path', '')
     def __init__(self):
-        model_dict_path = "model_dict.json"
         gpu = os.environ.get('gpu', False)
-        self.model_service = ModelService(model_dict_path, 'kenlm', gpu, False)
+        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, False)
         print("Loaded models successfully")
 
     def recognize(self, request, context):
         try:
-            handle_request(request)
+            handle_request(request, self.model_service.supported_languages)
         except NotImplementedError as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
