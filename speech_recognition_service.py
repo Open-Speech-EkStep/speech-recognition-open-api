@@ -17,6 +17,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     MODEL_BASE_PATH = os.environ.get('models_base_path', '')
     def __init__(self):
         gpu = os.environ.get('gpu', False)
+        for path, dirs, files in os.walk(self.MODEL_BASE_PATH):
+            print(path)
+            for f in files:
+                print(f)
         self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, False)
         print("Loaded models successfully")
 

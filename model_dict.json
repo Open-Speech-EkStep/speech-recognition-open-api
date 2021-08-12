@@ -1,13 +1,13 @@
 {
-    "en" : "/indian_english/final_model.pt",
-    "hi" : "/hindi/hindi.pt",
-    "ta" : "/tamil/final_model.pt",
-    "bn" : "/bengali/final_model.pt",
-    "ne" : "/nepali/final_model.pt",
-    "kn" : "/kannada/final_model.pt",
-    "gu" : "/gujarati/gujarati.pt",
-    "te" : "/telugu/telugu.pt",
-    "or" : "/odia/odia.pt",
-    "mr" : "/marathi/marathi.pt"
+    "en" : "/deployed_models/indian_english/final_model.pt",
+    "hi" : "/deployed_models/hindi/hindi.pt",
+    "ta" : "/deployed_models/tamil/final_model.pt",
+    "bn" : "/deployed_models/bengali/final_model.pt",
+    "ne" : "/deployed_models/nepali/final_model.pt",
+    "kn" : "/deployed_models/kannada/final_model.pt",
+    "gu" : "/deployed_models/gujarati/gujarati.pt",
+    "te" : "/deployed_models/telugu/telugu.pt",
+    "or" : "/deployed_models/odia/odia.pt",
+    "mr" : "/deployed_models/marathi/marathi.pt"
 
 }
