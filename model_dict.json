@@ -4,5 +4,10 @@
     "ta" : "/tamil/final_model.pt",
     "bn" : "/bengali/final_model.pt",
     "ne" : "/nepali/final_model.pt",
-    "kn" : "/kannada/final_model.pt"
+    "kn" : "/kannada/final_model.pt",
+    "gu" : "/gujarati/gujarati.pt",
+    "te" : "/telugu/telugu.pt",
+    "or" : "/odia/odia.pt",
+    "mr" : "/marathi/marathi.pt"
+
 }

@@ -4,7 +4,7 @@ FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt-get install -y sudo wget python3-pip
 RUN mkdir /opt/speech_recognition_open_api/
-ENV models_base_path=/opt/speech_recognition_open_api/
+ENV models_base_path=/opt/speech_recognition_open_api/deployed_models/
 WORKDIR /opt/speech_recognition_open_api/
 COPY requirements.txt .
 
