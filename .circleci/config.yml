@@ -53,12 +53,12 @@ jobs:
                   gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
                   gcloud --quiet config set project ${GCP_PROJECT}
                   echo "Build ..."
-                  docker build --rm=false -t us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
+                  docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
             - run:
                 name: deploy image to registry
                 command: |
                   echo "Deploy ..."
-                  gcloud docker -- push us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
+                  gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
             - run:
                 name: Remove account details
                 command: |
@@ -87,7 +87,7 @@ jobs:
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
 
-            echo "sudo gcloud docker -- pull us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>"  > start_server.sh
+            echo "sudo gcloud docker -- pull gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>"  > start_server.sh
 
             echo 'sudo docker ps -q --filter "name=<< pipeline.parameters.image_name >>" | grep -q . && sudo docker stop "<< pipeline.parameters.image_name >>" && sudo docker rm -fv "<< pipeline.parameters.image_name >>"' >> start_server.sh
 
