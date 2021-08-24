@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-api-v2-service
+  namespace: dev
+  uid: aea28007-7ca4-498f-9847-4ae3d96ae90e
+  resourceVersion: '6166'
+  creationTimestamp: '2021-08-02T19:57:02Z'
+  labels:
+    app: model-api-v2
+    language: all
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  managedFields:
+    - manager: kubectl-expose
+      operation: Update
+      apiVersion: v1
+      time: '2021-08-02T19:57:02Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:language': {}
+        'f:spec':
+          'f:externalTrafficPolicy': {}
+          'f:ports':
+            .: {}
+            'k:{"port":50051,"protocol":"TCP"}':
+              .: {}
+              'f:port': {}
+              'f:protocol': {}
+              'f:targetPort': {}
+          'f:selector':
+            .: {}
+            'f:app': {}
+            'f:language': {}
+          'f:sessionAffinity': {}
+          'f:type': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2021-08-02T19:57:49Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:finalizers':
+            .: {}
+            'v:"service.kubernetes.io/load-balancer-cleanup"': {}
+        'f:status':
+          'f:loadBalancer':
+            'f:ingress': {}
+  selfLink: /api/v1/namespaces/dev/services/model-api-v2-service
+status:
+  loadBalancer:
+    ingress:
+      - ip: 34.134.236.45
+spec:
+  ports:
+    - protocol: TCP
+      port: 50051
+      targetPort: 50051
+      nodePort: 31913
+  selector:
+    app: model-api-v2
+    language: all
+  clusterIP: 10.96.10.120
+  clusterIPs:
+    - 10.96.10.120
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+
