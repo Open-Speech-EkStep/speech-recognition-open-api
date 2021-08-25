@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: 'us.gcr.io/ekstepspeechrecognition/speech_recognition_model_api:2.0.0'
+  repository: gcr.io/ekstepspeechrecognition/speech_recognition_model_api
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -13,10 +13,19 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+namespace: "test"
+
+volumes:
+  name: modelsvolume
+  pdName: modelsv2
+  readOnly: true
+  fsType: ext4
+  mountPath: /opt/speech_recognition_open_api/deployed_models/
+
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -66,8 +75,8 @@ resources: {}
   #   memory: 128Mi
 
 autoscaling:
-  enabled: false
-  minReplicas: 10
+  enabled: true
+  minReplicas: 1
   maxReplicas: 15
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80

@@ -110,6 +110,22 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 `DOC: https://cloud.google.com/api-gateway/docs/get-started-cloud-run-grpc#before_you_begin`
 
 
+#### Using helm to deploy
+
+
+1. Do changes if needed in asr-model-v2
+2. Run the following to package: `helm package asr-model-v2/`
+3. Run the following to install: `helm install <release-name> asr-model-v2-0.1.0.tgz`
+
+To Upgrade:
+1. Do changes and package it(Follow steps 1 and 2 in above steps).
+2. Run the following to install: `helm upgrade <release-name> asr-model-v2-0.1.0.tgz`
+
+To View all resources:
+1. kubectl get all --namespace <namespace-name>
+2. `helm list` - to check releases.
+
+
 #### Note:
 In case you get a error such as, ModuleNotFoundError: No module named 'speech_recognition_open_api_pb2',
 do the following:

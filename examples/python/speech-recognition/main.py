@@ -111,10 +111,10 @@ def get_srt_audio_url(stub):
 if __name__ == '__main__':
     key = "mysecrettoken"
     # interceptors = [MetadataClientInterceptor(key)]
-    with grpc.insecure_channel('34.134.236.45:50051') as channel:
+    with grpc.insecure_channel('35.202.181.234:50051') as channel:
         # channel = grpc.intercept_channel(channel, *interceptors)
         stub = SpeechRecognizerStub(channel)
-        transcribe_audio_url(stub)
-        transcribe_audio_bytes(stub)
-        get_srt_audio_url(stub)
+        # transcribe_audio_url(stub)
+        # transcribe_audio_bytes(stub)
+        # get_srt_audio_url(stub)
         get_srt_audio_bytes(stub)
