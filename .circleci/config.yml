@@ -110,9 +110,8 @@ jobs:
             rm ${HOME}/gcp-key.json ; ls
 
   deployToEKS:
-    machine:
-      image: ubuntu-2004:202101-01
-      resource_class: large
+    docker:
+      - image: cimg/python:3.9.6
     steps:
       - attach_workspace:
           at: /tmp/workspace
