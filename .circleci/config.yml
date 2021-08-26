@@ -110,8 +110,9 @@ jobs:
             rm ${HOME}/gcp-key.json ; ls
 
   deployToEKS:
-    docker:
-      - image: circleci/golang:1.10
+    machine:
+      image: ubuntu-2004:202101-01
+      resource_class: large
     steps:
       - attach_workspace:
           at: /tmp/workspace
