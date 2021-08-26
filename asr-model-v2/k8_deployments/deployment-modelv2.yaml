@@ -29,14 +29,14 @@ spec:
           image: 'gcr.io/ekstepspeechrecognition/speech_recognition_model_api:2.0.0'
           env: 
           - name: languages
-            value: '["hi"]'
+            value: '["mai","ur"]'
           ports:
             - containerPort: 50051
               protocol: TCP
-          resources:
-            limits:
-                cpu: '500m'
-                memory: "2Gi"
+#          resources:
+#            limits:
+#                cpu: '500m'
+#                memory: "2Gi"
           volumeMounts:
             - name: modelsv2
               mountPath: /opt/speech_recognition_open_api/deployed_models/

@@ -109,21 +109,37 @@ jobs:
           command: |
             rm ${HOME}/gcp-key.json ; ls
 
+  deployToEKS:
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - checkout:
+          path: ~/project
+      - run:
+          name: Deploy helm chart to EKS
+          command: |
+            bash deploy-to-EKS.sh
+
+
 workflows:
   version: 2
 
   build_deploy_and_run_image:
     when: << pipeline.parameters.trigger_pipeline >>
     jobs:
-      - build_and_deploy_image:
-          name: build_and_deploy_image
-#          filters:
-#            branches:
-#              only: master
-      - start_server:
-          name: start_server
-#          filters:
-#            branches:
-#              only: master
-          requires:
-            - build_and_deploy_image
+#      - build_and_deploy_image:
+#          name: build_and_deploy_image
+##          filters:
+##            branches:
+##              only: master
+#      - start_server:
+#          name: start_server
+##          filters:
+##            branches:
+##              only: master
+#          requires:
+#            - build_and_deploy_image
+      - deployToEKS:
+          name: deployToEKS
