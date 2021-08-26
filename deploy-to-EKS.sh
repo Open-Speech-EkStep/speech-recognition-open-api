@@ -10,7 +10,9 @@ sudo apt install unzip && curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.z
 echo "Get the kubeconfig file "
 export KUBECONFIG=$HOME/.kube/kubeconfig && /home/circleci/bin/aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
 echo "Install and configuire helm"
-sudo curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helm && sudo rm -rf linux-amd64
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+sh get_helm.sh
 echo "Initialize helm"
 helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
 echo "Install tiller plugin"
