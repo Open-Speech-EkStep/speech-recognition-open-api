@@ -15,17 +15,19 @@ sudo apt-get install apt-transport-https --yes
 echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 sudo apt-get update
 sudo apt-get install helm
-echo "Initialize helm"
-helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
-echo "Install tiller plugin"
-helm plugin install https://github.com/rimusz/helm-tiller --kubeconfig=$HOME/.kube/kubeconfig
-helm tiller start-ci
+#echo "Initialize helm"
+#helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
+#echo "Install tiller plugin"
+#helm plugin install https://github.com/rimusz/helm-tiller --kubeconfig=$HOME/.kube/kubeconfig
+#helm tiller start-ci
 export HELM_HOST=127.0.0.1:44134
 result=$(eval helm ls | grep ekstep-model-api)
 if [ $? -ne "0" ]; then
+   echo "install helm charts"
    helm install --timeout 180s ekstep-model-api asr-model-v2 --namespace test --create-namespace
 else
+   echo "Upgrade helm charts"
    helm upgrade --timeout 180s ekstep-model-api asr-model-v2 --namespace test --create-namespace
 fi
-echo "stop tiller"
-helm tiller stop
+#echo "stop tiller"
+#helm tiller stop
