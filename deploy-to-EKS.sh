@@ -1,4 +1,5 @@
 #!/bin/bash
+namespace=$1
 echo "Install AWS cli"
 export TZ=Europe/Minsk && sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > sudo  /etc/timezone && sudo apt-get update && sudo apt-get install -y awscli
 echo "Install and confgure kubectl"
@@ -21,13 +22,13 @@ sudo apt-get install helm
 #helm plugin install https://github.com/rimusz/helm-tiller --kubeconfig=$HOME/.kube/kubeconfig
 #helm tiller start-ci
 export HELM_HOST=127.0.0.1:44134
-result=$(eval helm ls | grep ekstep-model-api)
+result=$(eval helm ls --namespace $namespace | grep ekstep-model-api)
 if [ $? -ne "0" ]; then
    echo "install helm charts"
-   helm install --timeout 180s ekstep-model-api asr-model-v2 --namespace test --create-namespace
+   helm install --timeout 180s ekstep-model-api asr-model-v2 --set namespace=$namespace --namespace $namespace --create-namespace
 else
    echo "Upgrade helm charts"
-   helm upgrade --timeout 180s ekstep-model-api asr-model-v2 --namespace test --create-namespace
+   helm upgrade --timeout 180s ekstep-model-api asr-model-v2 --set namespace=$namespace --namespace $namespace --create-namespace
 fi
 #echo "stop tiller"
 #helm tiller stop

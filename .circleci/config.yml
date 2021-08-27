@@ -110,6 +110,9 @@ jobs:
             rm ${HOME}/gcp-key.json ; ls
 
   deployToEKS:
+    parameters:
+      namespace:
+        type: string
     docker:
       - image: cimg/python:3.9.6
     steps:
@@ -120,7 +123,7 @@ jobs:
       - run:
           name: Deploy helm chart to EKS
           command: |
-            bash deploy-to-EKS.sh
+            bash deploy-to-EKS.sh << parameters.namespace >>
 
 
 workflows:
@@ -142,4 +145,5 @@ workflows:
 #          requires:
 #            - build_and_deploy_image
       - deployToEKS:
-          name: deployToEKS
+          name: deployToEKS-test
+          namespace: 'test'
