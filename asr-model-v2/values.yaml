@@ -89,3 +89,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  variable1: languages
+    value : '["hi"]'

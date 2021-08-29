@@ -40,8 +40,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: languages
-              value: '["gu","mr","or","te"]'
+            - name: {{ .Values.env.variable1 }}
+              value: {{ .Values.env.variable1.value }}
           ports:
             - name: http
               containerPort: 50051
