@@ -91,4 +91,4 @@ tolerations: []
 affinity: {}
 
 env:
- languages : ["hi"]
+ languages : "['hi']"
