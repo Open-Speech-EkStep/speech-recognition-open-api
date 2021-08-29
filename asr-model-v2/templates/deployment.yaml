@@ -41,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: languages
-              value: {{ .Values.languages}}
+              value: {{ .Values.env.languages }}
           ports:
             - name: http
               containerPort: 50051
