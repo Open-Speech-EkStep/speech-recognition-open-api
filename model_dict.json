@@ -8,6 +8,6 @@
     "gu" : "/gujarati/gujarati.pt",
     "te" : "/telugu/telugu.pt",
     "or" : "/odia/odia.pt",
-    "mr" : "/marathi/marathi.pt"
-
+    "mr" : "/marathi/marathi.pt",
+    "ur" : "/urdu/urdu.pt"
 }
