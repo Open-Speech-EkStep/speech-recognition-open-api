@@ -22,7 +22,7 @@ volumes:
 #  fsType: ext4
 #  mountPath: /opt/speech_recognition_open_api/deployed_models/
   name: samba-volume
-  path: /opt/share/aai4b/asr-models
+  path: /opt/share/aai4b/asr_models
   type: Directory
   mountPath: /opt/speech_recognition_open_api/deployed_models/
 
