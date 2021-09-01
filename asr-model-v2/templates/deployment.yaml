@@ -26,13 +26,13 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: {{ .Values.volumes.name }}
-          hostPath:
-            path: {{ .Values.volumes.path }}
-            type: {{ .Values.volumes.type }}
-#          gcePersistentDisk:
-#            pdName: {{ .Values.volumes.pdName }}
-#            fsType: {{ .Values.volumes.fsType }}
-#            readOnly: {{ .Values.volumes.readOnly }}
+          # hostPath:
+          #   path: {{ .Values.volumes.path }}
+          #   type: {{ .Values.volumes.type }}
+          gcePersistentDisk:
+            pdName: {{ .Values.volumes.pdName }}
+            fsType: {{ .Values.volumes.fsType }}
+            readOnly: {{ .Values.volumes.readOnly }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -43,7 +43,7 @@ spec:
             - name: languages
               value: {{ .Values.env.languages | squote }}
           ports:
-            - name: http
+            - name: grpc
               containerPort: 50051
               protocol: TCP
           resources:

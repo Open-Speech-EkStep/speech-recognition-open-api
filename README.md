@@ -111,8 +111,16 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 
 
 #### Using helm to deploy
+#### Prerequisites:
+1. Install the following:
+```
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    helm repo update
 
+    helm install ingress-nginx ingress-nginx/ingress-nginx
+```
 
+#### Next steps:
 1. Do changes if needed in asr-model-v2
 2. Run the following to package: `helm package asr-model-v2/`
 3. Run the following to install: `helm install <release-name> asr-model-v2-0.1.0.tgz`

@@ -3,6 +3,8 @@ from stub.speech_recognition_open_api_pb2_grpc import SpeechRecognizerStub
 from stub.speech_recognition_open_api_pb2 import Language, RecognitionConfig, RecognitionAudio, \
     SpeechRecognitionRequest
 import wave
+
+
 # from grpc_interceptor import ClientCallDetails, ClientInterceptor
 
 
@@ -46,7 +48,7 @@ def transcribe_audio_bytes(stub):
     language = "mr"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Marathi')
-    config = RecognitionConfig(language=lang,  transcriptionFormat='TRANSCRIPT',
+    config = RecognitionConfig(language=lang, transcriptionFormat='TRANSCRIPT',
                                enableAutomaticPunctuation=1)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
@@ -79,11 +81,11 @@ def transcribe_audio_url(stub):
 
 
 def get_srt_audio_bytes(stub):
-    language = "te"
+    language = "hi"
     audio_bytes = read_audio()
-    lang = Language(value=language, name='Telugu')
+    lang = Language(value=language, name='Hindi')
     config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
-                               enableInverseTextNormalization=True,enableAutomaticPunctuation=True)
+                               enableInverseTextNormalization=True, enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioContent=audio_bytes)
     request = SpeechRecognitionRequest(audio=audio, config=config)
 

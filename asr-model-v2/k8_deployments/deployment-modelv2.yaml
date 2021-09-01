@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: model-api-v2
-  namespace: dev
+  namespace: test
   labels:
     app: model-api-v2
     language: all
 spec:
-  replicas: 15
+  replicas: 2
   selector:
     matchLabels:
       app: model-api-v2
@@ -29,7 +29,7 @@ spec:
           image: 'gcr.io/ekstepspeechrecognition/speech_recognition_model_api:2.0.0'
           env: 
           - name: languages
-            value: '["mai","ur"]'
+            value: '["hi"]'
           ports:
             - containerPort: 50051
               protocol: TCP

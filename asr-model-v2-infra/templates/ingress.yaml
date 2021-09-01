@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.org/grpc-services: "grpc-server-service grpc"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+  name: basic-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path:
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: asr-model-v2-hi
+            port:
+              name: grpc

@@ -11,6 +11,6 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
       protocol: TCP
-      name: http
+      name: grpc
   selector:
     {{- include "asr-model-v2.selectorLabels" . | nindent 4 }}
