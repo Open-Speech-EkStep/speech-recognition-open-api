@@ -119,6 +119,10 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 
     helm install ingress-nginx ingress-nginx/ingress-nginx
 ```
+or 
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml
+```
 
 #### Next steps:
 1. Do changes if needed in asr-model-v2
@@ -151,3 +155,12 @@ Issue:
 
 1. AttributeError: Can't get attribute 'Wav2VecCtc' on <module '__main__' from 'server.py'>
     Solution: Import Wav2VecCtc in file you are starting.
+
+2. If nginx-ingress is installed and removed later,make sure the ValidatingWebhookConfiguration is removed or it will throw the following error.
+```
+Error from server (InternalError): error when creating "ingress.yaml": Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io": Post "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=30s": service "ingress-nginx-controller-admission" not found
+```
+To resolve it , run the following:
+```
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+```
