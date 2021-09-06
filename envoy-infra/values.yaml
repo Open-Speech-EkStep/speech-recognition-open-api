@@ -36,21 +36,19 @@ service:
   annotations: {}
 
 ingress:
-  # ingress.enabled -- enables Ingress for envoy
-  enabled: false
-  # ingress.annotations -- ingress annotations
-  annotations: {}
-  # kubernetes.io/ingress.class: envoy
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   # ingress.hosts -- ingress accepted hostnames
-  hosts: []
-  #  - host: chart-example.local
-  #    paths: []
+  hosts:
+    - host: model-api.vakyansh.in
+      paths: ["/"]
   # ingress.tls -- ingress TLS configuration
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+    - secretName: "asr-model-v2-envoy-secret"
+      hosts:
+        - model-api.vakyansh.in
 
 # resources -- custom resource configuration
 resources: {}
@@ -81,7 +79,9 @@ volumes:
 #    emptyDir: {}
 
 # env -- environment variables for the deployment
-env:
+creds:
+  crt: ""
+  key: ""
 #  - name: NODE_LABEL_REGION
 #    value: "failure-domain.beta.kubernetes.io/region"
 #  - name: NODE_LABEL_INSTANCE_TYPE
