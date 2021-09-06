@@ -3,17 +3,20 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.org/grpc-services: "grpc-server-service grpc"
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-  name: basic-ingress
+  name: asr-model-v2-ingress
 spec:
   rules:
-  - http:
+  - host: model-api.vakyansh.in
+    http:
       paths:
-      - path:
-        pathType: ImplementationSpecific
+      - path: /
+        pathType: Prefix
         backend:
           service:
-            name: asr-model-v2-hi
+            name: asr-model-v2-envoy
             port:
-              name: grpc
+              number: 51051
+  tls: 
+    - hosts: 
+        - model-api.vakyansh.in
+      secretName: my-tls-secret

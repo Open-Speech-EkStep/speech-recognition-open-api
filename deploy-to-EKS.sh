@@ -22,6 +22,7 @@ sudo apt-get install helm
 #helm plugin install https://github.com/rimusz/helm-tiller --kubeconfig=$HOME/.kube/kubeconfig
 #helm tiller start-ci
 export HELM_HOST=127.0.0.1:44134
+
 result=$(eval helm ls --namespace $namespace | grep asr-model-v2)
 if [ $? -ne "0" ]; then
    echo "install helm charts"

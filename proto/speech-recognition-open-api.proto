@@ -10,7 +10,7 @@ import "google/api/annotations.proto";
 
 service SpeechRecognizer {
   rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
-    option (google.api.http) = {post: "/v1/recognize", body: "*"};
+    option (google.api.http) = {post: "/v1/recognize/{config.language.value}", body: "*"};
   }
 }
 

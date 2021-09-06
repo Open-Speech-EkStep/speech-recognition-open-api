@@ -5,14 +5,9 @@ metadata:
   annotations:
     konghq.com/protocols: grpc,grpcs
 spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: dune-quote-service
-                port:
-                  number: 9001
+  defaultBackend:
+    service:
+      name: dune-quote-service
+      port:
+        number: 9001
   ingressClassName: kong

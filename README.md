@@ -115,9 +115,11 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 1. Install the following:
 ```
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    helm repo add slamdev-helm-charts https://slamdev.github.io/helm-charts
     helm repo update
 
-    helm install ingress-nginx ingress-nginx/ingress-nginx
+    helm install ingress-nginx ingress-nginx/ingress-nginx -n <namespace-name>
+    helm install -f envoy-values.yaml asr-model-v2-envoy slamdev-helm-charts/envoy -n <namespace-name>
 ```
 or 
 ```
@@ -137,6 +139,14 @@ To View all resources:
 1. kubectl get all --namespace <namespace-name>
 2. `helm list` - to check releases.
 
+
+Sample grpcurl command:
+
+```
+
+grpcurl -cacert=./../nginx/vakyansh-secret/vakyansh.crt -proto tst.proto -d "{"config": { "language": { "value": "hi" }, "transcriptionFormat": "TRANSCRIPT", "audioFormat": "WAV" }, "audio": { "audioUri": "https://www2.engr.arizona.edu/~429rns/audiofiles/cutafew.wav" } }" model-api.vakyansh.in:443 ekstep.speech_recognition.SpeechRecognizer/recognize
+
+```
 
 #### Note:
 In case you get a error such as, ModuleNotFoundError: No module named 'speech_recognition_open_api_pb2',
@@ -163,4 +173,5 @@ Error from server (InternalError): error when creating "ingress.yaml": Internal 
 To resolve it , run the following:
 ```
 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+kubectl delete -A IngressClass nginx
 ```

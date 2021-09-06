@@ -109,12 +109,15 @@ def get_srt_audio_url(stub):
 
     print(response.srt)
 
-
 if __name__ == '__main__':
-    key = "mysecrettoken"
-    # interceptors = [MetadataClientInterceptor(key)]
-    with grpc.insecure_channel('35.202.181.234:50051') as channel:
-        # channel = grpc.intercept_channel(channel, *interceptors)
+    with open('secret/server.crt', 'rb') as f:
+        trusted_certs = f.read()
+
+    # create credentials
+    credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
+    host = "model-api.vakyansh.in"
+    port = 443
+    with grpc.secure_channel('{}:{}'.format(host, port), credentials) as channel:
         stub = SpeechRecognizerStub(channel)
         # transcribe_audio_url(stub)
         # transcribe_audio_bytes(stub)
