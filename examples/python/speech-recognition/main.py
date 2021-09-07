@@ -80,7 +80,7 @@ def transcribe_audio_url(stub):
     print(response.transcript)
 
 
-def get_srt_audio_bytes(stub):
+def get_srt_audio_bytes(stub, metadata):
     language = "hi"
     audio_bytes = read_audio()
     lang = Language(value=language, name='Hindi')
@@ -92,7 +92,7 @@ def get_srt_audio_bytes(stub):
     # creds = grpc.metadata_call_credentials(
     #     metadata_plugin=GrpcAuth('access_key')
     # )
-    response = stub.recognize(request)
+    response = stub.recognize(request, metadata=metadata)
 
     print(response.srt)
 
@@ -109,10 +109,11 @@ def get_srt_audio_url(stub):
 
     print(response.srt)
 
+
 if __name__ == '__main__':
     with open('secret/server.crt', 'rb') as f:
         trusted_certs = f.read()
-
+    metadata = (('language', 'hi'),)
     # create credentials
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
     host = "model-api.vakyansh.in"
@@ -122,4 +123,4 @@ if __name__ == '__main__':
         # transcribe_audio_url(stub)
         # transcribe_audio_bytes(stub)
         # get_srt_audio_url(stub)
-        get_srt_audio_bytes(stub)
+        get_srt_audio_bytes(stub, metadata)
