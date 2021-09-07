@@ -39,6 +39,8 @@ ingress:
   enabled: true
   annotations: 
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
   # kubernetes.io/tls-acme: "true"
   # ingress.hosts -- ingress accepted hostnames
   hosts:
@@ -146,17 +148,11 @@ configYaml: |-
                 domains: ["*"]
                 routes:
                   - match:
-                      prefix: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
+                      prefix: "/ekstep.speech_recognition.SpeechRecognizer"
                       headers:
                       - name: language
                         exact_match: "hi"
                     route: {cluster: hi_cluster, timeout: 60s}
-                  - match:
-                      prefix: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
-                      headers:
-                      - name: language
-                        exact_match: "ta"
-                    route: {cluster: ta_cluster, timeout: 60s}
                   
                   - match:
                       prefix: "/v1/recognize/hi"
@@ -166,7 +162,7 @@ configYaml: |-
                     route: {cluster: ta_cluster, timeout: 60s}
 
                   - match:
-                      prefix: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
+                      prefix: "/ekstep.speech_recognition.SpeechRecognizer"
                     direct_response:
                       status: 404
                       body:
