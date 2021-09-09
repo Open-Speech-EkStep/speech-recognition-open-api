@@ -81,9 +81,9 @@ def transcribe_audio_url(stub):
 
 
 def get_srt_audio_bytes(stub, metadata):
-    language = "hi"
+    language = "en"
     audio_bytes = read_audio()
-    lang = Language(value=language, name='Hindi')
+    lang = Language(value=language, name='English')
     config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
                                enableInverseTextNormalization=True, enableAutomaticPunctuation=True)
     audio = RecognitionAudio(audioContent=audio_bytes)
@@ -113,7 +113,7 @@ def get_srt_audio_url(stub):
 if __name__ == '__main__':
     with open('secret/server.crt', 'rb') as f:
         trusted_certs = f.read()
-    metadata = (('language', 'hi'),)
+    metadata = (('language', 'en'),)
     # create credentials
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
     host = "model-api.vakyansh.in"

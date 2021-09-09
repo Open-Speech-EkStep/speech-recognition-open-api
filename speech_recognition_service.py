@@ -31,12 +31,14 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))
+
         punctuate = request.config.enableAutomaticPunctuation
         itn = request.config.enableInverseTextNormalization
         language = Language.LanguageCode.Name(request.config.language.value)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
         file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
+
         try:
             if len(request.audio.audioUri) != 0:
                 audio_path = download_from_url_to_file(file_name, request.audio.audioUri)

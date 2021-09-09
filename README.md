@@ -110,31 +110,43 @@ py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=k
 `DOC: https://cloud.google.com/api-gateway/docs/get-started-cloud-run-grpc#before_you_begin`
 
 
-#### Using helm to deploy
+### Using helm to deploy
 #### Prerequisites:
-1. Install the following:
+1. To go to infra root folder, run the following: `cd infra`
+2. Install the following:
 ```
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-    helm repo add slamdev-helm-charts https://slamdev.github.io/helm-charts
     helm repo update
 
     helm install ingress-nginx ingress-nginx/ingress-nginx -n <namespace-name>
-    helm install -f envoy-values.yaml asr-model-v2-envoy slamdev-helm-charts/envoy -n <namespace-name>
 ```
 or 
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml
 ```
-
+3. To create secret for tls, do the following:
+```
+kubectl create secret tls asr-model-v2-secret \     
+  --cert=vakyansh-secret/vakyansh.crt \
+  --key=vakyansh-secret/vakyansh.key -n test
+```
 #### Next steps:
+- To deploy models, do the following:
+    1. Do changes if needed in asr-model-v2
+    2. Run the following to package: `helm package asr-model-v2/`
+    3. Run the following to install: `helm install <release-name> asr-model-v2-<version>.tgz --set namespace=<namespace> --set env.languages='["<language>"]' -n <namespace>`
+
+    To Upgrade:
+    1. Do changes and package it(Follow steps 1 and 2 in above steps).
+    2. Run the following to install: `helm upgrade <release-name> asr-model-v2-<version>.tgz --set namespace=<namespace> --set env.languages='["<language>"]' -n <namespace>`
+- To deploy envoy infra with ingress, do the following:
 1. Do changes if needed in asr-model-v2
-2. Run the following to package: `helm package asr-model-v2/`
-3. Run the following to install: `helm install <release-name> asr-model-v2-0.1.0.tgz`
+    2. Run the following to package: `helm package envoy/`
+    3. Run the following to install: `helm install <release-name> envoy-<version>.tgz -n <namespace>`
 
-To Upgrade:
-1. Do changes and package it(Follow steps 1 and 2 in above steps).
-2. Run the following to install: `helm upgrade <release-name> asr-model-v2-0.1.0.tgz`
-
+    To Upgrade:
+    1. Do changes and package it(Follow steps 1 and 2 in above steps).
+    2. Run the following to install: `helm upgrade <release-name> envoy-<version>.tgz -n <namespace>`
 To View all resources:
 1. kubectl get all --namespace <namespace-name>
 2. `helm list` - to check releases.
