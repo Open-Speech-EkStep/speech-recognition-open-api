@@ -11,11 +11,19 @@ parameters:
   package_version:
     type: string
     default: 2.0.0
+  dependency_image_name:
+    type: string
+    default: speech-recognition-open-api-dependency
+  dependency_version:
+    type: string
+    default: 1.0
   platform:
     default: "gke"
     type: enum
     enum: ["gke", "eks", "cdac"]
-
+  build_dependency:
+    type: boolean
+    default: false
 
 jobs:
   build:
@@ -30,8 +38,16 @@ jobs:
           name: Setup Google credentials
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+            pip install google_compute_engine
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
+      - when:
+          condition:
+            equal: [ true, << pipeline.paramaters.build_dependency >> ]
+          steps:
+            - run: |
+                docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
+                gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
       - run:
           name: Build docker image
           command: |
@@ -48,13 +64,21 @@ jobs:
             rm ${HOME}/gcp-key.json ; ls
 
   deploy:
-    docker: 
-      - image : cimg/python:3.9.6
+    machine:
+      image: ubuntu-2004:202101-01
+      resource_class: 2xlarge
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: ~/speech-recognition-model-api
       - checkout:
           path: ~/speech-recognition-model-api
+      - run:
+          name: Setup Google credentials
+          command: |
+            echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+            pip install google_compute_engine
+            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            gcloud --quiet config set project ${GCP_PROJECT}
       - run:
           name: Install and confgure kubectl
           command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl  
@@ -67,7 +91,10 @@ jobs:
       - run:
           name: Release model using helm chart 
           command: python deploy.py
-
+      - run:
+          name: Remove account details
+          command: |
+            rm ${HOME}/gcp-key.json ; ls
 
 workflows:
   version: 2
