@@ -13,7 +13,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-namespace: "test"
 
 volumes:
   name: modelsvolume

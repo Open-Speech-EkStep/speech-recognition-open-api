@@ -5,145 +5,84 @@ parameters:
   trigger_pipeline:
     type: boolean
     default: true
-  build_and_deploy_image:
-    type: boolean
-    default: true
   image_name:
     type: string
     default: speech_recognition_model_api
   package_version:
     type: string
     default: 2.0.0
-  inference_host_name:
-    type: string
-    default: 34.70.114.226
-  inference_host_port:
-    type: integer
-    default: 50051
-  is_gpu_host:
-    type: boolean
-    default: false
+  platform:
+    default: "gke"
+    type: enum
+    enum: ["gke", "eks", "cdac"]
 
 
 jobs:
-  build_and_deploy_image:
-    machine:
-      image: ubuntu-2004:202101-01
-      resource_class: 2xlarge
-    working_directory: ~/project/
-    steps:
-      - when:
-          condition: << pipeline.parameters.build_and_deploy_image >>
-          steps:
-            - checkout:
-                path: ~/project
-            - run:
-                name: run tests
-                command: |
-                  sudo apt-get update
-                  pip3 install --upgrade pip
-                  pip3 install --no-cache-dir -r requirements.txt
-#                  sh model_bootstrap.sh
-#                  python -m py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
-            - run:
-                name: build image
-                command: |
-                  echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
-                  pip install google_compute_engine
-                  gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-                  gcloud --quiet config set project ${GCP_PROJECT}
-                  echo "Build ..."
-                  docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
-            - run:
-                name: deploy image to registry
-                command: |
-                  echo "Deploy ..."
-                  gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
-            - run:
-                name: Remove account details
-                command: |
-                  rm ${HOME}/gcp-key.json ; ls
-      - unless:
-          condition: << pipeline.parameters.build_and_deploy_image >>
-          steps:
-            - run:
-                name: image deployment not set to true
-                command: |
-                  echo 'New Image not built and deployed'
-
-  start_server:
-    machine:
-      image: ubuntu-2004:202101-01
-      resource_class: large
-    working_directory: ~/project/
+  build:
+    working_directory: ~/speech-recognition-model-api/
+    docker: 
+      - image : cimg/python:3.9.6
     steps:
       - checkout:
-          path: ~/project
+          path: ~/speech-recognition-model-api
       - run:
-          name: start server
+          name: Setup Google credentials
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
             pip install google_compute_engine
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
-
-            echo "sudo gcloud docker -- pull gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>"  > start_server.sh
-
-            echo 'sudo docker ps -q --filter "name=<< pipeline.parameters.image_name >>" | grep -q . && sudo docker stop "<< pipeline.parameters.image_name >>" && sudo docker rm -fv "<< pipeline.parameters.image_name >>"' >> start_server.sh
-
-            if [ << pipeline.parameters.image_name >>:<< pipeline.parameters.is_gpu_host >> = true ]; then
-
-            echo "sudo docker run --ipc=host --shm-size 16G --gpus all --cpus=10 -m 20000m -itd -p << pipeline.parameters.inference_host_port >>:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>" >> start_server.sh
-
-            else
-
-            echo "sudo docker run --cpus=6 -m 20000m -itd -p << pipeline.parameters.inference_host_port >>:50051 --name << pipeline.parameters.image_name >> -v /home/circleci/deployed_models:/opt/speech_recognition_open_api/deployed_models/ us.gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>" >> start_server.sh
-
-            fi
-            echo "Transfer via ssh ..."
-            scp ./start_server.sh circleci@<< pipeline.parameters.inference_host_name >>:~/start_server.sh
-            echo "Trigger via ssh ..."
-            ssh -oStrictHostKeyChecking=no -v circleci@<< pipeline.parameters.inference_host_name >> 'sudo sh ~/start_server.sh'
+      - run:
+          name: Build docker image
+          command: |
+            echo "Build ..."
+            docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
+      - run:
+          name: deploy image to registry
+          command: |
+            echo "Deploy ..."
+            gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
       - run:
           name: Remove account details
           command: |
             rm ${HOME}/gcp-key.json ; ls
 
-  deployToEKS:
-    parameters:
-      namespace:
-        type: string
-    docker:
-      - image: cimg/python:3.9.6
+  deploy:
+    docker: 
+      - image : cimg/python:3.9.6
     steps:
       - attach_workspace:
           at: /tmp/workspace
       - checkout:
-          path: ~/project
+          path: ~/speech-recognition-model-api
       - run:
-          name: Deploy helm chart to EKS
-          command: |
-            bash deploy-to-EKS.sh << parameters.namespace >>
+          name: Install and confgure kubectl
+          command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl  
+      - run:
+          name: Install and configuire helm
+          command: sh scripts/install_helm.sh    
+      - run:
+          name: Configure aws
+          command: sh scripts/<< pipeline.parameters.platform >>-setup.sh 
+      - run:
+          name: Release model using helm chart 
+          command: python deploy.py
 
 
 workflows:
   version: 2
-
-  build_deploy_and_run_image:
+  main_workflow:
     when: << pipeline.parameters.trigger_pipeline >>
     jobs:
-#      - build_and_deploy_image:
-#          name: build_and_deploy_image
-##          filters:
-##            branches:
-##              only: master
-#      - start_server:
-#          name: start_server
-##          filters:
-##            branches:
-##              only: master
-#          requires:
-#            - build_and_deploy_image
-      - deployToEKS:
-          name: deployToEKS-test
-          namespace: 'test'
+     - build:
+         name: build
+         filters:
+           branches:
+             only: test-helm
+     - deploy:
+         name: deploy
+         filters:
+           branches:
+             only: test-helm
+         requires:
+           - build

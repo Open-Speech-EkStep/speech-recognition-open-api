@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "asr-model-v2.fullname" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "asr-model-v2.labels" . | nindent 4 }}
 spec:
