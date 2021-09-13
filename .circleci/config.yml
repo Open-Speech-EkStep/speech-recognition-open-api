@@ -10,13 +10,13 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: 2.0.0
+    default: "2.0.0"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: 1.0
+    default: "1.0"
   platform:
     default: "gke"
     type: enum
@@ -67,6 +67,7 @@ jobs:
     machine:
       image: ubuntu-2004:202101-01
       resource_class: 2xlarge
+    working_directory: ~/speech-recognition-model-api/
     steps:
       - attach_workspace:
           at: ~/speech-recognition-model-api
