@@ -19,9 +19,10 @@ parameters:
 
 jobs:
   build:
+    machine:
+      image: ubuntu-2004:202101-01
+      resource_class: 2xlarge
     working_directory: ~/speech-recognition-model-api/
-    docker: 
-      - image : cimg/python:3.9.6
     steps:
       - checkout:
           path: ~/speech-recognition-model-api
@@ -29,7 +30,6 @@ jobs:
           name: Setup Google credentials
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
-            pip install google_compute_engine
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
       - run:
