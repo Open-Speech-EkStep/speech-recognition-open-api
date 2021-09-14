@@ -92,9 +92,6 @@ def read_app_config(config_path):
             print("Error: ", exc)
             return None
 
-def deploy_models(config, namespace, helm_chart_path):
-    
-
 
 def read_envoy_config(config_path):
     with open(config_path, "r") as stream:
