@@ -41,13 +41,21 @@ jobs:
             pip install google_compute_engine
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
-      - when:
-          condition:
-            equal: [ true, << pipeline.paramaters.build_dependency >> ]
-          steps:
-            - run: |
-                docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
-                gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
+      - run:
+          name: Build dependencies image
+          command: |
+            echo "Build ..."
+            if << pipeline.paramaters.build_dependency >> ; then
+              docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
+              gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
+            fi
+#      - when:
+#          condition:
+#            equal: [ true, << pipeline.paramaters.build_dependency >> ]
+#          steps:
+#            - run: |
+#                docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
+#                gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
       - run:
           name: Build docker image
           command: |
