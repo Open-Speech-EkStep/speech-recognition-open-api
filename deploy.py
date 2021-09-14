@@ -1,7 +1,8 @@
 import yaml
-import subprocess
 import argparse
 from collections import OrderedDict
+import os
+import subprocess
 
 def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
@@ -24,10 +25,23 @@ def ordered_dump(data, stream=None, Dumper=yaml.SafeDumper, **kwds):
     OrderedDumper.add_representer(OrderedDict, _dict_representer)
     return yaml.dump(data, stream, OrderedDumper, **kwds)
 
+def cmd_runner(command, caller):
+    result = subprocess.run(command, shell=True, capture_output=True)
+    if result.stderr:
+        raise subprocess.CalledProcessError(
+                returncode = result.returncode,
+                cmd = result.args,
+                stderr = result.stderr
+                )
+    if result.stdout:
+        print("Helm deployment => ", caller, " Out => ", result.stdout.decode('utf-8'), "\n")
+
+
 class LanguageConfig:
 
-    def __init__(self, language_code, base_name):
+    def __init__(self, language_code, base_name, helm_chart_path):
         self.language_code = language_code
+        self.helm_chart_path = helm_chart_path
         self.release_name = "{}-{}".format(base_name, language_code)
     
     def is_deployed(self, namespace):
@@ -42,13 +56,16 @@ class LanguageConfig:
             process = "install"
         else:
             process = "upgrade"
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]'".format(process, self.release_name, "infra/asr-model-v2", namespace, self.language_code)
-        subprocess.getoutput(command)
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]'".format(process, self.release_name, self.helm_chart_path, namespace, self.language_code)
+        cmd_runner(command, "LANGUAGE :" + self.language_code)
 
 class EnvoyConfig:
 
-    def __init__(self, base_name):
+    def __init__(self, base_name, crt, key, helm_chart_path):
         self.name = "envoy"
+        self.crt = crt
+        self.key = key
+        self.helm_chart_path = helm_chart_path
         self.release_name = "{}-{}".format(base_name, self.name)
     
     def is_deployed(self, namespace):
@@ -63,20 +80,25 @@ class EnvoyConfig:
             process = "install"
         else:
             process = "upgrade"
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set creds.crt=$MODEL_API_CRT --set creds.key=$MODEL_API_KEY".format(process, self.release_name, "infra/envoy", namespace)
-        subprocess.getoutput(command)
-    
-def deploy_models(config_path, namespace):
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set creds.crt={4} --set creds.key={5}".format(process, self.release_name, self.helm_chart_path, namespace, self.crt, self.key)
+        cmd_runner(command, "Envoy")
+
+def read_app_config(config_path):
     with open(config_path, "r") as stream:
         try:
             config = ordered_load(stream, yaml.SafeLoader)
-            base_name = config["base_name"]
-            for language_code in config["languages"]:
-                language_config = LanguageConfig(language_code, base_name)
-                language_config.deploy(namespace)
-                yield language_config
+            return config
         except yaml.YAMLError as exc:
             print("Error: ", exc)
+            return None
+
+def deploy_models(config, namespace, helm_chart_path):
+    base_name = config["base_name"]
+    for language_code in config["languages"]:
+        language_config = LanguageConfig(language_code, base_name, helm_chart_path)
+        language_config.deploy(namespace)
+        yield language_config
+
 
 def read_envoy_config(config_path):
     with open(config_path, "r") as stream:
@@ -207,21 +229,30 @@ def update_proto_descriptor(config, path_to_pb_file):
 
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser(description='')
-    # parser.add_argument('--namespace', help="Namespace to use")
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--namespace', default='test-v2', help="Namespace to use")
     # parser.add_argument('--app-config-path', help="Path of the app config")
     # parser.add_argument('--envoy-config-path', help="envoy config path")
-    # args = parser.parse_args()
+    parser.add_argument('--crt', help="Namespace to use", required = True)
+    parser.add_argument('--key', help="Namespace to use", required = True)
 
-    namespace = "test-v2"
-    config_path = "app_config.yaml"
+    args = parser.parse_args()
+
+    namespace = args.namespace
+    app_config_path = "app_config.yaml"
     envoy_config_path = "infra/envoy/config.yaml"
+    language_helm_chart_path = "infra/asr-model-v2"
+    envoy_helm_chart_path = "infra/envoy"
     envoy_config = read_envoy_config(envoy_config_path)
+    app_config = read_app_config(app_config_path)
     if envoy_config is None:
-        print("Please verify the envoy config")
+        print("Check the envoy config file")
         exit()
-    for language_config in deploy_models(config_path, namespace):
+    if app_config is None:
+        print("Check the app config file")
+        exit()
+    for language_config in deploy_models(app_config, namespace, language_helm_chart_path):
         envoy_config = update_envoy_config(envoy_config, language_config)
 
     write_to_yaml(envoy_config, envoy_config_path)
-    EnvoyConfig('asr-model-v2').deploy(namespace)
+    EnvoyConfig(app_config["base_name"], args.crt, args.key, envoy_helm_chart_path).deploy(namespace)

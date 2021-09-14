@@ -2,6 +2,9 @@ version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
+  kubernetes_namespace:
+    type: string
+    default: 'test-v2'
   trigger_pipeline:
     type: boolean
     default: true
@@ -110,7 +113,7 @@ jobs:
           command: sh scripts/<< pipeline.parameters.platform >>-setup.sh 
       - run:
           name: Release model using helm chart 
-          command: python3 deploy.py
+          command: python3 deploy.py --crt ${MODEL_API_CRT} --key ${MODEL_API_KEY} --namespace << pipeline.parameters.kubernetes_namespace >>
       - run:
           name: Remove account details
           command: |
