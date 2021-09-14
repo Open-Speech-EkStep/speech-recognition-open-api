@@ -76,6 +76,10 @@ jobs:
                 name: Remove account details
                 command: |
                   rm ${HOME}/gcp-key.json ; ls
+      - run:
+          name: E2e build and deploy to gcr
+          command: |
+            echo "Build and deploy to gcr"
 
   deploy:
     machine:
