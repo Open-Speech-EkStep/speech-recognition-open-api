@@ -155,7 +155,7 @@ def update_envoy_config(config, language_config):
     cluster = get_cluster(clusters, language_config.language_code)
     if cluster is None:
         lang_cluster = create_cluster(language_config)
-        clusters.append(lang_cluster)
+        clusters.insert(len(clusters)-2, lang_cluster)
         cluster = lang_cluster
     else:
         verify_and_update_release_name(cluster, language_config.release_name)
