@@ -93,11 +93,7 @@ def read_app_config(config_path):
             return None
 
 def deploy_models(config, namespace, helm_chart_path):
-    base_name = config["base_name"]
-    for language_code in config["languages"]:
-        language_config = LanguageConfig(language_code, base_name, helm_chart_path)
-        language_config.deploy(namespace)
-        yield language_config
+    
 
 
 def read_envoy_config(config_path):
@@ -115,6 +111,9 @@ def get_cluster(clusters, language_code):
         if cluster["name"] == cluster_name:
             return cluster
     return None
+
+def clear_clusters_and_matches(language_code):
+    pass
 
 def create_cluster(language_config):
     cluster = '''
@@ -251,8 +250,15 @@ if __name__ == "__main__":
     if app_config is None:
         print("Check the app config file")
         exit()
-    for language_config in deploy_models(app_config, namespace, language_helm_chart_path):
+
+    release_name = config["base_name"]
+    languages = config["languages"]
+    for language_code in languages:
+        language_config = LanguageConfig(language_code, release_name, language_helm_chart_path)
+        language_config.deploy(namespace)
         envoy_config = update_envoy_config(envoy_config, language_config)
 
+    # clear_clusters_and_matches(languages)
+
     write_to_yaml(envoy_config, envoy_config_path)
-    EnvoyConfig(app_config["base_name"], args.crt, args.key, envoy_helm_chart_path).deploy(namespace)
+    EnvoyConfig(release_name, args.crt, args.key, envoy_helm_chart_path).deploy(namespace)

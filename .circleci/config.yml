@@ -4,7 +4,7 @@ parameters:
   # This parameter is used to trigger the main workflow
   kubernetes_namespace:
     type: string
-    default: 'test-v2'
+    default: 'test'
   trigger_pipeline:
     type: boolean
     default: true
