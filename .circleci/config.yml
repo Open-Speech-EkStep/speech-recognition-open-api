@@ -86,6 +86,7 @@ jobs:
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
             pip install google_compute_engine
+            pip install yaml
             gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCP_PROJECT}
       - run:
