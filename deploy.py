@@ -248,8 +248,8 @@ if __name__ == "__main__":
         print("Check the app config file")
         exit()
 
-    release_name = config["base_name"]
-    languages = config["languages"]
+    release_name = app_config["base_name"]
+    languages = app_config["languages"]
     for language_code in languages:
         language_config = LanguageConfig(language_code, release_name, language_helm_chart_path)
         language_config.deploy(namespace)
