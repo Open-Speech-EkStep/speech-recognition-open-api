@@ -92,7 +92,6 @@ def read_app_config(config_path):
             print("Error: ", exc)
             return None
 
-
 def read_envoy_config(config_path):
     with open(config_path, "r") as stream:
         try:
@@ -155,21 +154,20 @@ def update_envoy_config(config, language_config):
     cluster = get_cluster(clusters, language_config.language_code)
     if cluster is None:
         lang_cluster = create_cluster(language_config)
-        clusters.insert(len(clusters)-2, lang_cluster)
+        clusters.append(lang_cluster)
         cluster = lang_cluster
     else:
         verify_and_update_release_name(cluster, language_config.release_name)
-
     # updating match filter
     grpc_match_route = get_grpc_match_filter(routes, language_config.language_code)
     if grpc_match_route is None:
         grpc_match_route = create_grpc_match_filter(language_config, cluster["name"])
-        routes.append(grpc_match_route)
+        routes.insert(len(routes)-2, grpc_match_route)
 
     rest_match_route = get_rest_match_filter(routes, language_config.language_code)
     if rest_match_route is None:
         rest_match_route = create_rest_match_filter(language_config, cluster["name"])
-        routes.append(rest_match_route)
+        routes.insert(len(routes)-2, rest_match_route)
     
     return config
 
