@@ -105,7 +105,7 @@ def create_cluster(language_config):
           envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
             "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
             explicit_http_config:
-            http2_protocol_options: {}
+              http2_protocol_options: {}
         load_assignment:
           cluster_name: hi_cluster
           endpoints:
