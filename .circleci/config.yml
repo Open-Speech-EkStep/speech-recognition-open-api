@@ -110,7 +110,7 @@ jobs:
           command: sh scripts/<< pipeline.parameters.platform >>-setup.sh 
       - run:
           name: Release model using helm chart 
-          command: python deploy.py
+          command: python3 deploy.py
       - run:
           name: Remove account details
           command: |
