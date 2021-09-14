@@ -45,7 +45,7 @@ jobs:
           name: Build dependencies image
           command: |
             echo "Build ..."
-            if << pipeline.paramaters.build_dependency >> ; then
+            if << pipeline.parameters.build_dependency >> ; then
               docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
               gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
             fi
