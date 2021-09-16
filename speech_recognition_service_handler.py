@@ -27,7 +27,7 @@ def is_out_format_supported(out_format):
 
 
 def is_audio_format_supported(audio_format):
-    return audio_format in ['wav', 'mp3', 'pcm' , 'flac']
+    return audio_format in ['wav', 'mp3', 'pcm', 'flac']
 
 
 def check_audio_source_valid(audioconfigobj):
