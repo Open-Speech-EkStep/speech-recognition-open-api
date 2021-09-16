@@ -104,15 +104,15 @@ jobs:
             gcloud --quiet config set project ${GCP_PROJECT}
       - run:
           name: Install and confgure kubectl
-          command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl  
+          command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl
       - run:
           name: Install and configuire helm
-          command: sh scripts/install_helm.sh    
+          command: sh scripts/install_helm.sh
       - run:
           name: Configure platform
-          command: sh scripts/<< pipeline.parameters.platform >>-setup.sh 
+          command: sh scripts/<< pipeline.parameters.platform >>-setup.sh
       - run:
-          name: Release model using helm chart 
+          name: Release model using helm chart
           command: python3 deploy.py --crt ${MODEL_API_CRT} --key ${MODEL_API_KEY} --namespace << pipeline.parameters.kubernetes_namespace >>
       - run:
           name: Remove account details
@@ -134,5 +134,5 @@ workflows:
          filters:
            branches:
              only: test-helm
-           requires:
-             - build_and_deploy_api_image
+         requires:
+              - build_and_deploy_api_image
