@@ -34,29 +34,36 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
 
         punctuate = request.config.enableAutomaticPunctuation
         itn = request.config.enableInverseTextNormalization
-        language = Language.LanguageCode.Name(request.config.language.value)
+        language = Language.LanguageCode.Name(request.config.language.sourceLanguage)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
-        file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
+        model_output_list = []
+        for audio_obj in request.audio:
+            file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
+            try:
+                if len(audio_obj.audioUri) != 0:
+                    audio_path = download_from_url_to_file(file_name, audio_obj.audioUri)
+                elif len(audio_obj.audioContent) != 0:
+                    audio_path = create_wav_file_using_bytes(file_name, audio_obj.audioContent)
+                if out_format == 'srt':
+                    response = self.model_service.get_srt(audio_path, language, punctuate, itn)
+                    output = SpeechRecognitionResult.Output(source=response['srt'])
+                    model_output_list.append(output)
 
-        try:
-            if len(request.audio.audioUri) != 0:
-                audio_path = download_from_url_to_file(file_name, request.audio.audioUri)
-            elif len(request.audio.audioContent) != 0:
-                audio_path = create_wav_file_using_bytes(file_name, request.audio.audioContent)
-            if out_format == 'SRT':
-                response = self.model_service.get_srt(audio_path, language, punctuate, itn)
-                result = SpeechRecognitionResult(status='SUCCESS', srt=response['srt'])
-            else:
-                response = self.model_service.transcribe(audio_path, language, punctuate, itn)
-                result = SpeechRecognitionResult(status='SUCCESS', transcript=response['transcription'])
-            os.remove(audio_path)
-            return result
-        except requests.exceptions.RequestException as e:
-            context.set_details(str(e))
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            return SpeechRecognitionResult(status='ERROR', status_text=str(e))
-        except Exception as e:
-            context.set_details("An unknown error has occurred.Please try again.")
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            return SpeechRecognitionResult(status='ERROR', status_text="An unknown error has occurred.Please try again.")
+                else:
+                    response = self.model_service.transcribe(audio_path, language, punctuate, itn)
+                    output = SpeechRecognitionResult.Output(source=response['transcription'])
+                    model_output_list.append(output)
+                os.remove(audio_path)
+
+            except requests.exceptions.RequestException as e:
+                context.set_details(str(e))
+                context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+                return SpeechRecognitionResult(status='ERROR', status_text=str(e))
+            except Exception as e:
+                context.set_details("An unknown error has occurred.Please try again.")
+                context.set_code(grpc.StatusCode.UNKNOWN)
+                return SpeechRecognitionResult(status='ERROR',
+                                               status_text="An unknown error has occurred.Please try again.")
+        result = SpeechRecognitionResult(status='SUCCESS', output=model_output_list)
+        return result

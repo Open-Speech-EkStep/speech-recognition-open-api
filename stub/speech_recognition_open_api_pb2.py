@@ -11,7 +11,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from stub.google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -20,31 +20,31 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\'com.ekstep.endpoints.speech_recognitionB\026SpeechRecognitionProtoP\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x19\x65kstep.speech_recognition\x1a\x1cgoogle/api/annotations.proto\"\x94\x01\n\x18SpeechRecognitionRequest\x12<\n\x06\x63onfig\x18\x01 \x01(\x0b\x32,.ekstep.speech_recognition.RecognitionConfig\x12:\n\x05\x61udio\x18\x02 \x01(\x0b\x32+.ekstep.speech_recognition.RecognitionAudio\"\x90\x0c\n\x11RecognitionConfig\x12\x35\n\x08language\x18\x01 \x01(\x0b\x32#.ekstep.speech_recognition.Language\x12R\n\x0b\x61udioFormat\x18\x02 \x01(\x0e\x32\x38.ekstep.speech_recognition.RecognitionConfig.AudioFormatH\x00\x88\x01\x01\x12O\n\x07\x63hannel\x18\x03 \x01(\x0e\x32\x39.ekstep.speech_recognition.RecognitionConfig.AudioChannelH\x01\x88\x01\x01\x12W\n\x0csamplingRate\x18\x04 \x01(\x0e\x32<.ekstep.speech_recognition.RecognitionConfig.AudioSampleRateH\x02\x88\x01\x01\x12[\n\rbitsPerSample\x18\x05 \x01(\x0e\x32?.ekstep.speech_recognition.RecognitionConfig.AudioBitsPerSampleH\x03\x88\x01\x01\x12\x62\n\x13transcriptionFormat\x18\x06 \x01(\x0e\x32@.ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatH\x04\x88\x01\x01\x12\x1c\n\x0fprofanityFilter\x18\x07 \x01(\x08H\x05\x88\x01\x01\x12H\n\x06\x64omain\x18\x08 \x01(\x0e\x32\x33.ekstep.speech_recognition.RecognitionConfig.DomainH\x06\x88\x01\x01\x12\x15\n\x08\x64\x65tailed\x18\t \x01(\x08H\x07\x88\x01\x01\x12\x18\n\x0bpunctuation\x18\n \x01(\tH\x08\x88\x01\x01\x12\x46\n\x05model\x18\x0b \x01(\x0e\x32\x32.ekstep.speech_recognition.RecognitionConfig.ModelH\t\x88\x01\x01\x12\'\n\x1a\x65nableAutomaticPunctuation\x18\x0c \x01(\x08H\n\x88\x01\x01\x12+\n\x1e\x65nableInverseTextNormalization\x18\r \x01(\x08H\x0b\x88\x01\x01\"@\n\x13TranscriptionFormat\x12\x0e\n\nTRANSCRIPT\x10\x00\x12\x07\n\x03SRT\x10\x01\x12\x10\n\x0c\x41LTERNATIVES\x10\x02\"L\n\x0f\x41udioSampleRate\x12\n\n\x06_16KHZ\x10\x00\x12\n\n\x06_48KHZ\x10\x01\x12\n\n\x06_22KHZ\x10\x02\x12\t\n\x05_8KHZ\x10\x03\x12\n\n\x06_44KHZ\x10\x04\",\n\x12\x41udioBitsPerSample\x12\x0b\n\x07SIXTEEN\x10\x00\x12\t\n\x05\x45IGHT\x10\x01\"$\n\x0c\x41udioChannel\x12\x08\n\x04MONO\x10\x00\x12\n\n\x06STEREO\x10\x01\"1\n\x0b\x41udioFormat\x12\x07\n\x03WAV\x10\x00\x12\x07\n\x03PCM\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x07\n\x03OGG\x10\x03\"\x8e\x01\n\x06\x44omain\x12\x0b\n\x07GENERAL\x10\x00\x12\x08\n\x04NEWS\x10\x01\x12\r\n\tEDUCATION\x10\x02\x12\t\n\x05LEGAL\x10\x03\x12\x1c\n\x18GOVERNMENT_PRESS_RELEASE\x10\x04\x12\x0e\n\nHEALTHCARE\x10\x05\x12\n\n\x06MOVIES\x10\x06\x12\r\n\tSUBTITLES\x10\x07\x12\n\n\x06SPORTS\x10\x08\"G\n\x05Model\x12\x16\n\x12\x43OMMAND_AND_SEARCH\x10\x00\x12\x0e\n\nPHONE_CALL\x10\x01\x12\t\n\x05VIDEO\x10\x02\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x03\x42\x0e\n\x0c_audioFormatB\n\n\x08_channelB\x0f\n\r_samplingRateB\x10\n\x0e_bitsPerSampleB\x16\n\x14_transcriptionFormatB\x12\n\x10_profanityFilterB\t\n\x07_domainB\x0b\n\t_detailedB\x0e\n\x0c_punctuationB\x08\n\x06_modelB\x1d\n\x1b_enableAutomaticPunctuationB!\n\x1f_enableInverseTextNormalization\"\xeb\x02\n\x08Language\x12\x11\n\x04name\x18\x01 \x01(\tH\x00\x88\x01\x01\x12?\n\x05value\x18\x02 \x01(\x0e\x32\x30.ekstep.speech_recognition.Language.LanguageCode\"\x81\x02\n\x0cLanguageCode\x12\x06\n\x02hi\x10\x00\x12\x06\n\x02\x65n\x10\x01\x12\x06\n\x02mr\x10\x02\x12\x06\n\x02ta\x10\x03\x12\x06\n\x02te\x10\x04\x12\x06\n\x02kn\x10\x05\x12\x06\n\x02gu\x10\x06\x12\x06\n\x02pa\x10\x07\x12\x06\n\x02\x62n\x10\x08\x12\x06\n\x02ml\x10\t\x12\x06\n\x02\x61s\x10\n\x12\x07\n\x03\x62rx\x10\x0b\x12\x07\n\x03\x64oi\x10\x0c\x12\x06\n\x02ks\x10\r\x12\x07\n\x03kok\x10\x0e\x12\x07\n\x03mai\x10\x0f\x12\x07\n\x03mni\x10\x10\x12\x06\n\x02ne\x10\x11\x12\x06\n\x02or\x10\x12\x12\x06\n\x02sd\x10\x13\x12\x06\n\x02si\x10\x14\x12\x06\n\x02ur\x10\x15\x12\x07\n\x03sat\x10\x17\x12\x07\n\x03lus\x10\x18\x12\x07\n\x03njz\x10\x19\x12\x07\n\x03pnr\x10\x1a\x12\x07\n\x03kha\x10\x1b\x12\x07\n\x03grt\x10\x1c\x12\x06\n\x02sa\x10\x1d\x42\x07\n\x05_name\"\x82\x01\n\x10RecognitionAudio\x12\x15\n\x08\x61udioUri\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x19\n\x0c\x61udioContent\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x12\x13\n\x06\x66ileId\x18\x03 \x01(\tH\x02\x88\x01\x01\x42\x0b\n\t_audioUriB\x0f\n\r_audioContentB\t\n\x07_fileId\"\xc0\x03\n\x17SpeechRecognitionResult\x12I\n\x06status\x18\x01 \x01(\x0e\x32\x39.ekstep.speech_recognition.SpeechRecognitionResult.Status\x12\x17\n\ntranscript\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03srt\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x43\n\x07\x64\x65tails\x18\x04 \x01(\x0b\x32-.ekstep.speech_recognition.RecognitionDetailsH\x02\x88\x01\x01\x12<\n\x0c\x61lternatives\x18\x05 \x03(\x0b\x32&.ekstep.speech_recognition.Alternative\x12\x18\n\x0bstatus_text\x18\x06 \x01(\tH\x03\x88\x01\x01\"_\n\x06Status\x12\x0b\n\x07SUCCESS\x10\x00\x12\x0c\n\x08NO_MATCH\x10\x01\x12\x1b\n\x17INITIAL_SILENCE_TIMEOUT\x10\x02\x12\x12\n\x0e\x42\x41\x42\x42LE_TIMEOUT\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x42\r\n\x0b_transcriptB\x06\n\x04_srtB\n\n\x08_detailsB\x0e\n\x0c_status_text\"x\n\x12RecognitionDetails\x12\x12\n\nchannelTag\x18\x01 \x01(\x05\x12\x14\n\x0clanguageCode\x18\x02 \x01(\t\x12\x0b\n\x03snr\x18\x03 \x01(\x05\x12\x14\n\x0csamplingRate\x18\x04 \x01(\x05\x12\x15\n\rbitsPerSample\x18\x05 \x01(\x05\"?\n\x0b\x41lternative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x11\n\tstartTime\x18\x02 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x03 \x01(\t2\xbb\x01\n\x10SpeechRecognizer\x12\xa6\x01\n\trecognize\x12\x33.ekstep.speech_recognition.SpeechRecognitionRequest\x1a\x32.ekstep.speech_recognition.SpeechRecognitionResult\"0\x82\xd3\xe4\x93\x02*\"%/v1/recognize/{config.language.value}:\x01*BC\n\'com.ekstep.endpoints.speech_recognitionB\x16SpeechRecognitionProtoP\x01\x62\x06proto3'
+  serialized_pb=b'\n!speech-recognition-open-api.proto\x12\x19\x65kstep.speech_recognition\x1a\x1cgoogle/api/annotations.proto\"\x94\x01\n\x18SpeechRecognitionRequest\x12<\n\x06\x63onfig\x18\x01 \x01(\x0b\x32,.ekstep.speech_recognition.RecognitionConfig\x12:\n\x05\x61udio\x18\x02 \x03(\x0b\x32+.ekstep.speech_recognition.RecognitionAudio\"\x9d\x0b\n\x11RecognitionConfig\x12\x35\n\x08language\x18\x01 \x01(\x0b\x32#.ekstep.speech_recognition.Language\x12R\n\x0b\x61udioFormat\x18\x02 \x01(\x0e\x32\x38.ekstep.speech_recognition.RecognitionConfig.AudioFormatH\x00\x88\x01\x01\x12O\n\x07\x63hannel\x18\x03 \x01(\x0e\x32\x39.ekstep.speech_recognition.RecognitionConfig.AudioChannelH\x01\x88\x01\x01\x12\x19\n\x0csamplingRate\x18\x04 \x01(\x03H\x02\x88\x01\x01\x12[\n\rbitsPerSample\x18\x05 \x01(\x0e\x32?.ekstep.speech_recognition.RecognitionConfig.AudioBitsPerSampleH\x03\x88\x01\x01\x12\x62\n\x13transcriptionFormat\x18\x06 \x01(\x0b\x32@.ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatH\x04\x88\x01\x01\x12\x1c\n\x0fprofanityFilter\x18\x07 \x01(\x08H\x05\x88\x01\x01\x12\x43\n\x06\x64omain\x18\x08 \x03(\x0e\x32\x33.ekstep.speech_recognition.RecognitionConfig.Domain\x12\x15\n\x08\x64\x65tailed\x18\t \x01(\x08H\x06\x88\x01\x01\x12\x18\n\x0bpunctuation\x18\n \x01(\x08H\x07\x88\x01\x01\x12\x46\n\x05model\x18\x0b \x01(\x0e\x32\x32.ekstep.speech_recognition.RecognitionConfig.ModelH\x08\x88\x01\x01\x12+\n\x1e\x65nableInverseTextNormalization\x18\x0c \x01(\x08H\t\x88\x01\x01\x1aj\n\x13TranscriptionFormat\x12S\n\x05value\x18\x01 \x01(\x0e\x32\x44.ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatEnum\"D\n\x17TranscriptionFormatEnum\x12\x0e\n\ntranscript\x10\x00\x12\x07\n\x03srt\x10\x01\x12\x10\n\x0c\x61lternatives\x10\x02\",\n\x12\x41udioBitsPerSample\x12\x0b\n\x07sixteen\x10\x00\x12\t\n\x05\x65ight\x10\x01\"$\n\x0c\x41udioChannel\x12\x08\n\x04mono\x10\x00\x12\n\n\x06stereo\x10\x01\"2\n\x0b\x41udioFormat\x12\x07\n\x03wav\x10\x00\x12\x07\n\x03pcm\x10\x01\x12\x07\n\x03mp3\x10\x02\x12\x08\n\x04\x66lac\x10\x03\"\x8e\x01\n\x06\x44omain\x12\x0b\n\x07GENERAL\x10\x00\x12\x08\n\x04NEWS\x10\x01\x12\r\n\tEDUCATION\x10\x02\x12\t\n\x05LEGAL\x10\x03\x12\x1c\n\x18GOVERNMENT_PRESS_RELEASE\x10\x04\x12\x0e\n\nHEALTHCARE\x10\x05\x12\n\n\x06MOVIES\x10\x06\x12\r\n\tSUBTITLES\x10\x07\x12\n\n\x06SPORTS\x10\x08\"G\n\x05Model\x12\x16\n\x12\x63ommand_and_search\x10\x00\x12\x0e\n\nphone_call\x10\x01\x12\t\n\x05video\x10\x02\x12\x0b\n\x07\x64\x65\x66\x61ult\x10\x03\x42\x0e\n\x0c_audioFormatB\n\n\x08_channelB\x0f\n\r_samplingRateB\x10\n\x0e_bitsPerSampleB\x16\n\x14_transcriptionFormatB\x12\n\x10_profanityFilterB\x0b\n\t_detailedB\x0e\n\x0c_punctuationB\x08\n\x06_modelB!\n\x1f_enableInverseTextNormalization\"\xf4\x02\n\x08Language\x12\x11\n\x04name\x18\x01 \x01(\tH\x00\x88\x01\x01\x12H\n\x0esourceLanguage\x18\x02 \x01(\x0e\x32\x30.ekstep.speech_recognition.Language.LanguageCode\"\x81\x02\n\x0cLanguageCode\x12\x06\n\x02hi\x10\x00\x12\x06\n\x02\x65n\x10\x01\x12\x06\n\x02mr\x10\x02\x12\x06\n\x02ta\x10\x03\x12\x06\n\x02te\x10\x04\x12\x06\n\x02kn\x10\x05\x12\x06\n\x02gu\x10\x06\x12\x06\n\x02pa\x10\x07\x12\x06\n\x02\x62n\x10\x08\x12\x06\n\x02ml\x10\t\x12\x06\n\x02\x61s\x10\n\x12\x07\n\x03\x62rx\x10\x0b\x12\x07\n\x03\x64oi\x10\x0c\x12\x06\n\x02ks\x10\r\x12\x07\n\x03kok\x10\x0e\x12\x07\n\x03mai\x10\x0f\x12\x07\n\x03mni\x10\x10\x12\x06\n\x02ne\x10\x11\x12\x06\n\x02or\x10\x12\x12\x06\n\x02sd\x10\x13\x12\x06\n\x02si\x10\x14\x12\x06\n\x02ur\x10\x15\x12\x07\n\x03sat\x10\x17\x12\x07\n\x03lus\x10\x18\x12\x07\n\x03njz\x10\x19\x12\x07\n\x03pnr\x10\x1a\x12\x07\n\x03kha\x10\x1b\x12\x07\n\x03grt\x10\x1c\x12\x06\n\x02sa\x10\x1d\x42\x07\n\x05_name\"b\n\x10RecognitionAudio\x12\x15\n\x08\x61udioUri\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x19\n\x0c\x61udioContent\x18\x02 \x01(\x0cH\x01\x88\x01\x01\x42\x0b\n\t_audioUriB\x0f\n\r_audioContent\"\xa3\x03\n\x17SpeechRecognitionResult\x12I\n\x06status\x18\x01 \x01(\x0e\x32\x39.ekstep.speech_recognition.SpeechRecognitionResult.Status\x12I\n\x06output\x18\x02 \x03(\x0b\x32\x39.ekstep.speech_recognition.SpeechRecognitionResult.Output\x12\x42\n\x06\x63onfig\x18\x03 \x01(\x0b\x32-.ekstep.speech_recognition.RecognitionDetailsH\x00\x88\x01\x01\x12\x18\n\x0bstatus_text\x18\x04 \x01(\tH\x01\x88\x01\x01\x1a\x18\n\x06Output\x12\x0e\n\x06source\x18\x01 \x01(\t\"_\n\x06Status\x12\x0b\n\x07SUCCESS\x10\x00\x12\x0c\n\x08NO_MATCH\x10\x01\x12\x1b\n\x17INITIAL_SILENCE_TIMEOUT\x10\x02\x12\x12\n\x0e\x42\x41\x42\x42LE_TIMEOUT\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x42\t\n\x07_configB\x0e\n\x0c_status_text\"\x99\x01\n\x12RecognitionDetails\x12\x12\n\nchannelTag\x18\x01 \x01(\x05\x12\x35\n\x08language\x18\x02 \x01(\x0b\x32#.ekstep.speech_recognition.Language\x12\x0b\n\x03snr\x18\x03 \x01(\x05\x12\x14\n\x0csamplingRate\x18\x04 \x01(\x05\x12\x15\n\rbitsPerSample\x18\x05 \x01(\x05\"?\n\x0b\x41lternative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x11\n\tstartTime\x18\x02 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x03 \x01(\t2\xc4\x01\n\x10SpeechRecognizer\x12\xaf\x01\n\trecognize\x12\x33.ekstep.speech_recognition.SpeechRecognitionRequest\x1a\x32.ekstep.speech_recognition.SpeechRecognitionResult\"9\x82\xd3\xe4\x93\x02\x33\"./v1/recognize/{config.language.sourceLanguage}:\x01*BC\n\'com.ekstep.endpoints.speech_recognitionB\x16SpeechRecognitionProtoP\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
 
 
-_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT = _descriptor.EnumDescriptor(
-  name='TranscriptionFormat',
-  full_name='ekstep.speech_recognition.RecognitionConfig.TranscriptionFormat',
+_RECOGNITIONCONFIG_TRANSCRIPTIONFORMATENUM = _descriptor.EnumDescriptor(
+  name='TranscriptionFormatEnum',
+  full_name='ekstep.speech_recognition.RecognitionConfig.TranscriptionFormatEnum',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='TRANSCRIPT', index=0, number=0,
+      name='transcript', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SRT', index=1, number=1,
+      name='srt', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='ALTERNATIVES', index=2, number=2,
+      name='alternatives', index=2, number=2,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
@@ -52,49 +52,9 @@ _RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT = _descriptor.EnumDescriptor(
   containing_type=None,
   serialized_options=None,
   serialized_start=1080,
-  serialized_end=1144,
+  serialized_end=1148,
 )
-_sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT)
-
-_RECOGNITIONCONFIG_AUDIOSAMPLERATE = _descriptor.EnumDescriptor(
-  name='AudioSampleRate',
-  full_name='ekstep.speech_recognition.RecognitionConfig.AudioSampleRate',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='_16KHZ', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='_48KHZ', index=1, number=1,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='_22KHZ', index=2, number=2,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='_8KHZ', index=3, number=3,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='_44KHZ', index=4, number=4,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1146,
-  serialized_end=1222,
-)
-_sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOSAMPLERATE)
+_sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_TRANSCRIPTIONFORMATENUM)
 
 _RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE = _descriptor.EnumDescriptor(
   name='AudioBitsPerSample',
@@ -104,20 +64,20 @@ _RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='SIXTEEN', index=0, number=0,
+      name='sixteen', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EIGHT', index=1, number=1,
+      name='eight', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1224,
-  serialized_end=1268,
+  serialized_start=1150,
+  serialized_end=1194,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE)
 
@@ -129,20 +89,20 @@ _RECOGNITIONCONFIG_AUDIOCHANNEL = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='MONO', index=0, number=0,
+      name='mono', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='STEREO', index=1, number=1,
+      name='stereo', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1270,
-  serialized_end=1306,
+  serialized_start=1196,
+  serialized_end=1232,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOCHANNEL)
 
@@ -154,30 +114,30 @@ _RECOGNITIONCONFIG_AUDIOFORMAT = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='WAV', index=0, number=0,
+      name='wav', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='PCM', index=1, number=1,
+      name='pcm', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='MP3', index=2, number=2,
+      name='mp3', index=2, number=2,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='OGG', index=3, number=3,
+      name='flac', index=3, number=3,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1308,
-  serialized_end=1357,
+  serialized_start=1234,
+  serialized_end=1284,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOFORMAT)
 
@@ -236,8 +196,8 @@ _RECOGNITIONCONFIG_DOMAIN = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1360,
-  serialized_end=1502,
+  serialized_start=1287,
+  serialized_end=1429,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_DOMAIN)
 
@@ -249,30 +209,30 @@ _RECOGNITIONCONFIG_MODEL = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='COMMAND_AND_SEARCH', index=0, number=0,
+      name='command_and_search', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='PHONE_CALL', index=1, number=1,
+      name='phone_call', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='VIDEO', index=2, number=2,
+      name='video', index=2, number=2,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='DEFAULT', index=3, number=3,
+      name='default', index=3, number=3,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1504,
-  serialized_end=1575,
+  serialized_start=1431,
+  serialized_end=1502,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_MODEL)
 
@@ -431,8 +391,8 @@ _LANGUAGE_LANGUAGECODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1898,
-  serialized_end=2155,
+  serialized_start=1792,
+  serialized_end=2049,
 )
 _sym_db.RegisterEnumDescriptor(_LANGUAGE_LANGUAGECODE)
 
@@ -471,8 +431,8 @@ _SPEECHRECOGNITIONRESULT_STATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2602,
-  serialized_end=2697,
+  serialized_start=2458,
+  serialized_end=2553,
 )
 _sym_db.RegisterEnumDescriptor(_SPEECHRECOGNITIONRESULT_STATUS)
 
@@ -494,8 +454,8 @@ _SPEECHRECOGNITIONREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='audio', full_name='ekstep.speech_recognition.SpeechRecognitionRequest.audio', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -515,6 +475,37 @@ _SPEECHRECOGNITIONREQUEST = _descriptor.Descriptor(
   serialized_end=243,
 )
 
+
+_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT = _descriptor.Descriptor(
+  name='TranscriptionFormat',
+  full_name='ekstep.speech_recognition.RecognitionConfig.TranscriptionFormat',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ekstep.speech_recognition.RecognitionConfig.TranscriptionFormat.value', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=972,
+  serialized_end=1078,
+)
 
 _RECOGNITIONCONFIG = _descriptor.Descriptor(
   name='RecognitionConfig',
@@ -547,7 +538,7 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='samplingRate', full_name='ekstep.speech_recognition.RecognitionConfig.samplingRate', index=3,
-      number=4, type=14, cpp_type=8, label=1,
+      number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -561,8 +552,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='transcriptionFormat', full_name='ekstep.speech_recognition.RecognitionConfig.transcriptionFormat', index=5,
-      number=6, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -575,8 +566,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='domain', full_name='ekstep.speech_recognition.RecognitionConfig.domain', index=7,
-      number=8, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
+      number=8, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -589,8 +580,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='punctuation', full_name='ekstep.speech_recognition.RecognitionConfig.punctuation', index=9,
-      number=10, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      number=10, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -602,15 +593,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='enableAutomaticPunctuation', full_name='ekstep.speech_recognition.RecognitionConfig.enableAutomaticPunctuation', index=11,
+      name='enableInverseTextNormalization', full_name='ekstep.speech_recognition.RecognitionConfig.enableInverseTextNormalization', index=11,
       number=12, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='enableInverseTextNormalization', full_name='ekstep.speech_recognition.RecognitionConfig.enableInverseTextNormalization', index=12,
-      number=13, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -618,10 +602,9 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT, ],
   enum_types=[
-    _RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT,
-    _RECOGNITIONCONFIG_AUDIOSAMPLERATE,
+    _RECOGNITIONCONFIG_TRANSCRIPTIONFORMATENUM,
     _RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE,
     _RECOGNITIONCONFIG_AUDIOCHANNEL,
     _RECOGNITIONCONFIG_AUDIOFORMAT,
@@ -664,38 +647,28 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_domain', full_name='ekstep.speech_recognition.RecognitionConfig._domain',
+      name='_detailed', full_name='ekstep.speech_recognition.RecognitionConfig._detailed',
       index=6, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_detailed', full_name='ekstep.speech_recognition.RecognitionConfig._detailed',
+      name='_punctuation', full_name='ekstep.speech_recognition.RecognitionConfig._punctuation',
       index=7, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_punctuation', full_name='ekstep.speech_recognition.RecognitionConfig._punctuation',
+      name='_model', full_name='ekstep.speech_recognition.RecognitionConfig._model',
       index=8, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_model', full_name='ekstep.speech_recognition.RecognitionConfig._model',
-      index=9, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_enableAutomaticPunctuation', full_name='ekstep.speech_recognition.RecognitionConfig._enableAutomaticPunctuation',
-      index=10, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
       name='_enableInverseTextNormalization', full_name='ekstep.speech_recognition.RecognitionConfig._enableInverseTextNormalization',
-      index=11, containing_type=None,
+      index=9, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
   serialized_start=246,
-  serialized_end=1798,
+  serialized_end=1683,
 )
 
 
@@ -715,7 +688,7 @@ _LANGUAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='ekstep.speech_recognition.Language.value', index=1,
+      name='sourceLanguage', full_name='ekstep.speech_recognition.Language.sourceLanguage', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -739,8 +712,8 @@ _LANGUAGE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1801,
-  serialized_end=2164,
+  serialized_start=1686,
+  serialized_end=2058,
 )
 
 
@@ -766,13 +739,6 @@ _RECOGNITIONAUDIO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='fileId', full_name='ekstep.speech_recognition.RecognitionAudio.fileId', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -794,16 +760,42 @@ _RECOGNITIONAUDIO = _descriptor.Descriptor(
       index=1, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_fileId', full_name='ekstep.speech_recognition.RecognitionAudio._fileId',
-      index=2, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
-  serialized_start=2167,
-  serialized_end=2297,
+  serialized_start=2060,
+  serialized_end=2158,
 )
 
+
+_SPEECHRECOGNITIONRESULT_OUTPUT = _descriptor.Descriptor(
+  name='Output',
+  full_name='ekstep.speech_recognition.SpeechRecognitionResult.Output',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='source', full_name='ekstep.speech_recognition.SpeechRecognitionResult.Output.source', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2432,
+  serialized_end=2456,
+)
 
 _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
   name='SpeechRecognitionResult',
@@ -821,36 +813,22 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='transcript', full_name='ekstep.speech_recognition.SpeechRecognitionResult.transcript', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='srt', full_name='ekstep.speech_recognition.SpeechRecognitionResult.srt', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='details', full_name='ekstep.speech_recognition.SpeechRecognitionResult.details', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='alternatives', full_name='ekstep.speech_recognition.SpeechRecognitionResult.alternatives', index=4,
-      number=5, type=11, cpp_type=10, label=3,
+      name='output', full_name='ekstep.speech_recognition.SpeechRecognitionResult.output', index=1,
+      number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult.status_text', index=5,
-      number=6, type=9, cpp_type=9, label=1,
+      name='config', full_name='ekstep.speech_recognition.SpeechRecognitionResult.config', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult.status_text', index=3,
+      number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -858,7 +836,7 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[_SPEECHRECOGNITIONRESULT_OUTPUT, ],
   enum_types=[
     _SPEECHRECOGNITIONRESULT_STATUS,
   ],
@@ -868,28 +846,18 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='_transcript', full_name='ekstep.speech_recognition.SpeechRecognitionResult._transcript',
+      name='_config', full_name='ekstep.speech_recognition.SpeechRecognitionResult._config',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_srt', full_name='ekstep.speech_recognition.SpeechRecognitionResult._srt',
+      name='_status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult._status_text',
       index=1, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_details', full_name='ekstep.speech_recognition.SpeechRecognitionResult._details',
-      index=2, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_status_text', full_name='ekstep.speech_recognition.SpeechRecognitionResult._status_text',
-      index=3, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
-  serialized_start=2300,
-  serialized_end=2748,
+  serialized_start=2161,
+  serialized_end=2580,
 )
 
 
@@ -909,9 +877,9 @@ _RECOGNITIONDETAILS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='languageCode', full_name='ekstep.speech_recognition.RecognitionDetails.languageCode', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='language', full_name='ekstep.speech_recognition.RecognitionDetails.language', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -948,8 +916,8 @@ _RECOGNITIONDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2750,
-  serialized_end=2870,
+  serialized_start=2583,
+  serialized_end=2736,
 )
 
 
@@ -994,22 +962,22 @@ _ALTERNATIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2872,
-  serialized_end=2935,
+  serialized_start=2738,
+  serialized_end=2801,
 )
 
 _SPEECHRECOGNITIONREQUEST.fields_by_name['config'].message_type = _RECOGNITIONCONFIG
 _SPEECHRECOGNITIONREQUEST.fields_by_name['audio'].message_type = _RECOGNITIONAUDIO
+_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT.fields_by_name['value'].enum_type = _RECOGNITIONCONFIG_TRANSCRIPTIONFORMATENUM
+_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT.containing_type = _RECOGNITIONCONFIG
 _RECOGNITIONCONFIG.fields_by_name['language'].message_type = _LANGUAGE
 _RECOGNITIONCONFIG.fields_by_name['audioFormat'].enum_type = _RECOGNITIONCONFIG_AUDIOFORMAT
 _RECOGNITIONCONFIG.fields_by_name['channel'].enum_type = _RECOGNITIONCONFIG_AUDIOCHANNEL
-_RECOGNITIONCONFIG.fields_by_name['samplingRate'].enum_type = _RECOGNITIONCONFIG_AUDIOSAMPLERATE
 _RECOGNITIONCONFIG.fields_by_name['bitsPerSample'].enum_type = _RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE
-_RECOGNITIONCONFIG.fields_by_name['transcriptionFormat'].enum_type = _RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT
+_RECOGNITIONCONFIG.fields_by_name['transcriptionFormat'].message_type = _RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT
 _RECOGNITIONCONFIG.fields_by_name['domain'].enum_type = _RECOGNITIONCONFIG_DOMAIN
 _RECOGNITIONCONFIG.fields_by_name['model'].enum_type = _RECOGNITIONCONFIG_MODEL
-_RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT.containing_type = _RECOGNITIONCONFIG
-_RECOGNITIONCONFIG_AUDIOSAMPLERATE.containing_type = _RECOGNITIONCONFIG
+_RECOGNITIONCONFIG_TRANSCRIPTIONFORMATENUM.containing_type = _RECOGNITIONCONFIG
 _RECOGNITIONCONFIG_AUDIOBITSPERSAMPLE.containing_type = _RECOGNITIONCONFIG
 _RECOGNITIONCONFIG_AUDIOCHANNEL.containing_type = _RECOGNITIONCONFIG
 _RECOGNITIONCONFIG_AUDIOFORMAT.containing_type = _RECOGNITIONCONFIG
@@ -1033,9 +1001,6 @@ _RECOGNITIONCONFIG.fields_by_name['transcriptionFormat'].containing_oneof = _REC
 _RECOGNITIONCONFIG.oneofs_by_name['_profanityFilter'].fields.append(
   _RECOGNITIONCONFIG.fields_by_name['profanityFilter'])
 _RECOGNITIONCONFIG.fields_by_name['profanityFilter'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_profanityFilter']
-_RECOGNITIONCONFIG.oneofs_by_name['_domain'].fields.append(
-  _RECOGNITIONCONFIG.fields_by_name['domain'])
-_RECOGNITIONCONFIG.fields_by_name['domain'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_domain']
 _RECOGNITIONCONFIG.oneofs_by_name['_detailed'].fields.append(
   _RECOGNITIONCONFIG.fields_by_name['detailed'])
 _RECOGNITIONCONFIG.fields_by_name['detailed'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_detailed']
@@ -1045,13 +1010,10 @@ _RECOGNITIONCONFIG.fields_by_name['punctuation'].containing_oneof = _RECOGNITION
 _RECOGNITIONCONFIG.oneofs_by_name['_model'].fields.append(
   _RECOGNITIONCONFIG.fields_by_name['model'])
 _RECOGNITIONCONFIG.fields_by_name['model'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_model']
-_RECOGNITIONCONFIG.oneofs_by_name['_enableAutomaticPunctuation'].fields.append(
-  _RECOGNITIONCONFIG.fields_by_name['enableAutomaticPunctuation'])
-_RECOGNITIONCONFIG.fields_by_name['enableAutomaticPunctuation'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_enableAutomaticPunctuation']
 _RECOGNITIONCONFIG.oneofs_by_name['_enableInverseTextNormalization'].fields.append(
   _RECOGNITIONCONFIG.fields_by_name['enableInverseTextNormalization'])
 _RECOGNITIONCONFIG.fields_by_name['enableInverseTextNormalization'].containing_oneof = _RECOGNITIONCONFIG.oneofs_by_name['_enableInverseTextNormalization']
-_LANGUAGE.fields_by_name['value'].enum_type = _LANGUAGE_LANGUAGECODE
+_LANGUAGE.fields_by_name['sourceLanguage'].enum_type = _LANGUAGE_LANGUAGECODE
 _LANGUAGE_LANGUAGECODE.containing_type = _LANGUAGE
 _LANGUAGE.oneofs_by_name['_name'].fields.append(
   _LANGUAGE.fields_by_name['name'])
@@ -1062,25 +1024,18 @@ _RECOGNITIONAUDIO.fields_by_name['audioUri'].containing_oneof = _RECOGNITIONAUDI
 _RECOGNITIONAUDIO.oneofs_by_name['_audioContent'].fields.append(
   _RECOGNITIONAUDIO.fields_by_name['audioContent'])
 _RECOGNITIONAUDIO.fields_by_name['audioContent'].containing_oneof = _RECOGNITIONAUDIO.oneofs_by_name['_audioContent']
-_RECOGNITIONAUDIO.oneofs_by_name['_fileId'].fields.append(
-  _RECOGNITIONAUDIO.fields_by_name['fileId'])
-_RECOGNITIONAUDIO.fields_by_name['fileId'].containing_oneof = _RECOGNITIONAUDIO.oneofs_by_name['_fileId']
+_SPEECHRECOGNITIONRESULT_OUTPUT.containing_type = _SPEECHRECOGNITIONRESULT
 _SPEECHRECOGNITIONRESULT.fields_by_name['status'].enum_type = _SPEECHRECOGNITIONRESULT_STATUS
-_SPEECHRECOGNITIONRESULT.fields_by_name['details'].message_type = _RECOGNITIONDETAILS
-_SPEECHRECOGNITIONRESULT.fields_by_name['alternatives'].message_type = _ALTERNATIVE
+_SPEECHRECOGNITIONRESULT.fields_by_name['output'].message_type = _SPEECHRECOGNITIONRESULT_OUTPUT
+_SPEECHRECOGNITIONRESULT.fields_by_name['config'].message_type = _RECOGNITIONDETAILS
 _SPEECHRECOGNITIONRESULT_STATUS.containing_type = _SPEECHRECOGNITIONRESULT
-_SPEECHRECOGNITIONRESULT.oneofs_by_name['_transcript'].fields.append(
-  _SPEECHRECOGNITIONRESULT.fields_by_name['transcript'])
-_SPEECHRECOGNITIONRESULT.fields_by_name['transcript'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_transcript']
-_SPEECHRECOGNITIONRESULT.oneofs_by_name['_srt'].fields.append(
-  _SPEECHRECOGNITIONRESULT.fields_by_name['srt'])
-_SPEECHRECOGNITIONRESULT.fields_by_name['srt'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_srt']
-_SPEECHRECOGNITIONRESULT.oneofs_by_name['_details'].fields.append(
-  _SPEECHRECOGNITIONRESULT.fields_by_name['details'])
-_SPEECHRECOGNITIONRESULT.fields_by_name['details'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_details']
+_SPEECHRECOGNITIONRESULT.oneofs_by_name['_config'].fields.append(
+  _SPEECHRECOGNITIONRESULT.fields_by_name['config'])
+_SPEECHRECOGNITIONRESULT.fields_by_name['config'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_config']
 _SPEECHRECOGNITIONRESULT.oneofs_by_name['_status_text'].fields.append(
   _SPEECHRECOGNITIONRESULT.fields_by_name['status_text'])
 _SPEECHRECOGNITIONRESULT.fields_by_name['status_text'].containing_oneof = _SPEECHRECOGNITIONRESULT.oneofs_by_name['_status_text']
+_RECOGNITIONDETAILS.fields_by_name['language'].message_type = _LANGUAGE
 DESCRIPTOR.message_types_by_name['SpeechRecognitionRequest'] = _SPEECHRECOGNITIONREQUEST
 DESCRIPTOR.message_types_by_name['RecognitionConfig'] = _RECOGNITIONCONFIG
 DESCRIPTOR.message_types_by_name['Language'] = _LANGUAGE
@@ -1098,11 +1053,19 @@ SpeechRecognitionRequest = _reflection.GeneratedProtocolMessageType('SpeechRecog
 _sym_db.RegisterMessage(SpeechRecognitionRequest)
 
 RecognitionConfig = _reflection.GeneratedProtocolMessageType('RecognitionConfig', (_message.Message,), {
+
+  'TranscriptionFormat' : _reflection.GeneratedProtocolMessageType('TranscriptionFormat', (_message.Message,), {
+    'DESCRIPTOR' : _RECOGNITIONCONFIG_TRANSCRIPTIONFORMAT,
+    '__module__' : 'speech_recognition_open_api_pb2'
+    # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.RecognitionConfig.TranscriptionFormat)
+    })
+  ,
   'DESCRIPTOR' : _RECOGNITIONCONFIG,
   '__module__' : 'speech_recognition_open_api_pb2'
   # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.RecognitionConfig)
   })
 _sym_db.RegisterMessage(RecognitionConfig)
+_sym_db.RegisterMessage(RecognitionConfig.TranscriptionFormat)
 
 Language = _reflection.GeneratedProtocolMessageType('Language', (_message.Message,), {
   'DESCRIPTOR' : _LANGUAGE,
@@ -1119,11 +1082,19 @@ RecognitionAudio = _reflection.GeneratedProtocolMessageType('RecognitionAudio', 
 _sym_db.RegisterMessage(RecognitionAudio)
 
 SpeechRecognitionResult = _reflection.GeneratedProtocolMessageType('SpeechRecognitionResult', (_message.Message,), {
+
+  'Output' : _reflection.GeneratedProtocolMessageType('Output', (_message.Message,), {
+    'DESCRIPTOR' : _SPEECHRECOGNITIONRESULT_OUTPUT,
+    '__module__' : 'speech_recognition_open_api_pb2'
+    # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.SpeechRecognitionResult.Output)
+    })
+  ,
   'DESCRIPTOR' : _SPEECHRECOGNITIONRESULT,
   '__module__' : 'speech_recognition_open_api_pb2'
   # @@protoc_insertion_point(class_scope:ekstep.speech_recognition.SpeechRecognitionResult)
   })
 _sym_db.RegisterMessage(SpeechRecognitionResult)
+_sym_db.RegisterMessage(SpeechRecognitionResult.Output)
 
 RecognitionDetails = _reflection.GeneratedProtocolMessageType('RecognitionDetails', (_message.Message,), {
   'DESCRIPTOR' : _RECOGNITIONDETAILS,
@@ -1149,8 +1120,8 @@ _SPEECHRECOGNIZER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2938,
-  serialized_end=3125,
+  serialized_start=2804,
+  serialized_end=3000,
   methods=[
   _descriptor.MethodDescriptor(
     name='recognize',
@@ -1159,7 +1130,7 @@ _SPEECHRECOGNIZER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_SPEECHRECOGNITIONREQUEST,
     output_type=_SPEECHRECOGNITIONRESULT,
-    serialized_options=b'\202\323\344\223\002*\"%/v1/recognize/{config.language.value}:\001*',
+    serialized_options=b'\202\323\344\223\0023\"./v1/recognize/{config.language.sourceLanguage}:\001*',
     create_key=_descriptor._internal_create_key,
   ),
 ])

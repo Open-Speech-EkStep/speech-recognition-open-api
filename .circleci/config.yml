@@ -32,7 +32,7 @@ parameters:
     default: false
 
 jobs:
-  build:
+  build_and_deploy_api_image:
     machine:
       image: ubuntu-2004:202101-01
       resource_class: 2xlarge
@@ -84,7 +84,7 @@ jobs:
           command: |
             echo "Build and deploy to gcr"
 
-  deploy:
+  deploy_api_to_platform:
     machine:
       image: ubuntu-2004:202101-01
       resource_class: 2xlarge
@@ -124,15 +124,15 @@ workflows:
   main_workflow:
     when: << pipeline.parameters.trigger_pipeline >>
     jobs:
-     - build:
-         name: build
+     - build_and_deploy_api_image:
+         name: build_and_deploy_api_image
          filters:
            branches:
              only: test-helm
-     - deploy:
-         name: deploy
+     - deploy_api_to_platform:
+         name: deploy_api_to_platform
          filters:
            branches:
              only: test-helm
-         requires:
-           - build
+           requires:
+             - build_and_deploy_api_image

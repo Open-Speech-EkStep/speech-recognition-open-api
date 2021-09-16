@@ -10,42 +10,38 @@ import "google/api/annotations.proto";
 
 service SpeechRecognizer {
   rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
-    option (google.api.http) = {post: "/v1/recognize/{config.language.value}", body: "*"};
+    option (google.api.http) = {post: "/v1/recognize/{config.language.sourceLanguage}", body: "*"};
   }
 }
 
 message SpeechRecognitionRequest {
   RecognitionConfig config = 1;
-  RecognitionAudio audio = 2;
+  repeated RecognitionAudio audio = 2;
 }
 
 
 message RecognitionConfig {
-  enum TranscriptionFormat {
-    TRANSCRIPT = 0;
-    SRT = 1;
-    ALTERNATIVES = 2;
+  message TranscriptionFormat{
+    TranscriptionFormatEnum value = 1;
   }
-  enum AudioSampleRate {
-    _16KHZ = 0;
-    _48KHZ = 1;
-    _22KHZ = 2;
-    _8KHZ = 3;
-    _44KHZ = 4;
+  enum TranscriptionFormatEnum {
+    transcript = 0;
+    srt = 1;
+    alternatives = 2;
   }
   enum AudioBitsPerSample {
-    SIXTEEN = 0;
-    EIGHT = 1;
+    sixteen = 0;
+    eight = 1;
   }
   enum AudioChannel {
-    MONO = 0;
-    STEREO = 1;
+    mono = 0;
+    stereo = 1;
   }
   enum AudioFormat {
-    WAV = 0;
-    PCM = 1;
-    MP3 = 2;
-    OGG = 3;
+    wav = 0;
+    pcm = 1;
+    mp3 = 2;
+    flac = 3;
   }
   enum Domain {
     GENERAL = 0;
@@ -59,25 +55,25 @@ message RecognitionConfig {
     SPORTS = 8;
   }
   enum Model {
-    COMMAND_AND_SEARCH = 0;
-    PHONE_CALL = 1;
-    VIDEO = 2;
-    DEFAULT = 3;
+    command_and_search = 0;
+    phone_call = 1;
+    video = 2;
+    default = 3;
   }
 
   Language language = 1;
   optional AudioFormat audioFormat = 2;
   optional AudioChannel channel = 3;
-  optional AudioSampleRate samplingRate = 4;
+  optional int64 samplingRate = 4;
   optional AudioBitsPerSample bitsPerSample = 5;
   optional TranscriptionFormat transcriptionFormat = 6;
   optional bool profanityFilter = 7;
-  optional Domain domain = 8;
+  repeated Domain domain = 8;
   optional bool detailed = 9;
-  optional string punctuation = 10;
+  optional bool punctuation = 10;
   optional Model model = 11;
-  optional bool enableAutomaticPunctuation = 12;
-  optional bool enableInverseTextNormalization = 13;
+  //  optional bool enableAutomaticPunctuation = 12;
+  optional bool enableInverseTextNormalization = 12;
 }
 
 message Language {
@@ -113,13 +109,12 @@ message Language {
     sa = 29;
   }
   optional string name = 1;
-  LanguageCode value = 2;
+  LanguageCode sourceLanguage = 2;
 }
 
 message RecognitionAudio {
   optional string audioUri = 1;
   optional bytes audioContent = 2;
-  optional string fileId = 3;
 }
 
 message SpeechRecognitionResult {
@@ -130,17 +125,18 @@ message SpeechRecognitionResult {
     BABBLE_TIMEOUT = 3;
     ERROR = 4;
   }
+  message Output{
+    string source = 1;
+  }
   Status status = 1;
-  optional string transcript = 2;
-  optional string srt = 3;
-  optional RecognitionDetails details = 4;
-  repeated Alternative alternatives = 5;
-  optional string status_text = 6;
+  repeated Output output = 2;
+  optional RecognitionDetails config = 3;
+  optional string status_text = 4;
 }
 
 message RecognitionDetails {
   int32 channelTag = 1;
-  string languageCode = 2;
+  Language language = 2;
   int32 snr = 3;
   int32 samplingRate = 4;
   int32 bitsPerSample = 5;
