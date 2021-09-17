@@ -6,7 +6,7 @@ image:
   # image.tag -- image tag (chart's appVersion value will be used if not set)
   tag: ""
   # image.pullPolicy -- image pull policy
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 # imagePullSecrets -- image pull secret for private images
 imagePullSecrets: []
