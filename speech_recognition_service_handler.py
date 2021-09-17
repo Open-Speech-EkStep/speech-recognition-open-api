@@ -5,7 +5,7 @@ def handle_request(request, supported_languages):
     language = Language.LanguageCode.Name(request.config.language.sourceLanguage)
     if not is_language_supported(language, supported_languages):
         raise NotImplementedError('Language not implemented yet')
-    out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
+    out_format = RecognitionConfig.TranscriptionFormatEnum.Name(request.config.transcriptionFormat.value)
     if not is_out_format_supported(out_format):
         raise NotImplementedError('Transcription Format not implemented yet')
     audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
