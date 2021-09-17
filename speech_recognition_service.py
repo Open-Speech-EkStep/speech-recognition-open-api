@@ -36,7 +36,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         itn = request.config.enableInverseTextNormalization
         language = Language.LanguageCode.Name(request.config.language.sourceLanguage)
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
-        out_format = RecognitionConfig.TranscriptionFormat.Name(request.config.transcriptionFormat)
+        out_format = RecognitionConfig.TranscriptionFormatEnum.Name(request.config.transcriptionFormat.value)
         model_output_list = []
         for audio_obj in request.audio:
             file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
