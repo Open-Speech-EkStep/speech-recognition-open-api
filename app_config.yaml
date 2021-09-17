@@ -1,9 +1,6 @@
 base_name: asr-model-v2
 languages:
-  - or
-  - te
   - en
-  - gu
   - hi
   - bn
 
