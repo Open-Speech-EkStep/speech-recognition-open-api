@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: gcr.io/ekstepspeechrecognition/speech_recognition_model_api
-    pullPolicy: Always
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
