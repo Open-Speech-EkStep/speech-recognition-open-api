@@ -29,7 +29,7 @@ parameters:
     default: false
   trigger_complete_build:
     type: boolean
-    default: false
+    default: true
 
 jobs:
   build_and_deploy_api_image:
