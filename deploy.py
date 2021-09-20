@@ -58,7 +58,7 @@ class LanguageConfig:
             process = "upgrade"
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]'".format(process, self.release_name, self.helm_chart_path, namespace, self.language_code)
         if api_changed:
-            uninstall_command = "helm uninstall {1} --namespace {2}".format(self.release_name, namespace)
+            uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
             cmd_runner(uninstall_command, "LANGUAGE :" + self.language_code)
             cmd_runner(command, "LANGUAGE :" + self.language_code)
         else:    
