@@ -61,6 +61,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
                 return SpeechRecognitionResult(status='ERROR', status_text=str(e))
             except Exception as e:
+                print("Error", e)
                 context.set_details("An unknown error has occurred.Please try again.")
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 return SpeechRecognitionResult(status='ERROR',
