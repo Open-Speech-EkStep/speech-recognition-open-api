@@ -234,12 +234,12 @@ if __name__ == "__main__":
     # parser.add_argument('--envoy-config-path', help="envoy config path")
     parser.add_argument('--crt', help="Crt for certificate", required = True)
     parser.add_argument('--key', help="key for certificate", required = True)
-    parser.add_argument('--api-changed', default= False, help="Flag if api has changed", required = True)
+    parser.add_argument('--api-updated', default= False, help="Flag if api has changed", required = True)
 
     args = parser.parse_args()
 
     namespace = args.namespace
-    api_changed = args.api_changed
+    api_updated = args.api_updated
     app_config_path = "app_config.yaml"
     envoy_config_path = "infra/envoy/config.yaml"
     language_helm_chart_path = "infra/asr-model-v2"
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     languages = app_config["languages"]
     for language_code in languages:
         language_config = LanguageConfig(language_code, release_name, language_helm_chart_path)
-        language_config.deploy(namespace, api_changed)
+        language_config.deploy(namespace, api_updated)
         envoy_config = update_envoy_config(envoy_config, language_config)
 
     # clear_clusters_and_matches(languages)
