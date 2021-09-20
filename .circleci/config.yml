@@ -128,11 +128,11 @@ workflows:
          name: build_and_deploy_api_image
          filters:
            branches:
-             only: test-helm
+             only: circle-ci-deploy
      - deploy_api_to_platform:
          name: deploy_api_to_platform
          filters:
            branches:
-             only: test-helm
+             only: circle-ci-deploy
          requires:
               - build_and_deploy_api_image
