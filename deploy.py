@@ -51,13 +51,18 @@ class LanguageConfig:
         else:
             return True
 
-    def deploy(self, namespace):
-        if not self.is_deployed(namespace):
+    def deploy(self, namespace, api_changed):
+        if api_changed or not self.is_deployed(namespace):
             process = "install"
         else:
             process = "upgrade"
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]'".format(process, self.release_name, self.helm_chart_path, namespace, self.language_code)
-        cmd_runner(command, "LANGUAGE :" + self.language_code)
+        if api_changed:
+            uninstall_command = "helm uninstall {1} --namespace {2}".format(self.release_name, namespace)
+            cmd_runner(uninstall_command, "LANGUAGE :" + self.language_code)
+            cmd_runner(command, "LANGUAGE :" + self.language_code)
+        else:    
+            cmd_runner(command, "LANGUAGE :" + self.language_code)
 
 class EnvoyConfig:
 
@@ -227,12 +232,14 @@ if __name__ == "__main__":
     parser.add_argument('--namespace', default='test-v2', help="Namespace to use")
     # parser.add_argument('--app-config-path', help="Path of the app config")
     # parser.add_argument('--envoy-config-path', help="envoy config path")
-    parser.add_argument('--crt', help="Namespace to use", required = True)
-    parser.add_argument('--key', help="Namespace to use", required = True)
+    parser.add_argument('--crt', help="Crt for certificate", required = True)
+    parser.add_argument('--key', help="key for certificate", required = True)
+    parser.add_argument('--api-changed', default= False, help="Flag if api has changed", required = True)
 
     args = parser.parse_args()
 
     namespace = args.namespace
+    api_changed = args.api_changed
     app_config_path = "app_config.yaml"
     envoy_config_path = "infra/envoy/config.yaml"
     language_helm_chart_path = "infra/asr-model-v2"
@@ -250,7 +257,7 @@ if __name__ == "__main__":
     languages = app_config["languages"]
     for language_code in languages:
         language_config = LanguageConfig(language_code, release_name, language_helm_chart_path)
-        language_config.deploy(namespace)
+        language_config.deploy(namespace, api_changed)
         envoy_config = update_envoy_config(envoy_config, language_config)
 
     # clear_clusters_and_matches(languages)

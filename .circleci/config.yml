@@ -27,7 +27,7 @@ parameters:
   build_dependency:
     type: boolean
     default: false
-  trigger_complete_build:
+  is_api_updated:
     type: boolean
     default: true
 
@@ -39,7 +39,7 @@ jobs:
     working_directory: ~/speech-recognition-model-api/
     steps:
       - when:
-          condition: << pipeline.parameters.trigger_complete_build >>
+          condition: << pipeline.parameters.is_api_updated >>
           steps:
             - checkout:
                 path: ~/speech-recognition-model-api
@@ -113,7 +113,7 @@ jobs:
           command: sh scripts/<< pipeline.parameters.platform >>-setup.sh
       - run:
           name: Release model using helm chart
-          command: python3 deploy.py --crt ${MODEL_API_CRT} --key ${MODEL_API_KEY} --namespace << pipeline.parameters.kubernetes_namespace >>
+          command: python3 deploy.py --crt ${MODEL_API_CRT} --key ${MODEL_API_KEY} --namespace << pipeline.parameters.kubernetes_namespace >> --api-updated << pipeline.parameters.is_api_updated >>
       - run:
           name: Remove account details
           command: |
