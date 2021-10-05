@@ -29,7 +29,7 @@ parameters:
     default: false
   is_api_updated:
     type: boolean
-    default: false
+    default: true
 
 jobs:
   build_and_deploy_api_image:
