@@ -8,7 +8,7 @@ from speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
-
+import torch
 
 # add error message field to status
 # handle grpc thrown error from server
@@ -16,7 +16,8 @@ from utilities import download_from_url_to_file, create_wav_file_using_bytes, ge
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
     MODEL_BASE_PATH = os.environ.get('models_base_path', '')
     def __init__(self):
-        gpu = os.environ.get('gpu', False)
+        # gpu = os.environ.get('gpu', False)
+        gpu = torch.cuda.is_available()
         for path, dirs, files in os.walk(self.MODEL_BASE_PATH):
             print(path)
             for f in files:
