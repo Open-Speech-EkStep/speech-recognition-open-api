@@ -35,7 +35,7 @@ jobs:
   build_and_deploy_api_image:
     machine:
       image: ubuntu-2004:202101-01
-      resource_class: 2xlarge
+      resource_class: xlarge
     working_directory: ~/speech-recognition-model-api/
     steps:
       - when:
@@ -136,3 +136,6 @@ workflows:
 #             only: circle-ci-deploy
 #         requires:
 #              - build_and_deploy_api_image
+
+
+docker build --rm=false -t speech_recognition_model_api:2.1.0 dependencies/
