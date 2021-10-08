@@ -13,7 +13,7 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "2.0.0"
+    default: "2.1.0"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
@@ -26,7 +26,7 @@ parameters:
     enum: ["gke", "eks", "cdac"]
   build_dependency:
     type: boolean
-    default: false
+    default: true
   is_api_updated:
     type: boolean
     default: true
@@ -129,10 +129,10 @@ workflows:
          filters:
            branches:
              only: circle-ci-deploy
-     - deploy_api_to_platform:
-         name: deploy_api_to_platform
-         filters:
-           branches:
-             only: circle-ci-deploy
-         requires:
-              - build_and_deploy_api_image
+#     - deploy_api_to_platform:
+#         name: deploy_api_to_platform
+#         filters:
+#           branches:
+#             only: circle-ci-deploy
+#         requires:
+#              - build_and_deploy_api_image

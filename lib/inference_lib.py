@@ -1,14 +1,19 @@
-import torch
-import numpy as np
 import argparse
-import soundfile as sf
-import torch.nn.functional as F
+import datetime
 import itertools as it
+import os
+import subprocess
+
+import numpy as np
+import soundfile as sf
+import torch
+import torch.nn.functional as F
 from fairseq import utils
-from fairseq.models import BaseFairseqModel
 from fairseq.data import Dictionary
+from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
-from fairseq.dataclass.utils import convert_namespace_to_omegaconf
+from pydub import AudioSegment
+
 from lib.audio_normalization import AudioNormalization
 
 try:
@@ -307,19 +312,43 @@ def post_process(sentence: str, symbol: str):
     return sentence
 
 
+def media_conversion(file_name, duration_limit=5):
+    dir_name = os.path.join('/tmp', datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    os.makedirs(dir_name)
 
-def get_results(wav_path,dict_path,generator,use_cuda=False,w2v_path=None,model=None, half=None):
+    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16,
+                                                                                        dir_name + '/input_audio.wav')],
+                    shell=True)
+
+    audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
+
+    audio_duration_min = audio_file.duration_seconds / 60
+
+    if audio_duration_min > duration_limit:
+        d_limit = duration_limit * 60 * 1000
+        clipped_audio = audio_file[:d_limit]
+        clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
+    else:
+        audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
+
+    os.remove(dir_name + '/input_audio.wav')
+
+    return dir_name
+
+
+def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=None):
     sample = dict()
     net_input = dict()
-
-    normalized_audio = AudioNormalization(wav_path).loudness_normalization_effects()
+    dir_name = media_conversion(wav_path, duration_limit=15)
+    audio_file = dir_name + '/clipped_audio.wav'
+    normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
     wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
     feature = get_feature_for_bytes(wav, 16000)
     target_dict = Dictionary.load(dict_path)
- 
+
     model.eval()
-           
+
     if half:
         net_input["source"] = feature.unsqueeze(0).half()
     else:
@@ -403,12 +432,13 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     if cuda:
         model = load_model(model_path)
         model.cuda()
+        if half:
+            model.half()
+        ln_code = model_item.get_language_code()
+        print(f"{ln_code} Model initialized with GPU successfully")
+
     else:
         model = load_model(model_path)
-        
-        
-    if half:
-        model.half()
 
     return model, generator
 

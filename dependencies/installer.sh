@@ -4,7 +4,7 @@ echo "Setting up model dependencies...."
 
 apt-get update && apt-get upgrade -y
 apt-get install -y sudo wget python3-pip
-apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev libfst-tools
+apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev libfst-tools libgmp3-dev
 apt-get install -y ffmpeg git
 apt-get install -y build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev sox
 apt install -y gcc-10 gcc-10-base gcc-10-doc g++-10 libstdc++-10-dev libstdc++-10-doc
@@ -32,7 +32,15 @@ git clone https://github.com/flashlight/flashlight.git
 cd flashlight/bindings/python
 export USE_MKL=0
 python3 setup.py install
-pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
+
+git clone https://github.com/Open-Speech-EkStep/indic-punct.git
+cd indic-punct
+bash install.sh
+python3 setup.py bdist_wheel
+pip3 install -e .
+cd ..
+
+#pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 
 cd /opt/files
 if [ ! -d fairseq ]; then

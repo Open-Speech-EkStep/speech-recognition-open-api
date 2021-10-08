@@ -22,7 +22,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             print(path)
             for f in files:
                 print(f)
-        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, False)
+        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, True)
         print("Loaded models successfully")
 
     def recognize(self, request, context):
