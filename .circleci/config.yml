@@ -136,6 +136,3 @@ workflows:
 #             only: circle-ci-deploy
 #         requires:
 #              - build_and_deploy_api_image
-
-
-docker build --rm=false -t speech_recognition_model_api:2.1.0 dependencies/
