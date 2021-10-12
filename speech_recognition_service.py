@@ -19,18 +19,24 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
 
     def __init__(self):
         gpu = os.environ.get('gpu', False)
+        if gpu == 'true' or gpu == 'True':
+            gpu = True
+        elif gpu == 'false' or gpu == 'False':
+            gpu = False
         print("User has provided gpu as ", gpu, type(gpu))
         gpu_present = torch.cuda.is_available()
-        if gpu and gpu_present:
+        if gpu == True and gpu_present == True:
             gpu = True
+            half = True
         else:
             gpu = False
+            half = False
 
         for path, dirs, files in os.walk(self.MODEL_BASE_PATH):
             print(path)
             for f in files:
                 print(f)
-        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, True)
+        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
         print("Loaded models successfully")
 
     def recognize(self, request, context):
