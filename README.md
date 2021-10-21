@@ -20,6 +20,225 @@
     sh model_bootstrap.sh
     ```
 4. Download models and update the right model paths in model_dict.json.
+```js
+assamese/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/assamese/assamese.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/assamese/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/assamese/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/assamese/lm.binary .
+
+bengali/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bengali/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bengali/final_model.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bengali/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bengali/lm.binary .
+
+bhojpuri/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bhojpuri/bhojpuri.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bhojpuri/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bhojpuri/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/bhojpuri/lm.binary .
+
+dogri/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/dogri/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/dogri/dogri.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/dogri/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/dogri/lm.binary .
+
+gujarati/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/gujarati/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/gujarati/gujarati.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/gujarati/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/gujarati/lm.binary .
+
+hindi/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/hindi/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/hindi/hindi.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/hindi/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/hindi/lm.binary .
+
+indian_english/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/indian_english/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/indian_english/final_model.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/indian_english/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/indian_english/lm.binary .
+
+kannada/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/kannada/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/kannada/final_model.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/kannada/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/kannada/lm.binary .
+
+maithili/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/maithili/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/maithili/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/maithili/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/maithili/maithili.pt .
+
+malayalam/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/malayalam/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/malayalam/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/malayalam/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/malayalam/malayalam.pt .
+
+marathi/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/marathi/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/marathi/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/marathi/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/marathi/marathi.pt .
+
+nepali/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/nepali/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/nepali/final_model.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/nepali/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/nepali/lm.binary .
+
+odia/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/odia/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/odia/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/odia/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/odia/odia.pt .
+
+punjabi/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/punjabi/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/punjabi/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/punjabi/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/punjabi/punjabi.pt .
+
+rajasthani/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/rajasthani/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/rajasthani/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/rajasthani/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/rajasthani/rajasthani.pt .
+
+sanskrit/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/sanskrit/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/sanskrit/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/sanskrit/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/sanskrit/sanskrit.pt .
+
+tamil/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/tamil/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/tamil/final_model.pt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/tamil/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/tamil/lm.binary .
+
+telugu/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/telugu/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/telugu/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/telugu/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/telugu/telugu.pt .
+
+urdu/:
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/dict.ltr.txt .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/lexicon.lst .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/lm.binary .
+wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/urdu.pt .
+```
+model_dict file should be updated with relative paths to the model artifacts:
+For eg, if the models are placed in the directory /asr-models/,then model_dict.json would be like,
+```
+{
+    "en": {
+        "path": "/asr-models/indian_english/final_model.pt",
+        "enablePunctuation": true,
+        "enableITN": true
+    },
+    "hi": {
+        "path": "/asr-models/hindi/hindi.pt",
+        "enablePunctuation": true,
+        "enableITN": true
+    },
+    "ta": {
+        "path": "/asr-models/tamil/final_model.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "bn": {
+        "path": "/asr-models/bengali/final_model.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "ne": {
+        "path": "/asr-models/nepali/final_model.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "kn": {
+        "path": "/asr-models/kannada/final_model.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "gu": {
+        "path": "/asr-models/gujarati/gujarati.pt",
+        "enablePunctuation": true,
+        "enableITN": true
+    },
+    "te": {
+        "path": "/asr-models/telugu/telugu.pt",
+        "enablePunctuation": true,
+        "enableITN": true
+    },
+    "or": {
+        "path": "/asr-models/odia/odia.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "mr": {
+        "path": "/asr-models/marathi/marathi.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "sa": {
+        "path": "/asr-models/sanskrit/sanskrit.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "mai": {
+        "path": "/asr-models/maithili/maithili.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "bo": {
+        "path": "/asr-models/bhojpuri/bhojpuri.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "ml": {
+        "path": "/asr-models/malayalam/malayalam.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "raj": {
+        "path": "/asr-models/rajasthani/rajasthani.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "doi": {
+        "path": "/asr-models/dogri/dogri.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "pa": {
+        "path": "/asr-models/punjabi/punjabi.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "ur":{
+        "path":"/asr-models/urdu/urdu.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    },
+    "as":{
+        "path":"/asr-models/assamese/assamese.pt",
+        "enablePunctuation": false,
+        "enableITN": false
+    }
+}
+
+```
+
+
 5. Start the server at port 50051:
 
     ```
