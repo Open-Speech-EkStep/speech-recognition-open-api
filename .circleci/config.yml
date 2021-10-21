@@ -13,13 +13,13 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "2.1.0"
+    default: "2.1.1"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "1.0"
+    default: "1.1"
   platform:
     default: "gke"
     type: enum
