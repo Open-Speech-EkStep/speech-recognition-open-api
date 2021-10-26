@@ -19,7 +19,9 @@
     ```
     sh model_bootstrap.sh
     ```
-4. Download models and update the right model paths in model_dict.json.
+4. Download asr models and punc models.Thereafter, update the right asr model paths in model_dict.json.
+For asr models:
+Create deployed_models directory and download the models inside it.
 ```js
 assamese/:
 wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/assamese/assamese.pt .
@@ -135,8 +137,41 @@ wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/ur
 wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/lm.binary .
 wget https://storage.googleapis.com/asr-public-models/data-sources-deployment/urdu/urdu.pt .
 ```
-model_dict file should be updated with relative paths to the model artifacts:
-For eg, if the models are placed in the directory /asr-models/,then model_dict.json would be like,
+For punc models:
+Create a directory called model_data inside deployed_models directory and then dowload all punc models.
+```
+gu/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu_dict.json .
+
+hi/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi_dict.json .
+
+kn/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/kn/kn.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/kn/kn.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/kn/kn_dict.json .
+
+mr/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/mr/mr.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/mr/mr.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/mr/mr_dict.json .
+
+pa/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/pa/pa.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/pa/pa.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/pa/pa_dict.json .
+
+te/:
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/te/te.json .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/te/te.pt .
+wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/te/te_dict.json .
+```
+model_dict(same hierarchy as deployed_models directory) file should be updated with relative paths to the asr model artifacts:
+For eg, if the asr models are placed in the directory /asr-models/,then model_dict.json would be like,
 ```
 {
     "en": {
