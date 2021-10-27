@@ -107,6 +107,8 @@ message Language {
     kha = 27;
     grt = 28;
     sa = 29;
+    raj = 30;
+    bo = 31;
   }
   optional string name = 1;
   LanguageCode sourceLanguage = 2;
