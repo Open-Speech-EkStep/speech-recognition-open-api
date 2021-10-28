@@ -4,7 +4,7 @@ parameters:
   # This parameter is used to trigger the main workflow
   trigger_pipeline:
     type: boolean
-    default: true
+    default: false
   image_name:
     type: string
     default: speech_recognition_model_api

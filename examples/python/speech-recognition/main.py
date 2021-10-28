@@ -44,83 +44,49 @@ def read_audio():
         return f.readframes(f.getnframes())
 
 
-def transcribe_audio_bytes(stub):
-    language = "mr"
-    audio_bytes = read_audio()
-    lang = Language(value=language, name='Marathi')
-    config = RecognitionConfig(language=lang, transcriptionFormat='TRANSCRIPT',
-                               enableAutomaticPunctuation=1)
-    audio = RecognitionAudio(audioContent=audio_bytes)
-    request = SpeechRecognitionRequest(audio=audio, config=config)
-
-    # creds = grpc.metadata_call_credentials(
-    #     metadata_plugin=GrpcAuth('access_key')
-    # )
-    try:
-        response = stub.recognize(request)
-
-        print(response.transcript)
-    except grpc.RpcError as e:
-        e.details()
-        status_code = e.code()
-        print(status_code.name)
-        print(status_code.value)
-
-
-def transcribe_audio_url(stub):
-    language = "hi"
-    url = "https://codmento.com/ekstep/test/changed.wav"
-    lang = Language(value=language, name='Hindi')
-    config = RecognitionConfig(language=lang, enableAutomaticPunctuation=True)
+def transcribe_url(stub, url, language, audio_format, transcription_format):
+    metadata = (('language', language),)
+    lang = Language(sourceLanguage=language)
+    config = RecognitionConfig(language=lang, audioFormat=audio_format,
+                               transcriptionFormat=RecognitionConfig.TranscriptionFormat(value=transcription_format))
     audio = RecognitionAudio(audioUri=url)
-    request = SpeechRecognitionRequest(audio=audio, config=config)
+    request = SpeechRecognitionRequest(audio=[audio], config=config)
 
-    response = stub.recognize(request)
-
-    print(response.transcript)
+    return stub.recognize(request, metadata=metadata)
 
 
-def get_srt_audio_bytes(stub, metadata):
-    language = "en"
-    audio_bytes = read_audio()
-    lang = Language(value=language, name='English')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT',
-                               enableInverseTextNormalization=True, enableAutomaticPunctuation=True)
+def transcribe_audio_bytes(stub, audio_bytes, language, audio_format, transcription_format):
+    metadata = (('language', language),)
+    lang = Language(sourceLanguage=language)
+    config = RecognitionConfig(language=lang, audioFormat=audio_format,
+                               transcriptionFormat=RecognitionConfig.TranscriptionFormat(value=transcription_format))
     audio = RecognitionAudio(audioContent=audio_bytes)
-    request = SpeechRecognitionRequest(audio=audio, config=config)
+    request = SpeechRecognitionRequest(audio=[audio], config=config)
 
-    # creds = grpc.metadata_call_credentials(
-    #     metadata_plugin=GrpcAuth('access_key')
-    # )
-    response = stub.recognize(request, metadata=metadata)
-
-    print(response.srt)
-
-
-def get_srt_audio_url(stub):
-    language = "gu"
-    url = "https://codmento.com/ekstep/test/changed.wav"
-    lang = Language(value=language, name='Gujarati')
-    config = RecognitionConfig(language=lang, audioFormat='WAV', transcriptionFormat='SRT')
-    audio = RecognitionAudio(audioUri=url)
-    request = SpeechRecognitionRequest(audio=audio, config=config)
-
-    response = stub.recognize(request)
-
-    print(response.srt)
+    return stub.recognize(request, metadata=metadata)
 
 
 if __name__ == '__main__':
     with open('secret/server.crt', 'rb') as f:
         trusted_certs = f.read()
-    metadata = (('language', 'en'),)
     # create credentials
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
     host = "model-api.vakyansh.in"
     port = 443
     with grpc.secure_channel('{}:{}'.format(host, port), credentials) as channel:
         stub = SpeechRecognizerStub(channel)
-        # transcribe_audio_url(stub)
-        # transcribe_audio_bytes(stub)
-        # get_srt_audio_url(stub)
-        get_srt_audio_bytes(stub, metadata)
+        language = 'hi'
+        audio_url = 'https://storage.googleapis.com/test_public_bucket/download.mp3'
+        audio_bytes = read_audio()
+
+        response = transcribe_url(stub, audio_url, language, 'mp3', 'transcript')
+        print(response.output[0].source)
+
+        response = transcribe_url(stub, audio_url, language, 'mp3', 'srt')
+        print(response.output[0].source)
+
+        response = transcribe_audio_bytes(stub, audio_bytes, language, 'wav', 'transcript')
+        print(response.output[0].source)
+
+        response = transcribe_audio_bytes(stub, audio_bytes, language, 'wav', 'srt')
+        print(response.output[0].source)
