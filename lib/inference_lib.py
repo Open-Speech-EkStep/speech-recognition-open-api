@@ -313,7 +313,7 @@ def post_process(sentence: str, symbol: str):
 
 
 def media_conversion(file_name, duration_limit=5):
-    dir_name = os.path.join('/tmp', datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    dir_name = os.path.join('/tmp', datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f'))
     os.makedirs(dir_name)
 
     subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16,
