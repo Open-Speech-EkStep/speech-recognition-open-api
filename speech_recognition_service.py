@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import grpc
 import requests
@@ -16,6 +17,7 @@ from utilities import download_from_url_to_file, create_wav_file_using_bytes, ge
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
     MODEL_BASE_PATH = os.environ.get('models_base_path', '')
+    BASE_PATH = os.environ.get('base_path')
 
     def __init__(self):
         gpu = os.environ.get('gpu', False)
@@ -31,13 +33,9 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         else:
             gpu = False
             half = False
-
-        for path, dirs, files in os.walk(self.MODEL_BASE_PATH):
-            print(path)
-            for f in files:
-                print(f)
         self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
         print("Loaded models successfully")
+        Path(self.BASE_PATH + 'Startup.done').touch()
 
     def recognize(self, request, context):
         try:

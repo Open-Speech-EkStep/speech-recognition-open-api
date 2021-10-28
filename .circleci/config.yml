@@ -2,9 +2,6 @@ version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
-  kubernetes_namespace:
-    type: string
-    default: 'test'
   trigger_pipeline:
     type: boolean
     default: true
@@ -13,7 +10,7 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "2.1.2"
+    default: "2.1.3"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
@@ -84,41 +81,6 @@ jobs:
           command: |
             echo "Build and deploy to gcr"
 
-  deploy_api_to_platform:
-    machine:
-      image: ubuntu-2004:202101-01
-      resource_class: 2xlarge
-    working_directory: ~/speech-recognition-model-api/
-    steps:
-      - attach_workspace:
-          at: ~/speech-recognition-model-api
-      - checkout:
-          path: ~/speech-recognition-model-api
-      - run:
-          name: Setup Google credentials
-          command: |
-            echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
-            pip3 install google_compute_engine
-            pip3 install pyyaml
-            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-            gcloud --quiet config set project ${GCP_PROJECT}
-      - run:
-          name: Install and confgure kubectl
-          command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl
-      - run:
-          name: Install and configuire helm
-          command: sh scripts/install_helm.sh
-      - run:
-          name: Configure platform
-          command: sh scripts/<< pipeline.parameters.platform >>-setup.sh
-      - run:
-          name: Release model using helm chart
-          command: python3 deploy.py --crt ${MODEL_API_CRT} --key ${MODEL_API_KEY} --namespace << pipeline.parameters.kubernetes_namespace >> --api-updated << pipeline.parameters.is_api_updated >>
-      - run:
-          name: Remove account details
-          command: |
-            rm ${HOME}/gcp-key.json ; ls
-
 workflows:
   version: 2
   main_workflow:
@@ -129,10 +91,3 @@ workflows:
          filters:
            branches:
              only: circle-ci-deploy
-#     - deploy_api_to_platform:
-#         name: deploy_api_to_platform
-#         filters:
-#           branches:
-#             only: circle-ci-deploy
-#         requires:
-#              - build_and_deploy_api_image

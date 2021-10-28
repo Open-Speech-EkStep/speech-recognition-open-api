@@ -6,6 +6,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y sudo wget python3-pip
 
 RUN mkdir /opt/speech_recognition_open_api/
+ENV base_path=/opt/speech_recognition_open_api/
 ENV models_base_path=/opt/speech_recognition_open_api/deployed_models/
 WORKDIR /opt/speech_recognition_open_api/
 COPY requirements.txt .
