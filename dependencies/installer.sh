@@ -33,12 +33,6 @@ cd flashlight/bindings/python
 export USE_MKL=0
 python3 setup.py install
 
-git clone https://github.com/Open-Speech-EkStep/indic-punct.git
-cd indic-punct
-bash install.sh
-python3 setup.py bdist_wheel
-pip3 install -e .
-cd ..
 
 #pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 
@@ -74,5 +68,13 @@ cd pynini-2.1.4/
 python3 setup.py install
 cd ..
 rm -rf pynini-2.1.4
+
+git clone https://github.com/Open-Speech-EkStep/indic-punct.git -b deploy
+cd indic-punct
+bash install.sh
+python3 setup.py bdist_wheel
+pip3 install -e .
+cd ..
+
 
 apt install python-is-python3
