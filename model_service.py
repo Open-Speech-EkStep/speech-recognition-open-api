@@ -4,10 +4,10 @@ import json
 import os
 
 import torch
+from inverse_text_normalization.run_predict import inverse_normalize_text
 from punctuate.punctuate_text import Punctuation
 from srt.subtitle_generator import get_srt
 
-from inverse_text_normalization.run_predict import inverse_normalize_text
 from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
 
@@ -95,7 +95,7 @@ class ModelService:
 
     def apply_punctuation(self, text_to_punctuate, language, punctuate):
         result = text_to_punctuate
-        if punctuate:
+        if punctuate and result not in ('', 'null'):
             punc_model_obj = self.punc_models_dict.get(language, None)
             if punc_model_obj != None:
                 result = punc_model_obj.punctuate_text([text_to_punctuate])[0]
@@ -103,7 +103,7 @@ class ModelService:
 
     def apply_itn(self, text_to_itn, language, itn):
         result = text_to_itn
-        if itn:
+        if itn and result not in ('', 'null'):
             enabled_itn = self.enabled_itn_lang_dict.get(language, None)
             if enabled_itn != None:
                 result = inverse_normalize_text([text_to_itn], language)[0]
