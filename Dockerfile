@@ -1,4 +1,4 @@
-FROM gcr.io/ekstepspeechrecognition/speech-recognition-open-api-dependency:0.2
+FROM gcr.io/ekstepspeechrecognition/speech-recognition-open-api-dependency:3.0
 
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -10,7 +10,7 @@ ENV base_path=/opt/speech_recognition_open_api/
 ENV models_base_path=/opt/speech_recognition_open_api/deployed_models/
 WORKDIR /opt/speech_recognition_open_api/
 COPY requirements.txt .
-
+RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/lib" >> ~/.bashrc
 RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . /opt/speech_recognition_open_api
 RUN cp -r /opt/files/denoiser /opt/speech_recognition_open_api/denoiser
