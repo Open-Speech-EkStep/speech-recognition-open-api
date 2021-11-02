@@ -16,7 +16,7 @@ parameters:
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "0.2"
+    default: "2.8"
   platform:
     default: "gke"
     type: enum
