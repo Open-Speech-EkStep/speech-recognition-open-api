@@ -69,7 +69,7 @@ python3 setup.py install
 cd ..
 rm -rf pynini-2.1.4
 
-git clone https://github.com/Open-Speech-EkStep/indic-punct.git
+git clone https://github.com/Open-Speech-EkStep/indic-punct.git -b deploy
 cd indic-punct
 bash install.sh
 python3 setup.py bdist_wheel
