@@ -23,7 +23,7 @@ parameters:
     enum: ["gke", "eks", "cdac"]
   build_dependency:
     type: boolean
-    default: false
+    default: true
   is_api_updated:
     type: boolean
     default: true
