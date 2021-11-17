@@ -1,23 +1,27 @@
+import json
 import os
+import wave
 from pathlib import Path
 
 import grpc
 import requests
 import torch
 
+import log_setup
 from model_service import ModelService
 from speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
-from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig
+from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 
-
+LOGGER = log_setup.get_logger('speech-recognition-service')
 # add error message field to status
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
     MODEL_BASE_PATH = os.environ.get('models_base_path', '')
     BASE_PATH = os.environ.get('base_path')
+    LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):
         gpu = os.environ.get('gpu', False)
@@ -34,7 +38,11 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             gpu = False
             half = False
         self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
-        print("Loaded models successfully")
+        self.count = 0
+        self.file_count = 0
+        self.client_buffers = {}
+        self.client_transcription = {}
+        LOGGER.info('Models Loaded Successfully')
         Path(self.BASE_PATH + 'Startup.done').touch()
 
     def recognize(self, request, context):
@@ -81,3 +89,95 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                                                status_text="An unknown error has occurred.Please try again.")
         result = SpeechRecognitionResult(status='SUCCESS', output=model_output_list)
         return result
+
+        # Streaming handler
+
+    def recognize_audio(self, request_iterator, context):
+        for data in request_iterator:
+            self.count += 1
+            LOGGER.debug("Received for user %s data.isEnd: %s  Buffer size: %s ", data.user, data.isEnd,
+                         len(self.client_buffers))
+            if data.isEnd:
+                if len(self.client_buffers[data.user]) > 0:
+                    transcription = self.transcribe(self.client_buffers[data.user], str(self.count), data, True, "")
+                    yield Response(transcription=transcription, user=data.user, action='True',
+                                   language=data.language)
+                self.disconnect(data.user)
+                result = {}
+                result["id"] = self.count
+                result["success"] = True
+                yield Response(transcription=json.dumps(result), user=data.user, action="terminate",
+                               language=data.language)
+            else:
+                buffer, append_result, local_file_name = self.preprocess(data)
+                if append_result:
+                    transcription = self.transcribe(buffer, str(self.count), data, append_result, local_file_name)
+                    yield Response(transcription=transcription, user=data.user, action=str(append_result),
+                                   language=data.language)
+
+    def disconnect(self, user):
+        self.clear_states(user)
+        LOGGER.info("Disconnecting user %s", str(user))
+
+    def transcribe(self, buffer, count, data, append_result, local_file_name):
+        index = data.user + count
+        user = data.user
+        file_name = self.write_wave_to_file(index + ".wav", buffer)
+
+        result = self.model_service.transcribe(file_name, data.language, False, False)
+        if user not in self.client_transcription:
+            self.client_transcription[user] = ""
+        transcription = (self.client_transcription[user] + " " + result['transcription']).lstrip()
+        result['transcription'] = transcription
+        if append_result:
+            self.client_transcription[user] = transcription
+            if local_file_name is not None:
+                with open(local_file_name.replace(".wav", ".txt"), 'w') as local_file:
+                    local_file.write(result['transcription'])
+        result["id"] = index
+        LOGGER.debug("Responded for user %s transcription: %s", user, transcription)
+
+        os.remove(file_name)
+
+        if result['status'] != "OK":
+            result["success"] = False
+        else:
+            result["success"] = True
+        return json.dumps(result)
+
+    def write_wave_to_file(self, file_name, audio):
+        with wave.open(file_name, 'wb') as file:
+            file.setnchannels(1)
+            file.setsampwidth(2)
+            file.setframerate(16000.0)
+            file.writeframes(audio)
+        return os.path.join(os.getcwd(), file_name)
+
+    def clear_states(self, user):
+        self.clear_buffers(user)
+        self.clear_transcriptions(user)
+
+    def clear_buffers(self, user):
+        if user in self.client_buffers:
+            del self.client_buffers[user]
+
+    def clear_transcriptions(self, user):
+        if user in self.client_transcription:
+            del self.client_transcription[user]
+
+    def preprocess(self, data):
+        # local_file_name = None
+        append_result = False
+        if data.user in self.client_buffers:
+            self.client_buffers[data.user] += data.audio
+        else:
+            self.client_buffers[data.user] = data.audio
+
+        buffer = self.client_buffers[data.user]
+        if not data.speaking:
+            del self.client_buffers[data.user]
+            append_result = True
+            # local_file_name = "utterances/{}__{}__{}.wav".format(data.user,str(int(time.time()*1000)), data.language)
+            # self.write_wave_to_file(local_file_name, buffer)
+        LOGGER.debug("Buffer length is %s for user %s is speaking %s", len(buffer), data.user, data.speaking)
+        return buffer, append_result, None

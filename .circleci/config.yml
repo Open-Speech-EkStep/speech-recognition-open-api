@@ -10,20 +10,20 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "2.2.3"
+    default: "3.0.0"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "3.0"
+    default: "0.2"
   platform:
     default: "gke"
     type: enum
     enum: ["gke", "eks", "cdac"]
   build_dependency:
     type: boolean
-    default: true
+    default: false
   is_api_updated:
     type: boolean
     default: true
