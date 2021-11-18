@@ -11,15 +11,17 @@ from srt.subtitle_generator import get_srt
 from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
 
+import log_setup
+LOGGER = log_setup.get_logger('model-service')
 
 def get_gpu_info(gpu):
-    print(f"*** GPU is enabled: {gpu} ***")
+    LOGGER.info(f"*** GPU is enabled: {gpu} ***")
     if gpu:
         no_gpus = torch.cuda.device_count()
-        print(f"*** Total number of gpus allocated are {no_gpus} ***")
-        print("*** The gpu device info : ***")
+        LOGGER.info(f"*** Total number of gpus allocated are {no_gpus} ***")
+        LOGGER.info("*** The gpu device info : ***")
         for gpu in range(0, no_gpus):
-            print(gpu, torch.cuda.get_device_name(gpu))
+            LOGGER.info(gpu, torch.cuda.get_device_name(gpu))
 
 
 class ModelService:
@@ -70,10 +72,11 @@ class ModelService:
         )
         # result = self.inference.get_inference(file_name, language)
         result['transcription'] = response
-        print("***Before Punctuation and ITN*** ", result['transcription'])
+        result['status'] = 'OK'
+        LOGGER.debug("***Before Punctuation and ITN*** ", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
         result['transcription'] = self.apply_itn(result['transcription'], language, itn)
-        print("*** After Punctuation and ITN *** ", result['transcription'])
+        LOGGER.debug("*** After Punctuation and ITN *** ", result['transcription'])
         return result
 
     def get_srt(self, file_name, language, punctuate, itn):

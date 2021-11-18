@@ -135,7 +135,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 with open(local_file_name.replace(".wav", ".txt"), 'w') as local_file:
                     local_file.write(result['transcription'])
         result["id"] = index
-        LOGGER.debug("Responded for user %s transcription: %s", user, transcription)
+        LOGGER.debug("Responded for user %s transcription: %s and result %s", user, transcription, result)
 
         os.remove(file_name)
 
