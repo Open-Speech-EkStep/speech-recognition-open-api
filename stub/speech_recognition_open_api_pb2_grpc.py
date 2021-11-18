@@ -19,6 +19,11 @@ class SpeechRecognizerStub(object):
                 request_serializer=speech__recognition__open__api__pb2.Message.SerializeToString,
                 response_deserializer=speech__recognition__open__api__pb2.Response.FromString,
                 )
+        self.punctuate = channel.unary_unary(
+                '/ekstep.speech_recognition.SpeechRecognizer/punctuate',
+                request_serializer=speech__recognition__open__api__pb2.PunctuateRequest.SerializeToString,
+                response_deserializer=speech__recognition__open__api__pb2.PunctuateResponse.FromString,
+                )
         self.recognize = channel.unary_unary(
                 '/ekstep.speech_recognition.SpeechRecognizer/recognize',
                 request_serializer=speech__recognition__open__api__pb2.SpeechRecognitionRequest.SerializeToString,
@@ -30,6 +35,12 @@ class SpeechRecognizerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def recognize_audio(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def punctuate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -48,6 +59,11 @@ def add_SpeechRecognizerServicer_to_server(servicer, server):
                     servicer.recognize_audio,
                     request_deserializer=speech__recognition__open__api__pb2.Message.FromString,
                     response_serializer=speech__recognition__open__api__pb2.Response.SerializeToString,
+            ),
+            'punctuate': grpc.unary_unary_rpc_method_handler(
+                    servicer.punctuate,
+                    request_deserializer=speech__recognition__open__api__pb2.PunctuateRequest.FromString,
+                    response_serializer=speech__recognition__open__api__pb2.PunctuateResponse.SerializeToString,
             ),
             'recognize': grpc.unary_unary_rpc_method_handler(
                     servicer.recognize,
@@ -78,6 +94,23 @@ class SpeechRecognizer(object):
         return grpc.experimental.stream_stream(request_iterator, target, '/ekstep.speech_recognition.SpeechRecognizer/recognize_audio',
             speech__recognition__open__api__pb2.Message.SerializeToString,
             speech__recognition__open__api__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def punctuate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ekstep.speech_recognition.SpeechRecognizer/punctuate',
+            speech__recognition__open__api__pb2.PunctuateRequest.SerializeToString,
+            speech__recognition__open__api__pb2.PunctuateResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

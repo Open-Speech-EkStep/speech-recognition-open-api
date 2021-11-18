@@ -11,7 +11,8 @@ import log_setup
 from model_service import ModelService
 from speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
-from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response
+from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
+    PunctuateResponse
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 
 LOGGER = log_setup.get_logger('speech-recognition-service')
@@ -90,18 +91,13 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         result = SpeechRecognitionResult(status='SUCCESS', output=model_output_list)
         return result
 
-        # Streaming handler
-
+    # Streaming handler
     def recognize_audio(self, request_iterator, context):
         for data in request_iterator:
             self.count += 1
             LOGGER.debug("Received for user %s data.isEnd: %s  Buffer size: %s ", data.user, data.isEnd,
                          len(self.client_buffers))
             if data.isEnd:
-                if len(self.client_buffers[data.user]) > 0:
-                    transcription = self.transcribe(self.client_buffers[data.user], str(self.count), data, True, "")
-                    yield Response(transcription=transcription, user=data.user, action='True',
-                                   language=data.language)
                 self.disconnect(data.user)
                 result = {}
                 result["id"] = self.count
@@ -110,10 +106,15 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                                language=data.language)
             else:
                 buffer, append_result, local_file_name = self.preprocess(data)
-                if append_result:
+                if append_result and buffer is not None:
                     transcription = self.transcribe(buffer, str(self.count), data, append_result, local_file_name)
                     yield Response(transcription=transcription, user=data.user, action=str(append_result),
                                    language=data.language)
+
+    def punctuate(self, request, context):
+        response = self.model_service.apply_punctuation(request.text, request.language, True)
+        response = self.model_service.apply_itn(response, request.language, True)
+        return PunctuateResponse(text=response, language=request.language)
 
     def disconnect(self, user):
         self.clear_states(user)
@@ -168,16 +169,17 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     def preprocess(self, data):
         # local_file_name = None
         append_result = False
-        if data.user in self.client_buffers:
-            self.client_buffers[data.user] += data.audio
-        else:
-            self.client_buffers[data.user] = data.audio
+        if data.audio is not None and len(data.audio) > 0:
+            LOGGER.debug("Audio length: %s, speaking: %s", len(data.audio), data.speaking)
+            if data.user in self.client_buffers:
+                self.client_buffers[data.user] += data.audio
+            else:
+                self.client_buffers[data.user] = data.audio
 
-        buffer = self.client_buffers[data.user]
+        buffer = self.client_buffers[data.user] if data.user in self.client_buffers else None
         if not data.speaking:
-            del self.client_buffers[data.user]
+            self.clear_buffers(data.user)
             append_result = True
-            # local_file_name = "utterances/{}__{}__{}.wav".format(data.user,str(int(time.time()*1000)), data.language)
-            # self.write_wave_to_file(local_file_name, buffer)
-        LOGGER.debug("Buffer length is %s for user %s is speaking %s", len(buffer), data.user, data.speaking)
+        LOGGER.debug("Buffer length is %s for user %s is speaking %s", len(buffer) if buffer is not None else 0,
+                     data.user, data.speaking)
         return buffer, append_result, None
