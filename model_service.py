@@ -73,10 +73,10 @@ class ModelService:
         # result = self.inference.get_inference(file_name, language)
         result['transcription'] = response
         result['status'] = 'OK'
-        LOGGER.debug("***Before Punctuation and ITN*** ", result['transcription'])
+        LOGGER.debug("***Before Punctuation and ITN*** %s", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
         result['transcription'] = self.apply_itn(result['transcription'], language, itn)
-        LOGGER.debug("*** After Punctuation and ITN *** ", result['transcription'])
+        LOGGER.debug("*** After Punctuation and ITN *** %s", result['transcription'])
         return result
 
     def get_srt(self, file_name, language, punctuate, itn):
