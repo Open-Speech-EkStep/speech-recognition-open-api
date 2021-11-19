@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 service SpeechRecognizer {
   rpc recognize_audio(stream Message) returns (stream Response) {}
   rpc punctuate(PunctuateRequest) returns (PunctuateResponse) {
-    option (google.api.http) = {post: "/v1/recognize/{language}", body: "*"};
+    option (google.api.http) = {post: "/v1/punctuate/{language}", body: "*"};
   }
   rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
     option (google.api.http) = {post: "/v1/recognize/{config.language.sourceLanguage}", body: "*"};
