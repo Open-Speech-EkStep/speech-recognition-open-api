@@ -82,13 +82,21 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     model_output_list.append(output)
                 os.remove(audio_path)
 
+            except ValueError as e:
+                LOGGER.error(str(e))
+                context.set_details(str(e))
+                context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+                return SpeechRecognitionResult(status='ERROR',
+                                               status_text=str(e))
+
             except requests.exceptions.RequestException as e:
+                LOGGER.error(str(e))
                 context.set_details("Audio file url is incorrect or can't be accessed")
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
                 return SpeechRecognitionResult(status='ERROR',
                                                status_text="Audio file url is incorrect or can't be accessed")
             except Exception as e:
-                print("Error", e)
+                LOGGER.error(str(e))
                 context.set_details("An unknown error has occurred.Please try again.")
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 return SpeechRecognitionResult(status='ERROR',
