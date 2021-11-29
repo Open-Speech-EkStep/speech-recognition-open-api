@@ -11,6 +11,8 @@ def handle_request(request, supported_languages):
     audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
     if not is_audio_format_supported(audio_format):
         raise NotImplementedError('Audio Format not implemented yet')
+    if len(request.audio) == 0:
+        raise ValueError('Audio input not specified')
     for audio_content in request.audio:
         audio_source_valid_flag, err_msg = check_audio_source_valid(audio_content)
         if not audio_source_valid_flag:

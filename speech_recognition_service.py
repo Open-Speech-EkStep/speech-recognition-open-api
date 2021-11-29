@@ -53,6 +53,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))
+        except ValueError as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            return SpeechRecognitionResult(status='ERROR', status_text=str(e))
 
         punctuate = request.config.punctuation
         itn = request.config.enableInverseTextNormalization
@@ -64,7 +68,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
             try:
                 if len(audio_obj.audioUri) != 0:
-                    audio_path = download_from_url_to_file(file_name, audio_obj.audioUri)
+                    audio_path = download_from_url_to_file(file_name, audio_obj.audioUri, audio_format)
                 elif len(audio_obj.audioContent) != 0:
                     audio_path = create_wav_file_using_bytes(file_name, audio_obj.audioContent)
                 if out_format == 'srt':
@@ -79,9 +83,10 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 os.remove(audio_path)
 
             except requests.exceptions.RequestException as e:
-                context.set_details(str(e))
+                context.set_details("Audio file url is incorrect or can't be accessed")
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-                return SpeechRecognitionResult(status='ERROR', status_text=str(e))
+                return SpeechRecognitionResult(status='ERROR',
+                                               status_text="Audio file url is incorrect or can't be accessed")
             except Exception as e:
                 print("Error", e)
                 context.set_details("An unknown error has occurred.Please try again.")
