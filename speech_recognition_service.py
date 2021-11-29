@@ -50,10 +50,12 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         try:
             handle_request(request, self.model_service.supported_languages)
         except NotImplementedError as e:
+            LOGGER.error(str(e))
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))
         except ValueError as e:
+            LOGGER.error(str(e))
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))

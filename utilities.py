@@ -14,7 +14,7 @@ def validate_content(response, audio_format='wav'):
         raise ValueError("Invalid audio input format. Only supported formats are allowed.")
     if not content_type.endswith(audio_format):
         raise ValueError("Mismatch between audio format specified and audio format of file specified.")
-    if content_length > supported_content_length:
+    if int(content_length) > supported_content_length:
         raise ValueError(f"Audio input size exceeds limit of {supported_content_length} bytes.")
     if content_length == 0:
         raise ValueError(f"Audio input size is 0.")
