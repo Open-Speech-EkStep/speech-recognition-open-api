@@ -342,7 +342,13 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     dir_name = media_conversion(wav_path, duration_limit=15)
     audio_file = dir_name + '/clipped_audio.wav'
     normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
-    wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
+    silence = AudioSegment.silence(duration=500)
+    sound = silence + normalized_audio + silence
+    sound.export('test_sil.wav', format='wav')
+    print("The sound object is : ", sound)
+    wav = np.array(sound.get_array_of_samples()).astype('float64')
+    print("The shape of the audio is ", wav.shape)
+    # wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
     feature = get_feature_for_bytes(wav, 16000)
     target_dict = Dictionary.load(dict_path)
