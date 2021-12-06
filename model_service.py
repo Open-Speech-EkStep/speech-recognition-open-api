@@ -12,7 +12,7 @@ from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
 
 import log_setup
-LOGGER = log_setup.get_logger('model-service')
+LOGGER = log_setup.get_logger('speech-recognition-service')
 
 def get_gpu_info(gpu):
     LOGGER.info(f"*** GPU is enabled: {gpu} ***")
@@ -51,13 +51,13 @@ class ModelService:
                 model_item.set_model(model)
                 model_item.set_generator(generator)
                 self.model_items[language_code] = model_item
-                print(f"Loaded {language_code} model")
+                LOGGER.info(f"Loaded {language_code} model")
                 if lang_config["enablePunctuation"]:
                     self.punc_models_dict[language_code] = Punctuation(language_code)
-                    print(f"Loaded {language_code} model with Punctuation")
+                    LOGGER.info(f"Loaded {language_code} model with Punctuation")
                 if lang_config["enableITN"]:
                     self.enabled_itn_lang_dict[language_code] = 1
-                    print(f"Loaded {language_code} model with ITN")
+                    LOGGER.info(f"Loaded {language_code} model with ITN")
 
     def transcribe(self, file_name, language, punctuate, itn):
         model_item = self.model_items[language]
@@ -73,10 +73,9 @@ class ModelService:
         # result = self.inference.get_inference(file_name, language)
         result['transcription'] = response
         result['status'] = 'OK'
-        LOGGER.debug("***Before Punctuation and ITN*** %s", result['transcription'])
         result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
         result['transcription'] = self.apply_itn(result['transcription'], language, itn)
-        LOGGER.debug("*** After Punctuation and ITN *** %s", result['transcription'])
+        LOGGER.debug("*** The model transcript is  *** %s", result['transcription'])
         return result
 
     def get_srt(self, file_name, language, punctuate, itn):
@@ -90,10 +89,9 @@ class ModelService:
                            language=language, half=self.half)
         response = [i.replace('\n', ' ') for i in list(itertools.chain(*response)) if type(i) != bool]
         result['srt'] = ''.join(response)
-        print("*** Before Punctuation and ITN *** ", result['srt'])
         result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
         result['srt'] = self.apply_itn(result['srt'], language, itn)
-        print("*** After Punctuation and ITN *** ", result['srt'])
+        LOGGER.info("*** The model SRT is *** ", result['srt'])
         return result
 
     def apply_punctuation(self, text_to_punctuate, language, punctuate):
