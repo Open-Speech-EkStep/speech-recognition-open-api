@@ -12,7 +12,7 @@ from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
 
 import log_setup
-LOGGER = log_setup.get_logger('speech-recognition-service')
+LOGGER = log_setup.get_logger('model-inference-service')
 
 def get_gpu_info(gpu):
     LOGGER.info(f"*** GPU is enabled: {gpu} ***")
