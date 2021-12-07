@@ -5,8 +5,8 @@ import socket
 from logging.handlers import TimedRotatingFileHandler
 
 FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
-MODEL_BASE_PATH = os.environ.get('models_base_path', '')
-LOG_FILE = f"inference " + socket.gethostname() + ".log"
+LOGS_MODEL_BASE_PATH = os.environ.get('model_logs_base_path', '')
+LOG_FILE = f"inference_" + socket.gethostname() + ".log"
 
 
 def get_console_handler():
@@ -16,7 +16,7 @@ def get_console_handler():
 
 
 def get_file_handler():
-    file_handler = TimedRotatingFileHandler(MODEL_BASE_PATH + LOG_FILE, when='midnight', backupCount=30)
+    file_handler = TimedRotatingFileHandler(LOGS_MODEL_BASE_PATH + LOG_FILE, when='midnight', backupCount=30)
     file_handler.setFormatter(FORMATTER)
     return file_handler
 

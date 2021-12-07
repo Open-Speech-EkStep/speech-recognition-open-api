@@ -66,6 +66,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         audio_format = RecognitionConfig.AudioFormat.Name(request.config.audioFormat)
         out_format = RecognitionConfig.TranscriptionFormatEnum.Name(request.config.transcriptionFormat.value)
         model_output_list = []
+        LOGGER.info(
+            f"The request parameters are (language:{language},output_format:{out_format},audio_format:{audio_format},punctuation :{punctuate},enableInverseTextNormalization:{itn})")
         for audio_obj in request.audio:
             file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
             try:
