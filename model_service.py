@@ -8,10 +8,10 @@ from inverse_text_normalization.run_predict import inverse_normalize_text
 from punctuate.punctuate_text import Punctuation
 from srt.subtitle_generator import get_srt
 
+import log_setup
 from lib.inference_lib import load_model_and_generator, get_results
 from model_item import ModelItem
 
-import log_setup
 LOGGER = log_setup.get_logger('model-inference-service')
 
 def get_gpu_info(gpu):
@@ -21,7 +21,7 @@ def get_gpu_info(gpu):
         LOGGER.info(f"*** Total number of gpus allocated are {no_gpus} ***")
         LOGGER.info("*** The gpu device info : ***")
         for gpu in range(0, no_gpus):
-            LOGGER.info(gpu, torch.cuda.get_device_name(gpu))
+            LOGGER.info(f"GPU {str(gpu)} - {str(torch.cuda.get_device_name(gpu))}")
 
 
 class ModelService:
