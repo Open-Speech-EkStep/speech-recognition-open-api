@@ -81,4 +81,4 @@ workflows:
            branches:
              only: circle-ci-deploy
          requires:
-            - approve_to_publish
+            - approve-build-and-deploy
