@@ -76,16 +76,7 @@ workflows:
          name: approve-build-and-deploy
          type: approval
     - build_and_deploy_api_image:
-<<<<<<< Updated upstream
          name: build_and_deploy_api_image
          filters:
            branches:
              only: circle-ci-deploy
-=======
-        name: build_and_deploy_api_image
-        filters:
-          branches:
-            only: circle-ci-deploy
-        requires:
-            - approve-package-publish
->>>>>>> Stashed changes
