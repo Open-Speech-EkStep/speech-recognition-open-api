@@ -20,11 +20,12 @@ LOGGER = log_setup.get_logger('speech-recognition-service')
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
-    MODEL_BASE_PATH = os.environ.get('models_base_path', '')
-    BASE_PATH = os.environ.get('base_path')
+
     LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):
+        self.MODEL_BASE_PATH = os.environ.get('models_base_path', '')
+        self.BASE_PATH = os.environ.get('base_path', "")
         gpu = os.environ.get('gpu', False)
         if gpu == 'true' or gpu == 'True':
             gpu = True

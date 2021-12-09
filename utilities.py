@@ -3,20 +3,29 @@ import time
 import wave
 
 import requests
-
+from mimeparse import parse_mime_type
 
 def validate_content(response, audio_format='wav'):
+    audio_content_type_extension_map = {"mp3":["mp3","mpeg"], "wav": ["wav","x-wav","vnd.wav"], "flac":["x-flac", "flac"], }
     supported_content_length = os.environ.get('supported_content_length', 3145728)
-    supported_content_types = ['audio', 'video']
+    supported_content_types = ['audio']
     content_type = response.headers.get('Content-Type')
     content_length = response.headers.get('Content-Length', len(response.content))
-    if content_type is None or not content_type.startswith(tuple(supported_content_types)):
+    if content_type is None:
         raise ValueError("Invalid audio input format. Only supported formats are allowed.")
-    if not content_type.endswith(audio_format):
-        raise ValueError("Mismatch between audio format specified and audio format of file specified.")
+
+    try:
+        content_type_value, subtype, options = parse_mime_type(content_type)
+    except:
+        raise ValueError("Invalid audio url (No mimetype present).")
+
+    if not content_type_value in supported_content_types:
+        raise ValueError("Invalid audio input format. Only supported formats are allowed.")
+    if not subtype in audio_content_type_extension_map[audio_format]:
+        raise ValueError("Mismatch between audio format specified and audio format of file given.")
     if int(content_length) > supported_content_length:
         raise ValueError(f"Audio input size exceeds limit of {supported_content_length} bytes.")
-    if content_length == 0:
+    if int(content_length) == 0:
         raise ValueError(f"Audio input size is 0.")
 
 
