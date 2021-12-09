@@ -86,6 +86,9 @@ workflows:
   main_workflow:
     when: << pipeline.parameters.trigger_pipeline >>
     jobs:
+    - approve_to_publish:
+         name: approve-build-and-deploy
+         type: approval
      - build_and_deploy_api_image:
          name: build_and_deploy_api_image
          filters:
