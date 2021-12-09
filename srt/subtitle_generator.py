@@ -1,15 +1,20 @@
-import os, datetime
+import os
+import shutil
 import subprocess
+import uuid
+
+import torch
 from pydub import AudioSegment
 from srt.infer import generate_srt
-import torch
-import shutil
+
 
 def media_conversion(file_name, duration_limit=5):
-    dir_name = os.path.join('/tmp', datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f'))
+    dir_name = os.path.join('/tmp', uuid.uuid4().hex)
     os.makedirs(dir_name)
 
-    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16, dir_name + '/input_audio.wav')], shell=True)
+    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16,
+                                                                                        dir_name + '/input_audio.wav')],
+                    shell=True)
 
     audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
 
