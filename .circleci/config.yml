@@ -2,9 +2,6 @@ version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
-  trigger_pipeline:
-    type: boolean
-    default: true
   image_name:
     type: string
     default: speech_recognition_model_api
@@ -17,16 +14,9 @@ parameters:
   dependency_version:
     type: string
     default: "0.2"
-  platform:
-    default: "gke"
-    type: enum
-    enum: ["gke", "eks", "cdac"]
   build_dependency:
     type: boolean
     default: false
-  is_api_updated:
-    type: boolean
-    default: true
 
 jobs:
   build_and_deploy_api_image:
@@ -35,47 +25,44 @@ jobs:
       resource_class: xlarge
     working_directory: ~/speech-recognition-model-api/
     steps:
-      - when:
-          condition: << pipeline.parameters.is_api_updated >>
-          steps:
-            - checkout:
-                path: ~/speech-recognition-model-api
-            - run:
-                name: Setup Google credentials
-                command: |
-                  echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
-                  pip install google_compute_engine
-                  gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-                  gcloud --quiet config set project ${GCP_PROJECT}
-            - run:
-                name: Build dependencies image
-                command: |
-                  echo "Build ..."
-                  if << pipeline.parameters.build_dependency >> ; then
-                    docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
-                    gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
-                  fi
-      #      - when:
-      #          condition:
-      #            equal: [ true, << pipeline.paramaters.build_dependency >> ]
-      #          steps:
-      #            - run: |
-      #                docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
-      #                gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
-            - run:
-                name: Build docker image
-                command: |
-                  echo "Build ..."
-                  docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
-            - run:
-                name: deploy image to registry
-                command: |
-                  echo "Deploy ..."
-                  gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
-            - run:
-                name: Remove account details
-                command: |
-                  rm ${HOME}/gcp-key.json ; ls
+      - checkout:
+          path: ~/speech-recognition-model-api
+      - run:
+          name: Setup Google credentials
+          command: |
+            echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+            pip install google_compute_engine
+            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            gcloud --quiet config set project ${GCP_PROJECT}
+      - run:
+          name: Build dependencies image
+          command: |
+            echo "Build ..."
+            if << pipeline.parameters.build_dependency >> ; then
+              docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
+              gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
+            fi
+#      - when:
+#          condition:
+#            equal: [ true, << pipeline.paramaters.build_dependency >> ]
+#          steps:
+#            - run: |
+#                docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >> dependencies/
+#                gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.dependency_image_name >>:<< pipeline.parameters.dependency_version >>
+      - run:
+          name: Build docker image
+          command: |
+            echo "Build ..."
+            docker build --rm=false -t gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >> .
+      - run:
+          name: deploy image to registry
+          command: |
+            echo "Deploy ..."
+            gcloud docker -- push gcr.io/${GCP_PROJECT}/<< pipeline.parameters.image_name >>:<< pipeline.parameters.package_version >>
+      - run:
+          name: Remove account details
+          command: |
+            rm ${HOME}/gcp-key.json ; ls
       - run:
           name: E2e build and deploy to gcr
           command: |
@@ -84,12 +71,11 @@ jobs:
 workflows:
   version: 2
   main_workflow:
-    when: << pipeline.parameters.trigger_pipeline >>
     jobs:
     - approve_to_publish:
          name: approve-build-and-deploy
          type: approval
-     - build_and_deploy_api_image:
+    - build_and_deploy_api_image:
          name: build_and_deploy_api_image
          filters:
            branches:
