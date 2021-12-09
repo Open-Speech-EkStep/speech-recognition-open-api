@@ -80,3 +80,5 @@ workflows:
          filters:
            branches:
              only: circle-ci-deploy
+         requires:
+            - approve_to_publish
