@@ -7,9 +7,10 @@ apt-get install -y sudo wget python3-pip
 apt-get install -y liblzma-dev libbz2-dev libzstd-dev libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev libfst-tools libgmp3-dev
 apt-get install -y ffmpeg git
 apt-get install -y build-essential cmake libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libeigen3-dev zlib1g-dev libbz2-dev sox
-apt install -y gcc-10 gcc-10-base gcc-10-doc g++-10 libstdc++-10-dev libstdc++-10-doc
+apt install -y gcc-10 gcc-10-base gcc-10-doc g++-10 libstdc++-10-dev libstdc++-10-doc libgcc-7-dev libsndfile1
 
 pip3 install packaging soundfile
+pip3 install pynini
 
 sudo mkdir -p /opt/files
 sudo chmod 777 -R /opt/files
@@ -48,6 +49,7 @@ pip3 install ray[tune]
 pip3 install 'ray[default]'
 pip3 install Cython
 pip3 install nemo_toolkit[all]==v1.0.2
+
 if [ ! -d denoiser ]; then
   git clone https://github.com/facebookresearch/denoiser.git
 fi
@@ -62,12 +64,12 @@ sh ~/.bashrc
 cd ..
 rm -rf openfst-1.8.1
 
-wget http://www.openfst.org/twiki/pub/GRM/PyniniDownload/pynini-2.1.4.tar.gz
-tar -xzf pynini-2.1.4.tar.gz
-cd pynini-2.1.4/
-python3 setup.py install
-cd ..
-rm -rf pynini-2.1.4
+# wget http://www.openfst.org/twiki/pub/GRM/PyniniDownload/pynini-2.1.4.tar.gz
+# tar -xzf pynini-2.1.4.tar.gz
+# cd pynini-2.1.4/
+# python3 setup.py install
+# cd ..
+# rm -rf pynini-2.1.4
 
 git clone https://github.com/Open-Speech-EkStep/indic-punct.git -b deploy
 cd indic-punct
