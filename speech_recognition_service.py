@@ -113,8 +113,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     def recognize_audio(self, request_iterator, context):
         for data in request_iterator:
             self.count += 1
-            LOGGER.debug("Received for user %s data.isEnd: %s  Buffer size: %s ", data.user, data.isEnd,
-                         len(self.client_buffers))
+            LOGGER.debug("Request received for user %s  data.isEnd: %s ", data.user, data.isEnd)
+            LOGGER.info(" Total Connected Users: %s ", len(self.client_buffers))
             if data.isEnd:
                 self.disconnect(data.user)
                 result = {}
