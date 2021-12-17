@@ -369,8 +369,9 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     with torch.no_grad():
         hypo = generator.generate(model, sample, prefix_tokens=None)
     hyp_pieces = target_dict.string(hypo[0][0]["tokens"].int().cpu())
-    text=post_process(hyp_pieces, 'letter')
-
+    text = post_process(hyp_pieces, 'letter')
+    del sample
+    torch.cuda.empty_cache()
     return text
 
 
