@@ -1,4 +1,4 @@
-FROM gcr.io/ekstepspeechrecognition/speech-recognition-open-api-dependency:1.3
+FROM gcr.io/ekstepspeechrecognition/speech-recognition-open-api-dependency:1.4
 
 
 ARG DEBIAN_FRONTEND=noninteractive

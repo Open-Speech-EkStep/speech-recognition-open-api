@@ -45,8 +45,8 @@ cd fairseq
 pip3 install -e .
 cd ..
 
-pip3 install ray[tune]
-pip3 install 'ray[default]'
+#pip3 install ray[tune]
+#pip3 install 'ray[default]'
 pip3 install Cython
 pip3 install nemo_toolkit[all]==v1.0.2
 
