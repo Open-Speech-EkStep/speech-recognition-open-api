@@ -47,6 +47,7 @@ cd ..
 
 #pip3 install ray[tune]
 #pip3 install 'ray[default]'
+pip3 install -U https://storage.googleapis.com/vakyaansh-open-models/ray/ray-2.0.0.dev0-cp38-cp38-manylinux2014_x86_64.whl
 pip3 install Cython
 pip3 install nemo_toolkit[all]==v1.0.2
 
