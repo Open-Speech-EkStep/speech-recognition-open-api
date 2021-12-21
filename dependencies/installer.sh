@@ -81,5 +81,7 @@ fi
 cd fairseq
 pip3 install -e .
 cd ..
-
+echo "****************"
+python3 -c "import fairseq; print(fairseq.__file__)"
+echo "****************"
 apt install python-is-python3
