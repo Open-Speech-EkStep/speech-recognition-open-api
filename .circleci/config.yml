@@ -16,7 +16,7 @@ parameters:
     default: "1.7"
   build_dependency:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   build_and_deploy_api_image:
