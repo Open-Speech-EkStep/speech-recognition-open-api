@@ -13,10 +13,10 @@ parameters:
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "1.7"
+    default: "2.0"
   build_dependency:
     type: boolean
-    default: false
+    default: true
 
 jobs:
   build_and_deploy_api_image:
