@@ -45,14 +45,6 @@ pip3 install -U https://storage.googleapis.com/vakyaansh-open-models/ray/ray-2.0
 pip3 install Cython
 pip3 install nemo_toolkit[all]==v1.0.2
 
-cd /opt/files
-if [ ! -d fairseq ]; then
-  git clone https://github.com/Open-Speech-EkStep/fairseq -b v2-hydra
-fi
-cd fairseq
-pip3 install -e .
-cd ..
-
 
 if [ ! -d denoiser ]; then
   git clone https://github.com/facebookresearch/denoiser.git
@@ -82,5 +74,12 @@ python3 setup.py bdist_wheel
 pip3 install -e .
 cd ..
 
+cd /opt/files
+if [ ! -d fairseq ]; then
+  git clone https://github.com/Open-Speech-EkStep/fairseq -b v2-hydra
+fi
+cd fairseq
+pip3 install -e .
+cd ..
 
 apt install python-is-python3
