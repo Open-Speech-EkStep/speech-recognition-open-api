@@ -7,13 +7,13 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "3.2.2"
+    default: "3.2.3"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "1.5"
+    default: "1.6"
   build_dependency:
     type: boolean
     default: true

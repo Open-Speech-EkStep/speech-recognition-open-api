@@ -37,6 +37,14 @@ python3 setup.py install
 
 #pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 
+
+
+#pip3 install ray[tune]
+#pip3 install 'ray[default]'
+pip3 install -U https://storage.googleapis.com/vakyaansh-open-models/ray/ray-2.0.0.dev0-cp38-cp38-manylinux2014_x86_64.whl
+pip3 install Cython
+pip3 install nemo_toolkit[all]==v1.0.2
+
 cd /opt/files
 if [ ! -d fairseq ]; then
   git clone https://github.com/Open-Speech-EkStep/fairseq -b v2-hydra
@@ -45,25 +53,20 @@ cd fairseq
 pip3 install -e .
 cd ..
 
-#pip3 install ray[tune]
-#pip3 install 'ray[default]'
-pip3 install -U https://storage.googleapis.com/vakyaansh-open-models/ray/ray-2.0.0.dev0-cp38-cp38-manylinux2014_x86_64.whl
-pip3 install Cython
-pip3 install nemo_toolkit[all]==v1.0.2
 
 if [ ! -d denoiser ]; then
   git clone https://github.com/facebookresearch/denoiser.git
 fi
 
 apt install -y graphviz
-wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.8.1.tar.gz
-tar -xzf openfst-1.8.1.tar.gz
-cd openfst-1.8.1/
-sh ./configure --enable-grm --enable-far=true && sudo make -j install
-echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib" >> ~/.bashrc
-sh ~/.bashrc
-cd ..
-rm -rf openfst-1.8.1
+#wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.8.1.tar.gz
+#tar -xzf openfst-1.8.1.tar.gz
+#cd openfst-1.8.1/
+#sh ./configure --enable-grm --enable-far=true && sudo make -j install
+#echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib" >> ~/.bashrc
+#sh ~/.bashrc
+#cd ..
+#rm -rf openfst-1.8.1
 
 # wget http://www.openfst.org/twiki/pub/GRM/PyniniDownload/pynini-2.1.4.tar.gz
 # tar -xzf pynini-2.1.4.tar.gz
