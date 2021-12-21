@@ -37,7 +37,7 @@ python3 setup.py install
 
 #pip3 install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 
-
+cd /opt/files
 
 #pip3 install ray[tune]
 #pip3 install 'ray[default]'
@@ -74,7 +74,7 @@ python3 setup.py bdist_wheel
 pip3 install -e .
 cd ..
 
-cd /opt/files
+
 if [ ! -d fairseq ]; then
   git clone https://github.com/Open-Speech-EkStep/fairseq -b v2-hydra
 fi
