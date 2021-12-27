@@ -14,6 +14,7 @@ from model_item import ModelItem
 
 LOGGER = log_setup.get_logger('model-inference-service')
 
+
 def get_gpu_info(gpu):
     LOGGER.info(f"*** GPU is enabled: {gpu} ***")
     if gpu:

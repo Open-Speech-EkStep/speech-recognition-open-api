@@ -9,7 +9,7 @@ class ModelItem:
         self.model_file_name = model_file_name
         self.lexicon_file_name = 'lexicon.lst'
         self.language_model_name = 'lm.binary'
-        self.dict_file_name = 'dict.ltr.txt' 
+        self.dict_file_name = 'dict.ltr.txt'
         self.punctuation_and_itn_enabled = False
 
     def get_model(self):
@@ -17,13 +17,13 @@ class ModelItem:
 
     def set_model(self, model):
         self.model = model
-    
+
     def get_generator(self):
         return self.generator
-    
+
     def set_generator(self, generator):
         self.generator = generator
-    
+
     def get_model_path(self):
         return self.base_path + "/" + self.model_file_name
 
@@ -38,7 +38,7 @@ class ModelItem:
 
     def get_puncutation_model(self):
         return self.punctuation_model
-    
+
     def set_punctuation_model(self, punctuation_model):
         self.punctuation_model = punctuation_model
 

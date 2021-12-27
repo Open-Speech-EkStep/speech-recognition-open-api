@@ -2,11 +2,10 @@ import os
 
 import pytest
 import unittest.mock as mock
-from unittest.mock import patch, Mock
-from grpc import ServicerContext
+from unittest.mock import patch
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionRequest, RecognitionConfig, \
     RecognitionAudio, Language, SpeechRecognitionResult
-from pytest_grpc.plugin import FakeContext
+
 
 #
 # class Context(Mock):
@@ -29,7 +28,7 @@ def grpc_add_to_server():
 @pytest.fixture(scope='module')
 @patch('speech_recognition_service.ModelService')
 def grpc_servicer(model_mock):
-    from speech_recognition_service import SpeechRecognizer
+    from src.speech_recognition_service import SpeechRecognizer
     model_mock.return_value.transcribe.return_value = {'transcription': 'Hello world'}
     model_mock.return_value.get_srt.return_value = {'srt': '1\n00:00:01,29 --> 00:00:04,88\nHello how are you\n\n'}
     return SpeechRecognizer()

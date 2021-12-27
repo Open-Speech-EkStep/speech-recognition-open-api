@@ -16,11 +16,12 @@ from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Langua
 from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 
 LOGGER = log_setup.get_logger('speech-recognition-service')
+
+
 # add error message field to status
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
-
     LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):

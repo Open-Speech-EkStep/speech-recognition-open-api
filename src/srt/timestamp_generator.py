@@ -4,6 +4,7 @@ import contextlib
 import wave
 import webrtcvad
 
+
 def read_wave(path):
     """Reads a .wav file.
 
@@ -22,6 +23,7 @@ def read_wave(path):
 
 class Frame(object):
     """Represents a "frame" of audio data."""
+
     def __init__(self, bytes, timestamp, duration):
         self.bytes = bytes
         self.timestamp = timestamp
@@ -84,7 +86,7 @@ def vad_collector(sample_rate, frame_duration_ms,
     for frame in frames:
         is_speech = vad.is_speech(frame.bytes, sample_rate)
 
-        #sys.stdout.write('1' if is_speech else '0')
+        # sys.stdout.write('1' if is_speech else '0')
         if not triggered:
             ring_buffer.append((frame, is_speech))
             num_voiced = len([f for f, speech in ring_buffer if speech])
@@ -94,7 +96,7 @@ def vad_collector(sample_rate, frame_duration_ms,
             if num_voiced > 0.9 * ring_buffer.maxlen:
                 triggered = True
                 start_time.append(ring_buffer[0][0].timestamp)
-                #sys.stdout.write('+(%s)' % (ring_buffer[0][0].timestamp,))
+                # sys.stdout.write('+(%s)' % (ring_buffer[0][0].timestamp,))
                 # We want to yield all the audio we see from now until
                 # we are NOTTRIGGERED, but we have to start with the
                 # audio that's already in the ring buffer.
@@ -111,7 +113,7 @@ def vad_collector(sample_rate, frame_duration_ms,
             # unvoiced, then enter NOTTRIGGERED and yield whatever
             # audio we've collected.
             if num_unvoiced > 0.9 * ring_buffer.maxlen:
-                #sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
+                # sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
                 end_time.append(frame.timestamp + frame.duration)
                 triggered = False
                 yield b''.join([f.bytes for f in voiced_frames])
@@ -119,12 +121,13 @@ def vad_collector(sample_rate, frame_duration_ms,
                 voiced_frames = []
     if triggered:
         end_time.append(frame.timestamp + frame.duration)
-        #sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
-    #sys.stdout.write('\n')
+        # sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
+    # sys.stdout.write('\n')
     # If we have any leftover voiced audio when we run out of input,
     # yield it.
     if voiced_frames:
         yield b''.join([f.bytes for f in voiced_frames])
+
 
 def extract_time_stamps(wav_file):
     start_time = []
@@ -142,6 +145,5 @@ def extract_time_stamps(wav_file):
         exit
     return start_time, end_time
 
-
-#s, e = extract_time_stamps(sys.argv[1])
-#print(s[0], e[0])
+# s, e = extract_time_stamps(sys.argv[1])
+# print(s[0], e[0])

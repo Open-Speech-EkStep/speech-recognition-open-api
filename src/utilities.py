@@ -5,8 +5,10 @@ import wave
 import requests
 from mimeparse import parse_mime_type
 
+
 def validate_content(response, audio_format='wav'):
-    audio_content_type_extension_map = {"mp3":["mp3","mpeg"], "wav": ["wav","x-wav","vnd.wav"], "flac":["x-flac", "flac"], }
+    audio_content_type_extension_map = {"mp3": ["mp3", "mpeg"], "wav": ["wav", "x-wav", "vnd.wav"],
+                                        "flac": ["x-flac", "flac"], }
     supported_content_length = os.environ.get('supported_content_length', 3145728)
     supported_content_types = ['audio']
     content_type = response.headers.get('Content-Type')

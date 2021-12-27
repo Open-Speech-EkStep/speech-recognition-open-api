@@ -3,7 +3,7 @@ import os
 import pytest
 import responses
 
-from utilities import download_from_url_to_file, create_wav_file_using_bytes, write_to_file, get_current_time_in_millis, \
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, write_to_file, get_current_time_in_millis, \
     validate_content
 
 
