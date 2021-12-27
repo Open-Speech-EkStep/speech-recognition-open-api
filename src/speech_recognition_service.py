@@ -7,13 +7,13 @@ import grpc
 import requests
 import torch
 
-import log_setup
-from model_service import ModelService
-from speech_recognition_service_handler import handle_request
+from src import log_setup
+from src.model_service import ModelService
+from src.speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
-from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 
 LOGGER = log_setup.get_logger('speech-recognition-service')
 

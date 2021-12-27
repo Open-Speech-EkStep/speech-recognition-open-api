@@ -6,11 +6,11 @@ import os
 import torch
 from inverse_text_normalization.run_predict import inverse_normalize_text
 from punctuate.punctuate_text import Punctuation
-from srt.subtitle_generator import get_srt
+from src.srt.subtitle_generator import get_srt
 
-import log_setup
+from src import log_setup
 from lib.inference_lib import load_model_and_generator, get_results
-from model_item import ModelItem
+from src.model_item import ModelItem
 
 LOGGER = log_setup.get_logger('model-inference-service')
 
