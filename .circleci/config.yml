@@ -77,8 +77,5 @@ workflows:
          type: approval
     - build_and_deploy_api_image:
          name: build_and_deploy_api_image
-         filters:
-           branches:
-             only: circle-ci-deploy
          requires:
             - approve-build-and-deploy
