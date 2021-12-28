@@ -16,7 +16,11 @@ def get_console_handler():
 
 
 def get_file_handler():
-    file_handler = TimedRotatingFileHandler(LOGS_MODEL_BASE_PATH + LOG_FILE, when='midnight', backupCount=30)
+    if not os.path.exists(LOGS_MODEL_BASE_PATH):
+        os.makedirs(LOGS_MODEL_BASE_PATH)
+
+    log_file = LOGS_MODEL_BASE_PATH + LOG_FILE
+    file_handler = TimedRotatingFileHandler(log_file, when='midnight', backupCount=30)
     file_handler.setFormatter(FORMATTER)
     return file_handler
 

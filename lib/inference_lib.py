@@ -35,8 +35,8 @@ except:
     # )
     LM = object
     LMState = object
-    
-    
+
+
 class Wav2VecCtc(BaseFairseqModel):
     def __init__(self, cfg: Wav2Vec2CtcConfig, w2v_encoder: BaseFairseqModel):
         super().__init__()
@@ -48,7 +48,7 @@ class Wav2VecCtc(BaseFairseqModel):
         return state_dict
 
     @classmethod
-    def build_model(cls, cfg: Wav2Vec2CtcConfig, target_dictionary): ##change here
+    def build_model(cls, cfg: Wav2Vec2CtcConfig, target_dictionary):  ##change here
         """Build a new model instance."""
         w2v_encoder = Wav2VecEncoder(cfg, target_dictionary)
         return cls(cfg, w2v_encoder)
@@ -67,8 +67,8 @@ class Wav2VecCtc(BaseFairseqModel):
         padding = net_output["padding_mask"]
         if padding is not None and padding.any():
             padding = padding.T
-            logits[padding][...,0] = 0
-            logits[padding][...,1:] = float('-inf')
+            logits[padding][..., 0] = 0
+            logits[padding][..., 1:] = float('-inf')
 
         return logits
 
@@ -81,7 +81,7 @@ class W2lDecoder(object):
     def __init__(self, args, tgt_dict):
         self.tgt_dict = tgt_dict
         self.vocab_size = len(tgt_dict)
-        #print(args)
+        # print(args)
         self.nbest = args['nbest']
 
         # criterion-specific init
@@ -121,11 +121,11 @@ class W2lDecoder(object):
 
     def get_emissions(self, models, encoder_input):
         """Run encoder and normalize emissions"""
-        model = models ## change here
+        model = models  ## change here
         encoder_out = model(**encoder_input)
         if self.criterion_type == CriterionType.CTC:
             if hasattr(model, "get_logits"):
-                emissions = model.get_logits(encoder_out) # no need to normalize emissions
+                emissions = model.get_logits(encoder_out)  # no need to normalize emissions
             else:
                 emissions = model.get_normalized_probs(encoder_out, log_probs=True)
         elif self.criterion_type == CriterionType.ASG:
@@ -244,7 +244,6 @@ class W2lKenLMDecoder(W2lDecoder):
                 self.decoder_opts, self.lm, self.silence, self.blank, []
             )
 
-
     def decode(self, emissions):
         B, T, N = emissions.size()
         hypos = []
@@ -266,7 +265,8 @@ class W2lKenLMDecoder(W2lDecoder):
                 ]
             )
         return hypos
-    
+
+
 def get_feature(filepath):
     def postprocess(feats, sample_rate):
         if feats.dim == 2:
@@ -283,6 +283,7 @@ def get_feature(filepath):
     feats = postprocess(feats, sample_rate)
     return feats
 
+
 def get_feature_for_bytes(wav, sample_rate):
     def postprocess(feats, sample_rate):
         if feats.dim == 2:
@@ -297,6 +298,7 @@ def get_feature_for_bytes(wav, sample_rate):
     feats = torch.from_numpy(wav).float()
     feats = postprocess(feats, sample_rate)
     return feats
+
 
 def post_process(sentence: str, symbol: str):
     if symbol == "sentencepiece":
@@ -376,8 +378,8 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
 
 
 def load_model(model_path):
-    return torch.load(model_path)#,map_location=torch.device("cuda"))
-
+    print('Loading model from ', model_path)
+    return torch.load(model_path)  # ,map_location=torch.device("cuda"))
 
 
 def get_args(lexicon_path, lm_path, BEAM=128, LM_WEIGHT=2, WORD_SCORE=-1):
@@ -391,19 +393,21 @@ def get_args(lexicon_path, lm_path, BEAM=128, LM_WEIGHT=2, WORD_SCORE=-1):
     args['unk_weight'] = -np.inf
     args['sil_weight'] = 0
     args['nbest'] = 1
-    args['criterion'] ='ctc'
-    args['labels']='ltr'
+    args['criterion'] = 'ctc'
+    args['labels'] = 'ltr'
     return args
 
-def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi", lexicon_path=None, lm_path=None, half=None):
+
+def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi", lexicon_path=None, lm_path=None,
+                        half=None):
     target_dict = Dictionary.load(dict_path)
     args = get_args(lexicon_path, lm_path)
-    
-    if decoder=="viterbi":
+
+    if decoder == "viterbi":
         generator = W2lViterbiDecoder(args, target_dict)
     else:
         generator = W2lKenLMDecoder(args, target_dict)
-    
+
     result = ''
 
     if cuda:
@@ -411,14 +415,15 @@ def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi"
         model.cuda()
     else:
         model = load_model(model_path)
-        
-        
+
     if half:
         model.half()
-        
-    result = get_results(wav_path=wav_path, dict_path=dict_path, generator=generator, use_cuda=cuda, model=model, half=half)
-    
+
+    result = get_results(wav_path=wav_path, dict_path=dict_path, generator=generator, use_cuda=cuda, model=model,
+                         half=half)
+
     return result
+
 
 def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     model_path = model_item.get_model_path()
@@ -428,12 +433,12 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
 
     target_dict = Dictionary.load(dict_path)
     args = get_args(lexicon_path, lm_path)
-    
-    if decoder=="viterbi":
+
+    if decoder == "viterbi":
         generator = W2lViterbiDecoder(args, target_dict)
     else:
         generator = W2lKenLMDecoder(args, target_dict)
-    
+
     result = ''
 
     if cuda:
@@ -449,18 +454,20 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
 
     return model, generator
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run')
     parser.add_argument('-m', '--model', type=str, help="Custom model path")
     parser.add_argument('-d', '--dict', type=str, help="Dict path")
-    parser.add_argument('-w', '--wav', type=str, help= "Wav file path")
+    parser.add_argument('-w', '--wav', type=str, help="Wav file path")
     parser.add_argument('-c', '--cuda', default=False, type=bool, help="CUDA True or False")
-    parser.add_argument('-D', '--decoder', type=str, help= "Which decoder to use kenlm or viterbi")
-    parser.add_argument('-l', '--lexicon', default=None, type=str, help= "Lexicon path if decoder is kenlm")
-    parser.add_argument('-L', '--lm-path', default=None, type=str, help= "Language mode path if decoder is kenlm")
+    parser.add_argument('-D', '--decoder', type=str, help="Which decoder to use kenlm or viterbi")
+    parser.add_argument('-l', '--lexicon', default=None, type=str, help="Lexicon path if decoder is kenlm")
+    parser.add_argument('-L', '--lm-path', default=None, type=str, help="Language mode path if decoder is kenlm")
     parser.add_argument('-H', '--half', default=False, type=bool, help="Half True or False")
-    
+
     args_local = parser.parse_args()
 
-    result = parse_transcription(args_local.model, args_local.dict, args_local.wav,  args_local.cuda, args_local.decoder, args_local.lexicon, args_local.lm_path, args_local.half)
+    result = parse_transcription(args_local.model, args_local.dict, args_local.wav, args_local.cuda, args_local.decoder,
+                                 args_local.lexicon, args_local.lm_path, args_local.half)
     print(result)
