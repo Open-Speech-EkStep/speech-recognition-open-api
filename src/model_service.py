@@ -62,7 +62,6 @@ class ModelService:
 
     def transcribe(self, file_name, language, punctuate, itn):
         model_item = self.model_items[language]
-        result = {}
         response = get_results(
             wav_path=file_name,
             dict_path=model_item.get_dict_file_path(),
@@ -71,13 +70,14 @@ class ModelService:
             model=model_item.get_model(),
             half=self.half
         )
-        # result = self.inference.get_inference(file_name, language)
-        result['transcription'] = response
-        result['status'] = 'OK'
-        result['transcription'] = self.apply_punctuation(result['transcription'], language, punctuate)
-        result['transcription'] = self.apply_itn(result['transcription'], language, itn)
-        LOGGER.debug("*** The model transcript is  *** %s", result['transcription'])
-        return result
+        LOGGER.debug("The model transcript is: %s", response)
+        punctuated_text = self.apply_punctuation(response, language, punctuate)
+        itn_text = self.apply_itn(punctuated_text, language, itn)
+        LOGGER.debug("The model transcript after punctuation and itn: %s", itn_text)
+        return {
+            'transcription': itn_text,
+            'status': 'OK'
+        }
 
     def get_srt(self, file_name, language, punctuate, itn):
         model_item = self.model_items[language]

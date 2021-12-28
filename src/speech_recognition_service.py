@@ -48,6 +48,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         LOGGER.info('Models Loaded Successfully')
         Path(self.BASE_PATH + 'Startup.done').touch()
 
+    # Batch API request handler
     def recognize(self, request, context):
         try:
             handle_request(request, self.model_service.supported_languages)

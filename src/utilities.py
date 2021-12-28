@@ -5,6 +5,8 @@ import wave
 import requests
 from mimeparse import parse_mime_type
 
+from src.monitoring import monitor
+
 
 def validate_content(response, audio_format='wav'):
     audio_content_type_extension_map = {"mp3": ["mp3", "mpeg"], "wav": ["wav", "x-wav", "vnd.wav"],
@@ -31,6 +33,7 @@ def validate_content(response, audio_format='wav'):
         raise ValueError(f"Audio input size is 0.")
 
 
+@monitor
 def download_from_url_to_file(file_name, url, audio_format):
     response = requests.get(url, allow_redirects=True)
     response.raise_for_status()
