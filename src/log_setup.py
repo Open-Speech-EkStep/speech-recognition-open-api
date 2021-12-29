@@ -1,11 +1,12 @@
 import logging
 import os
-import sys
 import socket
+import sys
 from logging.handlers import TimedRotatingFileHandler
+from pathlib import Path
 
-FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
-LOGS_MODEL_BASE_PATH = os.environ.get('model_logs_base_path', '')
+FORMATTER = logging.Formatter("%(asctime)s — [%(threadName)s] - %(name)s — %(levelname)s — %(message)s")
+LOGS_MODEL_BASE_PATH = Path(os.environ.get('model_logs_base_path', os.getcwd()))
 LOG_FILE = f"inference_" + socket.gethostname() + ".log"
 
 
@@ -19,7 +20,7 @@ def get_file_handler():
     if not os.path.exists(LOGS_MODEL_BASE_PATH):
         os.makedirs(LOGS_MODEL_BASE_PATH)
 
-    log_file = LOGS_MODEL_BASE_PATH + LOG_FILE
+    log_file = LOGS_MODEL_BASE_PATH / LOG_FILE
     file_handler = TimedRotatingFileHandler(log_file, when='midnight', backupCount=30)
     file_handler.setFormatter(FORMATTER)
     return file_handler
