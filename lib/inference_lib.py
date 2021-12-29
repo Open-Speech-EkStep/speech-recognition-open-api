@@ -3,6 +3,7 @@ import itertools as it
 import os
 import subprocess
 import uuid
+from pathlib import Path
 
 import numpy as np
 import soundfile as sf
@@ -192,7 +193,7 @@ class W2lKenLMDecoder(W2lDecoder):
                 for spelling in spellings:
                     spelling_idxs = [tgt_dict.index(token) for token in spelling]
                     assert (
-                        tgt_dict.unk() not in spelling_idxs
+                            tgt_dict.unk() not in spelling_idxs
                     ), f"{spelling} {spelling_idxs}"
                     self.trie.insert(spelling_idxs, word_idx, score)
             self.trie.smear(SmearingMode.MAX)
@@ -374,6 +375,11 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     text = post_process(hyp_pieces, 'letter')
     del sample
     torch.cuda.empty_cache()
+    # cleanup audio files
+    os.remove(audio_file)
+    if Path(dir_name).exists():
+        Path(dir_name).rmdir()
+
     return text
 
 
