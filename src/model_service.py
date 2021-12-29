@@ -6,6 +6,8 @@ import os
 import torch
 from inverse_text_normalization.run_predict import inverse_normalize_text
 from punctuate.punctuate_text import Punctuation
+
+from src.monitoring import monitor
 from src.srt.subtitle_generator import get_srt
 
 from src import log_setup
@@ -60,6 +62,7 @@ class ModelService:
                     self.enabled_itn_lang_dict[language_code] = 1
                     LOGGER.info(f"Loaded {language_code} model with ITN")
 
+    @monitor
     def transcribe(self, file_name, language, punctuate, itn):
         model_item = self.model_items[language]
         response = get_results(
@@ -79,6 +82,7 @@ class ModelService:
             'status': 'OK'
         }
 
+    @monitor
     def get_srt(self, file_name, language, punctuate, itn):
         model_item = self.model_items[language]
         model = model_item.get_model()
@@ -95,6 +99,7 @@ class ModelService:
         LOGGER.info("*** The model SRT is *** ", result['srt'])
         return result
 
+    @monitor
     def apply_punctuation(self, text_to_punctuate, language, punctuate):
         result = text_to_punctuate
         if punctuate and result not in ('', 'null', 'Null'):
@@ -103,6 +108,7 @@ class ModelService:
                 result = punc_model_obj.punctuate_text([text_to_punctuate])[0]
         return result
 
+    @monitor
     def apply_itn(self, text_to_itn, language, itn):
         result = text_to_itn
         if itn and result not in ('', 'null', 'Null'):

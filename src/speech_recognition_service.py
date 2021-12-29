@@ -9,6 +9,7 @@ import torch
 
 from src import log_setup
 from src.model_service import ModelService
+from src.monitoring import monitor
 from src.speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
@@ -49,6 +50,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         Path(self.BASE_PATH + 'Startup.done').touch()
 
     # Batch API request handler
+    @monitor
     def recognize(self, request, context):
         try:
             handle_request(request, self.model_service.supported_languages)
@@ -132,6 +134,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     yield Response(transcription=transcription, user=data.user, action=str(append_result),
                                    language=data.language)
 
+    @monitor
     def punctuate(self, request, context):
         response = self.model_service.apply_punctuation(request.text, request.language, True)
         response = self.model_service.apply_itn(response, request.language, True)

@@ -51,7 +51,7 @@ def create_wav_file_using_bytes(file_name, audio):
         file.writeframes(audio)
     return os.path.join(os.getcwd(), file_name)
 
-
+@monitor
 def write_to_file(file_name, audio):
     with open(file_name, 'wb') as f:
         f.write(audio)
