@@ -3,6 +3,7 @@ import os
 import socket
 import sys
 from logging.handlers import TimedRotatingFileHandler
+from logging import FileHandler
 from pathlib import Path
 
 FORMATTER = logging.Formatter("%(asctime)s — [%(threadName)s] - %(name)s — %(levelname)s — %(message)s")
@@ -21,7 +22,7 @@ def get_file_handler():
         os.makedirs(LOGS_MODEL_BASE_PATH)
 
     log_file = LOGS_MODEL_BASE_PATH / LOG_FILE
-    file_handler = TimedRotatingFileHandler(log_file, when='midnight', backupCount=30)
+    file_handler = FileHandler(log_file)
     file_handler.setFormatter(FORMATTER)
     return file_handler
 
