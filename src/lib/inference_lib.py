@@ -2,7 +2,6 @@ import argparse
 import itertools as it
 import os
 import subprocess
-import uuid
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +14,7 @@ from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
 from pydub import AudioSegment
 
+from src import utilities
 from src.lib.audio_normalization import AudioNormalization
 
 try:
@@ -316,26 +316,14 @@ def post_process(sentence: str, symbol: str):
 
 
 def media_conversion(file_name, duration_limit=5):
-    dir_name = os.path.join('/tmp', uuid.uuid4().hex)
-    os.makedirs(dir_name)
+    dir_name = utilities.create_temp_dir()
 
     subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16,
                                                                                         dir_name + '/input_audio.wav')],
                     shell=True)
-
     audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
-
-    audio_duration_min = audio_file.duration_seconds / 60
-
-    if audio_duration_min > duration_limit:
-        d_limit = duration_limit * 60 * 1000
-        clipped_audio = audio_file[:d_limit]
-        clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
-    else:
-        audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
-
-    os.remove(dir_name + '/input_audio.wav')
-
+    utilities.clip_audio(audio_file, dir_name, duration_limit)
+    utilities.delete_file(dir_name + '/input_audio.wav')
     return dir_name
 
 

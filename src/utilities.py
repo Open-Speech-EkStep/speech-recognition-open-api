@@ -1,5 +1,6 @@
 import os
 import time
+import uuid
 import wave
 
 import requests
@@ -72,5 +73,26 @@ def create_directory(file):
         os.makedirs(file)
 
 
+def delete_file(file):
+    if os.path.exists(file):
+        os.remove(file)
+
+
 def get_env_var(var_name=str, default=''):
     return os.environ.get(var_name, default)
+
+
+def create_temp_dir():
+    temp_dir = os.path.join('/tmp', uuid.uuid4().hex)
+    create_directory(temp_dir)
+    return temp_dir
+
+
+def clip_audio(audio_file, dir_name, duration_limit):
+    audio_duration_min = audio_file.duration_seconds / 60
+    if audio_duration_min > duration_limit:
+        d_limit = duration_limit * 60 * 1000
+        clipped_audio = audio_file[:d_limit]
+        clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
+    else:
+        audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
