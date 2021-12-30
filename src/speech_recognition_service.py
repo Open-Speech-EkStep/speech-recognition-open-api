@@ -14,7 +14,7 @@ from src.speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
-from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, get_env_var
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -26,9 +26,9 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):
-        self.MODEL_BASE_PATH = os.environ.get('models_base_path', '')
-        self.BASE_PATH = os.environ.get('base_path', "")
-        gpu = os.environ.get('gpu', False)
+        self.MODEL_BASE_PATH = get_env_var('models_base_path')
+        self.BASE_PATH = get_env_var('base_path')
+        gpu = get_env_var('gpu', False)
         if gpu == 'true' or gpu == 'True':
             gpu = True
         elif gpu == 'false' or gpu == 'False':

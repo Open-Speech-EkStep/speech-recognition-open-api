@@ -11,7 +11,7 @@ from src.monitoring import monitor
 def validate_content(response, audio_format='wav'):
     audio_content_type_extension_map = {"mp3": ["mp3", "mpeg"], "wav": ["wav", "x-wav", "vnd.wav"],
                                         "flac": ["x-flac", "flac"], }
-    supported_content_length = os.environ.get('supported_content_length', 3145728)
+    supported_content_length = get_env_var('supported_content_length', 3145728)
     supported_content_types = ['audio']
     content_type = response.headers.get('Content-Type')
     content_length = response.headers.get('Content-Length', len(response.content))

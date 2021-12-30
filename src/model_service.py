@@ -7,12 +7,11 @@ import torch
 from inverse_text_normalization.run_predict import inverse_normalize_text
 from punctuate.punctuate_text import Punctuation
 
-from src.monitoring import monitor
-from src.srt.subtitle_generator import get_srt
-
-from src import log_setup
+from src import log_setup, utilities
 from src.lib.inference_lib import load_model_and_generator, get_results
 from src.model_item import ModelItem
+from src.monitoring import monitor
+from src.srt.subtitle_generator import get_srt
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -30,7 +29,7 @@ def get_gpu_info(gpu):
 class ModelService:
 
     def __init__(self, model_base_path, decoder_type, cuda, half):
-        languages = os.environ.get('languages', ['all'])
+        languages = utilities.get_env_var('languages', ['all'])
         model_config_file_path = model_base_path + 'model_dict.json'
         if os.path.exists(model_config_file_path):
             with open(model_config_file_path, 'r') as f:
