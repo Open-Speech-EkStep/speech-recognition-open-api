@@ -11,7 +11,7 @@ from src.monitoring import monitor
 from src.srt.subtitle_generator import get_srt
 
 from src import log_setup
-from lib.inference_lib import load_model_and_generator, get_results
+from src.lib.inference_lib import load_model_and_generator, get_results
 from src.model_item import ModelItem
 
 LOGGER = log_setup.get_logger('model-inference-service')

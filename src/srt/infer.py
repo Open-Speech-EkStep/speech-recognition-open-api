@@ -6,7 +6,7 @@ from fairseq.data import Dictionary
 
 from src.srt.timestamp_generator import extract_time_stamps
 from tqdm import tqdm
-from lib.inference_lib import get_feature_for_bytes, post_process
+from src.lib.inference_lib import get_feature_for_bytes, post_process
 
 
 def get_results_from_chunks(wav_data, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=False):

@@ -15,7 +15,7 @@ from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
 from pydub import AudioSegment
 
-from lib.audio_normalization import AudioNormalization
+from src.lib.audio_normalization import AudioNormalization
 
 try:
     from flashlight.lib.text.dictionary import create_word_dict, load_words
