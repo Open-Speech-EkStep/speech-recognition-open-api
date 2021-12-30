@@ -51,6 +51,7 @@ def create_wav_file_using_bytes(file_name, audio):
         file.writeframes(audio)
     return os.path.join(os.getcwd(), file_name)
 
+
 @monitor
 def write_to_file(file_name, audio):
     with open(file_name, 'wb') as f:
@@ -64,3 +65,12 @@ def convert_audio_to_required_format(file_name):
 
 def get_current_time_in_millis():
     return round(time.time() * 1000)
+
+
+def create_directory(file):
+    if not os.path.exists(file):
+        os.makedirs(file)
+
+
+def get_env_var(var_name=str, default=''):
+    return os.environ.get(var_name, default)

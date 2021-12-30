@@ -3,28 +3,38 @@ import os
 import socket
 import sys
 from logging.handlers import TimedRotatingFileHandler
-from logging import FileHandler
 from pathlib import Path
 
-FORMATTER = logging.Formatter("%(asctime)s — [%(threadName)s] - %(name)s — %(levelname)s — %(message)s")
-LOGS_MODEL_BASE_PATH = Path(os.environ.get('model_logs_base_path', os.getcwd()))
+from src import utilities
+
+_FORMATTER = logging.Formatter(
+    "%(asctime)s — [%(threadName)s] - %(name)s -  %(filename)s.%(funcName)s(%(lineno)d) - %(levelname)s - %(message)s")
+LOGS_MODEL_BASE_PATH = Path(utilities.get_env_var('model_logs_base_path', os.getcwd()))
 LOG_FILE = f"inference_" + socket.gethostname() + ".log"
+
+_FILE_LOGGER_HANDLER = None
+_CONSOLE_LOGGER_HANDLER = None
 
 
 def get_console_handler():
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(FORMATTER)
-    return console_handler
+    global _CONSOLE_LOGGER_HANDLER
+    if _CONSOLE_LOGGER_HANDLER is None:
+        _CONSOLE_LOGGER_HANDLER = logging.StreamHandler(sys.stdout)
+        _CONSOLE_LOGGER_HANDLER.setFormatter(_FORMATTER)
+
+    return _CONSOLE_LOGGER_HANDLER
 
 
 def get_file_handler():
-    if not os.path.exists(LOGS_MODEL_BASE_PATH):
-        os.makedirs(LOGS_MODEL_BASE_PATH)
+    global _FILE_LOGGER_HANDLER
+    if _FILE_LOGGER_HANDLER is None:
+        utilities.create_directory(LOGS_MODEL_BASE_PATH)
+        _FILE_LOGGER_HANDLER = TimedRotatingFileHandler(LOGS_MODEL_BASE_PATH / LOG_FILE,
+                                                        when='midnight',
+                                                        backupCount=30)
+        _FILE_LOGGER_HANDLER.setFormatter(_FORMATTER)
 
-    log_file = LOGS_MODEL_BASE_PATH / LOG_FILE
-    file_handler = FileHandler(log_file)
-    file_handler.setFormatter(FORMATTER)
-    return file_handler
+    return _FILE_LOGGER_HANDLER
 
 
 def get_logger(logger_name):
