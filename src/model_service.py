@@ -14,7 +14,7 @@ from src import log_setup
 from src.lib.inference_lib import load_model_and_generator, get_results
 from src.model_item import ModelItem
 
-LOGGER = log_setup.get_logger('model-inference-service')
+LOGGER = log_setup.get_logger(__name__)
 
 
 def get_gpu_info(gpu):

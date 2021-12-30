@@ -16,7 +16,7 @@ from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Langua
     PunctuateResponse
 from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
 
-LOGGER = log_setup.get_logger('speech-recognition-service')
+LOGGER = log_setup.get_logger(__name__)
 
 
 # add error message field to status
