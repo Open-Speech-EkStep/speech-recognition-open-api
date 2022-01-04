@@ -14,7 +14,8 @@ from src.speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
-from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, get_env_var
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
+    get_env_var
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -28,21 +29,20 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     def __init__(self):
         self.MODEL_BASE_PATH = get_env_var('models_base_path')
         self.BASE_PATH = get_env_var('base_path')
-        gpu = get_env_var('gpu', False)
+
+        gpu = get_env_var('gpu', 'false')
         if gpu == 'true' or gpu == 'True':
             gpu = True
-        elif gpu == 'false' or gpu == 'False':
-            gpu = False
-        print("User has provided gpu as ", gpu, type(gpu))
-        gpu_present = torch.cuda.is_available()
-        if gpu == True and gpu_present == True:
-            gpu = True
-            half = True
         else:
             gpu = False
-            half = False
+        LOGGER.info(f'User has provided gpu as {gpu}')
+
+        gpu_present = torch.cuda.is_available()
+        LOGGER.info(f'GPU available on machine {gpu_present}')
+        gpu = gpu & gpu_present
+
         LOGGER.info(f'Loading models from {self.MODEL_BASE_PATH} with gpu value: {gpu}')
-        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
+        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, gpu)
         self.count = 0
         self.file_count = 0
         self.client_buffers = {}

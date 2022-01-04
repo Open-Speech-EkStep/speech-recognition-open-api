@@ -53,7 +53,7 @@ class ModelService:
                 model_item.set_model(model)
                 model_item.set_generator(generator)
                 self.model_items[language_code] = model_item
-                LOGGER.info(f"Loaded {language_code} model")
+                LOGGER.info(f"Loaded {language_code} model base_path is {base_path}")
                 if lang_config["enablePunctuation"]:
                     self.punc_models_dict[language_code] = Punctuation(language_code)
                     LOGGER.info(f"Loaded {language_code} model with Punctuation")
