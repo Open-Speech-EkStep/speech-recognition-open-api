@@ -41,6 +41,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         else:
             gpu = False
             half = False
+        LOGGER.info(f'Loading models from {self.MODEL_BASE_PATH} with gpu value: {gpu}')
         self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
         self.count = 0
         self.file_count = 0
