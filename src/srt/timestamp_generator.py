@@ -142,7 +142,6 @@ def extract_time_stamps(wav_file):
         chunks = chunks + 1
     if chunks != len(start_time):
         print("Error: Segments not broken properly")
-        exit
     return start_time, end_time
 
 # s, e = extract_time_stamps(sys.argv[1])
