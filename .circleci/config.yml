@@ -7,7 +7,7 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "3.2.6"
+    default: "3.2.5-refactor-1"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
@@ -16,7 +16,7 @@ parameters:
     default: "2.0"
   build_dependency:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   build_and_deploy_api_image:
@@ -77,8 +77,5 @@ workflows:
          type: approval
     - build_and_deploy_api_image:
          name: build_and_deploy_api_image
-         filters:
-           branches:
-             only: circle-ci-deploy
          requires:
             - approve-build-and-deploy

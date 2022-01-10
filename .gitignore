@@ -4,3 +4,4 @@ __pycache__/
 .DS_Store
 model_dict.json
 ingress-secret.yaml
+.scannerwork/

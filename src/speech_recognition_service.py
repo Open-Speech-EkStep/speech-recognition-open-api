@@ -7,39 +7,42 @@ import grpc
 import requests
 import torch
 
-import log_setup
-from model_service import ModelService
-from speech_recognition_service_handler import handle_request
+from src import log_setup
+from src.model_service import ModelService
+from src.monitoring import monitor
+from src.speech_recognition_service_handler import handle_request
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
-from utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
+    get_env_var
 
-LOGGER = log_setup.get_logger('speech-recognition-service')
+LOGGER = log_setup.get_logger(__name__)
+
+
 # add error message field to status
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
-
     LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):
-        self.MODEL_BASE_PATH = os.environ.get('models_base_path', '')
-        self.BASE_PATH = os.environ.get('base_path', "")
-        gpu = os.environ.get('gpu', False)
+        self.MODEL_BASE_PATH = get_env_var('models_base_path')
+        self.BASE_PATH = get_env_var('base_path')
+
+        gpu = get_env_var('gpu', 'false')
         if gpu == 'true' or gpu == 'True':
             gpu = True
-        elif gpu == 'false' or gpu == 'False':
-            gpu = False
-        print("User has provided gpu as ", gpu, type(gpu))
-        gpu_present = torch.cuda.is_available()
-        if gpu == True and gpu_present == True:
-            gpu = True
-            half = True
         else:
             gpu = False
-            half = False
-        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, half)
+        LOGGER.info(f'User has provided gpu as {gpu}')
+
+        gpu_present = torch.cuda.is_available()
+        LOGGER.info(f'GPU available on machine {gpu_present}')
+        gpu = gpu & gpu_present
+
+        LOGGER.info(f'Loading models from {self.MODEL_BASE_PATH} with gpu value: {gpu}')
+        self.model_service = ModelService(self.MODEL_BASE_PATH, 'kenlm', gpu, gpu)
         self.count = 0
         self.file_count = 0
         self.client_buffers = {}
@@ -47,6 +50,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         LOGGER.info('Models Loaded Successfully')
         Path(self.BASE_PATH + 'Startup.done').touch()
 
+    # Batch API request handler
+    @monitor
     def recognize(self, request, context):
         try:
             handle_request(request, self.model_service.supported_languages)
@@ -130,6 +135,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     yield Response(transcription=transcription, user=data.user, action=str(append_result),
                                    language=data.language)
 
+    @monitor
     def punctuate(self, request, context):
         response = self.model_service.apply_punctuation(request.text, request.language, True)
         response = self.model_service.apply_itn(response, request.language, True)

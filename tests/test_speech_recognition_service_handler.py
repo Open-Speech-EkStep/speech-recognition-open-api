@@ -1,6 +1,6 @@
 import pytest
 
-from speech_recognition_service_handler import is_out_format_supported, is_audio_format_supported, \
+from src.speech_recognition_service_handler import is_out_format_supported, is_audio_format_supported, \
     is_language_supported, handle_request
 from stub.speech_recognition_open_api_pb2 import RecognitionConfig, RecognitionAudio, Language, SpeechRecognitionRequest
 

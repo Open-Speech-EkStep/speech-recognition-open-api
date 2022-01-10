@@ -1,9 +1,9 @@
 from concurrent import futures
 import grpc
-from speech_recognition_service import SpeechRecognizer
+from src.speech_recognition_service import SpeechRecognizer
 from stub.speech_recognition_open_api_pb2_grpc import add_SpeechRecognizerServicer_to_server
-from lib.inference_lib import Wav2VecCtc
-from auth_interceptor import AuthInterceptor
+
+from src.lib.inference_lib import Wav2VecCtc
 
 
 def run():

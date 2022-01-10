@@ -23,7 +23,6 @@ def is_language_supported(language, supported_languages):
     return language in supported_languages
 
 
-
 def is_out_format_supported(out_format):
     return out_format in ['transcript', 'srt']
 
