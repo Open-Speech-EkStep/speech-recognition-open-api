@@ -27,9 +27,6 @@ jobs:
       - checkout:
           path: ~/speech-recognition-model-api
       - run:
-          name: Branch
-          command: echo $CIRCLE_BRANCH
-      - run:
           name: Sonar Scan
           command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -v $PWD:/usr/src sonarsource/sonar-scanner-cli -Dsonar.branch.name=$CIRCLE_BRANCH
 
