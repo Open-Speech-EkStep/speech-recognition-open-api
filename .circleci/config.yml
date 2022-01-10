@@ -19,7 +19,7 @@ parameters:
     default: false
 
 jobs:
-  build:
+  sonar-scan:
     docker:
       - image: 'sonarsource/sonarcloud-scan:1.3.0'
     working_directory: ~/speech-recognition-model-api/
@@ -83,8 +83,8 @@ workflows:
   version: 2
   main_workflow:
     jobs:
-    - build:
-          context: sonarcloud
+    - sonar-scan:
+          name: sonar-scan
     - approve_to_publish:
          name: approve-build-and-deploy
          type: approval
