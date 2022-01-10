@@ -20,21 +20,22 @@ parameters:
 
 jobs:
   sonar-scan:
-    docker:
-      - image: 'sonarsource/sonarcloud-scan:1.3.0'
+    machine:
+      image: ubuntu-2004:202101-01
+      resource_class: xlarge
     working_directory: ~/speech-recognition-model-api/
     steps:
       - checkout:
           path: ~/speech-recognition-model-api
-      - setup_remote_docker:
-          version: 19.03.13
-          docker_layer_caching: true
       - run:
           name: Current Directory
           command: echo $PWD
       - run:
+          name: Current Directory ls
+          command: ls
+      - run:
           name: Sonar Scan
-          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -v $PWD/speech-recognition-model-api:/usr/src sonarsource/sonar-scanner-cli
+          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -v $PWD:/usr/src sonarsource/sonar-scanner-cli
 
   build_and_deploy_api_image:
     machine:
