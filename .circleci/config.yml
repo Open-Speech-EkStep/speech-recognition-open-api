@@ -22,14 +22,16 @@ jobs:
   sonar-scan:
     machine:
       image: ubuntu-2004:202101-01
-      resource_class: xlarge
     working_directory: ~/speech-recognition-model-api/
     steps:
       - checkout:
           path: ~/speech-recognition-model-api
       - run:
+          name: Branch
+          command: echo $CIRCLE_BRANCH
+      - run:
           name: Sonar Scan
-          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -e sonar.branch.name=$CIRCLE_BRANCH -v $PWD:/usr/src sonarsource/sonar-scanner-cli
+          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -v $PWD:/usr/src sonarsource/sonar-scanner-cli -Dsonar.branch.name=$CIRCLE_BRANCH
 
   build_and_deploy_api_image:
     machine:
