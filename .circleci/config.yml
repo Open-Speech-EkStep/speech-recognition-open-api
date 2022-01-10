@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.3
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -19,6 +21,13 @@ parameters:
     default: false
 
 jobs:
+  build:
+    docker:
+      - image: 'circleci/python:3.7.4'
+    steps:
+      - checkout
+      - sonarcloud/scan
+
   build_and_deploy_api_image:
     machine:
       image: ubuntu-2004:202101-01
@@ -72,6 +81,8 @@ workflows:
   version: 2
   main_workflow:
     jobs:
+    - build:
+          context: sonarcloud
     - approve_to_publish:
          name: approve-build-and-deploy
          type: approval
