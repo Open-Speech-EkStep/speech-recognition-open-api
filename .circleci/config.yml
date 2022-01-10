@@ -28,14 +28,8 @@ jobs:
       - checkout:
           path: ~/speech-recognition-model-api
       - run:
-          name: Current Directory
-          command: echo $PWD
-      - run:
-          name: Current Directory ls
-          command: ls
-      - run:
           name: Sonar Scan
-          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -v $PWD:/usr/src sonarsource/sonar-scanner-cli
+          command: docker run --rm -e SONAR_HOST_URL="https://sonarcloud.io" -e SONAR_TOKEN=$SONAR_TOKEN -e sonar.branch.name=$CIRCLE_BRANCH -v $PWD:/usr/src sonarsource/sonar-scanner-cli
 
   build_and_deploy_api_image:
     machine:
