@@ -1,5 +1,6 @@
 import subprocess
 from pathlib import Path
+from pydub import AudioSegment
 
 from src.utilities import clip_audio
 
