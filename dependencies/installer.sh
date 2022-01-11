@@ -10,7 +10,7 @@ apt-get install -y build-essential cmake libboost-system-dev libboost-thread-dev
 apt install -y gcc-10 gcc-10-base gcc-10-doc g++-10 libstdc++-10-dev libstdc++-10-doc libgcc-7-dev libsndfile1
 
 pip3 install packaging soundfile
-pip3 install pynini
+pip3 install pynini julius
 
 sudo mkdir -p /opt/files
 sudo chmod 777 -R /opt/files

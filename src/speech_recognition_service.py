@@ -11,11 +11,11 @@ from src import log_setup
 from src.model_service import ModelService
 from src.monitoring import monitor
 from src.speech_recognition_service_handler import handle_request
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
+    get_env_var
 from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
-from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
-    get_env_var
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -138,7 +138,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     @monitor
     def punctuate(self, request, context):
         response = self.model_service.apply_punctuation(request.text, request.language, True)
-        response = self.model_service.apply_itn(response, request.language, True)
+        response = self.model_service.apply_itn(response, request.language, request.enabledItn)
         return PunctuateResponse(text=response, language=request.language)
 
     def disconnect(self, user):
@@ -193,7 +193,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             del self.client_transcription[user]
 
     def preprocess(self, data):
-        # local_file_name = None
         append_result = False
         if data.audio is not None and len(data.audio) > 0:
             LOGGER.debug("Audio length: %s, speaking: %s", len(data.audio), data.speaking)

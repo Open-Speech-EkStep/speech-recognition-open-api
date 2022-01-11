@@ -7,16 +7,16 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "3.2.7"
+    default: "3.2.8"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
   dependency_version:
     type: string
-    default: "2.0"
+    default: "3.0"
   build_dependency:
     type: boolean
-    default: false
+    default: true
 
 jobs:
   sonar-scan:
