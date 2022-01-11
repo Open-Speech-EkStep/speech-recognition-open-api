@@ -1,7 +1,10 @@
 import os
+
+import pytest
 import responses
 
-from utilities import download_from_url_to_file, create_wav_file_using_bytes, write_to_file, get_current_time_in_millis
+from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, write_to_file, get_current_time_in_millis, \
+    validate_content
 
 
 @responses.activate
@@ -49,3 +52,26 @@ def test_get_current_time_in_millis(mocker):
     time = get_current_time_in_millis()
 
     assert time == 123000
+
+
+def test_validate_content():
+    supported_content_length = os.environ.get('supported_content_length', 3145728)
+
+    class DummyResponse():
+        def __init__(self, headers={}, content='abcd'):
+            self.headers = headers
+            self.content = content
+
+    with pytest.raises(ValueError, match="Invalid audio input format. Only supported formats are allowed."):
+        validate_content(DummyResponse())
+
+    with pytest.raises(ValueError, match="Invalid audio input format. Only supported formats are allowed."):
+        validate_content(DummyResponse({'Content-Type': 'application/doc'}))
+    with pytest.raises(ValueError, match="Mismatch between audio format specified and audio format of file specified."):
+        validate_content(DummyResponse({'Content-Type': 'audio/x-wav'}), audio_format='mp4')
+    with pytest.raises(ValueError, match=f"Audio input size exceeds limit of {supported_content_length} bytes."):
+        validate_content(DummyResponse({'Content-Type': 'audio/x-wav', 'Content-Length': 3145729}))
+    with pytest.raises(ValueError, match="Audio input size is 0."):
+        validate_content(DummyResponse({'Content-Type': 'audio/x-wav', 'Content-Length': 0}))
+    with pytest.raises(ValueError, match="Audio input size is 0."):
+        validate_content(DummyResponse({'Content-Type': 'audio/x-wav', 'Content-Length': 0}, content=''))

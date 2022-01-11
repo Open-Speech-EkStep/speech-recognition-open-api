@@ -1,6 +1,6 @@
 import pytest
 
-from speech_recognition_service_handler import is_out_format_supported, is_audio_format_supported, \
+from src.speech_recognition_service_handler import is_out_format_supported, is_audio_format_supported, \
     is_language_supported, handle_request
 from stub.speech_recognition_open_api_pb2 import RecognitionConfig, RecognitionAudio, Language, SpeechRecognitionRequest
 
@@ -124,10 +124,3 @@ def test_should_throw_empty_audio_source_is_not_implemented_error_on_handle():
                0] == 'empty audio source is not implemented yet, send valid attributes only for audioUri or audioContent'
 
 
-def test_should_throw_fileid_is_not_implemented_error_on_handle():
-    request = SpeechRecognitionRequest(config=RecognitionConfig(audioFormat='MP3'), audio=RecognitionAudio(fileId='123')
-                                       )
-    with pytest.raises(NotImplementedError) as e:
-        handle_request(request)
-
-    assert e.value.args[0] == 'fileId is not implemented yet'

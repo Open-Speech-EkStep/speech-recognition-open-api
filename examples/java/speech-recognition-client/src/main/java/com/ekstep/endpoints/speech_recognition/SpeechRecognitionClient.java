@@ -1,10 +1,8 @@
 package com.ekstep.endpoints.speech_recognition;
 
 import com.google.protobuf.ByteString;
-import io.grpc.Channel;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.StatusRuntimeException;
+import io.grpc.*;
+import io.grpc.stub.MetadataUtils;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -19,20 +17,27 @@ public class SpeechRecognitionClient {
         blockingStub = SpeechRecognizerGrpc.newBlockingStub(channel);
     }
 
-    public SpeechRecognitionResult transcribeUrlV2() {
-        String audioUrl = "https://codmento.com/ekstep/test/changed.wav";
-        logger.info("Will try to request " + audioUrl + " ...");
+    public SpeechRecognitionResult transcribeAudioBytes(ByteString audioBytes, Language.LanguageCode language, RecognitionConfig.AudioFormat audioFormat, RecognitionConfig.TranscriptionFormatEnum transcriptionFormat) {
+        logger.info("Will try to request ...");
+
         RecognitionConfig config = RecognitionConfig.newBuilder()
-                .setLanguage(Language.newBuilder().setValue(Language.LanguageCode.hi).build())
-                .setAudioFormat(RecognitionConfig.AudioFormat.WAV)
+                .setLanguage(Language.newBuilder().setSourceLanguage(language).build())
+                .setAudioFormat(audioFormat)
+                .setTranscriptionFormat(RecognitionConfig.TranscriptionFormat.newBuilder().setValue(transcriptionFormat).build())
                 .build();
-        RecognitionAudio audio = RecognitionAudio.newBuilder().setAudioUri(audioUrl).build();
+        RecognitionAudio audio = RecognitionAudio.newBuilder().setAudioContent(audioBytes).build();
         SpeechRecognitionRequest request = SpeechRecognitionRequest.newBuilder()
-                .setAudio(audio)
+                .addAudio(audio)
                 .setConfig(config)
                 .build();
-        SpeechRecognitionResult response;
 
+        Metadata metadata = new Metadata();
+        Metadata.Key<String> key = Metadata.Key.of("language", Metadata.ASCII_STRING_MARSHALLER);
+        metadata.put(key, language.toString());
+
+        MetadataUtils.attachHeaders(blockingStub, metadata);
+
+        SpeechRecognitionResult response;
         try {
             response = blockingStub.recognize(request);
             return response;
@@ -42,103 +47,25 @@ public class SpeechRecognitionClient {
         }
     }
 
-    public SpeechRecognitionResult transcribeBytesV2() {
-        logger.info("Will try to request ...");
+    public static ByteString getAudioBytes() {
         AudioFiles audioFiles = new AudioFiles();
         String file = "/Users/nireshkumarr/Documents/ekstep/speech-recognition-open-api/examples/python/speech-recognition/changed.wav";
         byte[] data2 = audioFiles.readAudioFileData(file);
         ByteString byteString = ByteString.copyFrom(data2);
-
-        RecognitionConfig config = RecognitionConfig.newBuilder()
-                .setLanguage(Language.newBuilder().setValue(Language.LanguageCode.hi).build())
-                .setAudioFormat(RecognitionConfig.AudioFormat.WAV)
-                .build();
-        RecognitionAudio audio = RecognitionAudio.newBuilder().setAudioContent(byteString).build();
-        SpeechRecognitionRequest request = SpeechRecognitionRequest.newBuilder()
-                .setAudio(audio)
-                .setConfig(config)
-                .build();
-
-        SpeechRecognitionResult response;
-        try {
-            response = blockingStub.recognize(request);
-            return response;
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return SpeechRecognitionResult.newBuilder().build();
-        }
-    }
-
-    public SpeechRecognitionResult srtUrlV2() {
-        String audioUrl = "https://codmento.com/ekstep/test/changed.wav";
-        logger.info("Will try to request " + audioUrl + " ...");
-        RecognitionConfig config = RecognitionConfig.newBuilder()
-                .setLanguage(Language.newBuilder().setValue(Language.LanguageCode.hi).build())
-                .setAudioFormat(RecognitionConfig.AudioFormat.WAV)
-                .setTranscriptionFormat(RecognitionConfig.TranscriptionFormat.SRT)
-                .build();
-        RecognitionAudio audio = RecognitionAudio.newBuilder().setAudioUri(audioUrl).build();
-        SpeechRecognitionRequest request = SpeechRecognitionRequest.newBuilder()
-                .setAudio(audio)
-                .setConfig(config)
-                .build();
-        SpeechRecognitionResult response;
-
-        try {
-            response = blockingStub.recognize(request);
-            return response;
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return SpeechRecognitionResult.newBuilder().build();
-        }
-    }
-
-
-
-    public SpeechRecognitionResult srtBytesV2() {
-        logger.info("Will try to request ...");
-        AudioFiles audioFiles = new AudioFiles();
-        String file = "/Users/nireshkumarr/Documents/ekstep/speech-recognition-open-api/examples/python/speech-recognition/changed.wav";
-        byte[] data2 = audioFiles.readAudioFileData(file);
-        ByteString byteString = ByteString.copyFrom(data2);
-
-        RecognitionConfig config = RecognitionConfig.newBuilder()
-                .setLanguage(Language.newBuilder().setValue(Language.LanguageCode.hi).build())
-                .setAudioFormat(RecognitionConfig.AudioFormat.WAV)
-                .setTranscriptionFormat(RecognitionConfig.TranscriptionFormat.SRT)
-                .build();
-        RecognitionAudio audio = RecognitionAudio.newBuilder().setAudioContent(byteString).build();
-        SpeechRecognitionRequest request = SpeechRecognitionRequest.newBuilder()
-                .setAudio(audio)
-                .setConfig(config)
-                .build();
-
-        SpeechRecognitionResult response;
-        try {
-            response = blockingStub.recognize(request);
-            return response;
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return SpeechRecognitionResult.newBuilder().build();
-        }
+        return byteString;
     }
 
     public static void main(String[] args) throws Exception {
-        String target = "34.70.114.226:50051";
+        String target = "test-model-api.vakyansh.in:50051";
 
         ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
                 .usePlaintext()
                 .build();
         try {
             SpeechRecognitionClient client = new SpeechRecognitionClient(channel);
-            SpeechRecognitionResult srtUrlResponse = client.srtUrlV2()
-            SpeechRecognitionResult srtBytesResponse = client.srtBytesV2();
-            SpeechRecognitionResult bytesResponse = client.transcribeBytesV2();
-            SpeechRecognitionResult urlResponse = client.transcribeUrlV2();
-            System.out.println(bytesResponse.getTranscript());
-            System.out.println(urlResponse.getTranscript());
-            System.out.println(srtBytesResponse.getSrt());
-            System.out.println(srtUrlResponse.getSrt());
+            ByteString audioBytes = getAudioBytes();
+            SpeechRecognitionResult result = client.transcribeAudioBytes(audioBytes, Language.LanguageCode.en, RecognitionConfig.AudioFormat.wav, RecognitionConfig.TranscriptionFormatEnum.transcript);
+            System.out.println(result.toString());
 
         } finally {
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);

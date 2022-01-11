@@ -1,5 +1,4 @@
-from model_service import ModelService
-import pytest
+from src.model_service import ModelService
 
 
 def test_transcribe(mocker):
