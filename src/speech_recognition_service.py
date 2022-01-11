@@ -153,6 +153,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         self.clear_states(user)
         LOGGER.info("Disconnecting user %s", str(user))
 
+    @monitor
     def transcribe(self, buffer, count, data, append_result, local_file_name):
         index = data.user + count
         user = data.user
@@ -161,12 +162,12 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
 
         try:
             file_name = self.write_wave_to_file(temp_location + "/" + index + ".wav", buffer)
-
             result = self.model_service.transcribe(file_name, data.language, False, False)
             if user not in self.client_transcription:
                 self.client_transcription[user] = ""
             transcription = (self.client_transcription[user] + " " + result['transcription']).lstrip()
             result['transcription'] = transcription
+            LOGGER.debug("transcription for user %s language: %s transcription: %s", user, data.language, transcription)
             if append_result:
                 self.client_transcription[user] = transcription
                 if local_file_name is not None:
@@ -176,14 +177,12 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             LOGGER.debug("Responded for user %s language: %s transcription: %s and result %s", user, data.language,
                          transcription, result)
 
-            os.remove(file_name)
-
             if result['status'] != "OK":
                 result["success"] = False
             else:
                 result["success"] = True
         except Exception as e:
-            LOGGER.error(e)
+            LOGGER.error('Error in realtime streaming', e)
             result["success"] = False
         finally:
             # cleanup temp location
