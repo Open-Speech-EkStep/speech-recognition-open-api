@@ -2,6 +2,7 @@ import os
 import time
 import uuid
 import wave
+from pathlib import Path
 
 import requests
 from mimeparse import parse_mime_type
@@ -72,6 +73,16 @@ def create_directory(file):
     if not os.path.exists(file):
         os.makedirs(file)
 
+
+def delete_directory(directory):
+    directory = Path(directory)
+    if directory.exists():
+        for item in directory.iterdir():
+            if item.is_dir():
+                delete_directory(item)
+            else:
+                item.unlink()
+        directory.rmdir()
 
 def delete_file(file):
     if os.path.exists(file):

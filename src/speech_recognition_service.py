@@ -15,7 +15,7 @@ from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
 from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
-    get_env_var, create_temp_dir
+    get_env_var, create_temp_dir, delete_directory
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -117,8 +117,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             finally:
                 # cleanup temp lodation
                 LOGGER.debug(f'removing directory {temp_location}')
-                if Path(temp_location).exists():
-                    Path(temp_location).rmdir()
+                delete_directory(temp_location)
 
         result = SpeechRecognitionResult(status='SUCCESS', output=model_output_list)
         return result
