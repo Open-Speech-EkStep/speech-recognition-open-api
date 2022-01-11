@@ -323,7 +323,7 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     sample = dict()
     net_input = dict()
     dir_name = src.media_convertor.media_conversion(wav_path, duration_limit=15)
-    audio_file = dir_name + '/clipped_audio.wav'
+    audio_file = dir_name /'clipped_audio.wav'
     normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
     silence = AudioSegment.silent(duration=500)
     sound = silence + normalized_audio + silence

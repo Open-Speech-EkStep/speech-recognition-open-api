@@ -93,6 +93,6 @@ def clip_audio(audio_file, dir_name, duration_limit):
     if audio_duration_min > duration_limit:
         d_limit = duration_limit * 60 * 1000
         clipped_audio = audio_file[:d_limit]
-        clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
+        clipped_audio.export(dir_name / 'clipped_audio.wav', format='wav')
     else:
-        audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
+        audio_file.export(dir_name / 'clipped_audio.wav', format='wav')

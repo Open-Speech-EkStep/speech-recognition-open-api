@@ -62,10 +62,10 @@ class ModelService:
                     LOGGER.info(f"Loaded {language_code} model with ITN")
 
     @monitor
-    def transcribe(self, file_name, language, punctuate, itn):
+    def transcribe(self, file, language, punctuate, itn):
         model_item = self.model_items[language]
         response = get_results(
-            wav_path=file_name,
+            wav_path=file,
             dict_path=model_item.get_dict_file_path(),
             generator=model_item.get_generator(),
             use_cuda=self.cuda,
