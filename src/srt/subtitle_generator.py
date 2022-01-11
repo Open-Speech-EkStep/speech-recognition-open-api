@@ -5,9 +5,10 @@ import subprocess
 import torch
 from pydub import AudioSegment
 
-from src import utilities
+from src import utilities, log_setup
 from src.srt.infer import generate_srt
 
+LOGGER = log_setup.get_logger(__name__)
 
 def media_conversion(file_name, duration_limit=5):
     dir_name = utilities.create_temp_dir()
@@ -18,6 +19,7 @@ def media_conversion(file_name, duration_limit=5):
 
     audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
     utilities.clip_audio(audio_file, dir_name, duration_limit)
+    LOGGER.debug(f'removing files {dir_name}/input_audio.wav')
     utilities.delete_file(dir_name + '/input_audio.wav')
 
     return dir_name

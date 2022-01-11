@@ -90,6 +90,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     response = self.model_service.transcribe(audio_path, language, punctuate, itn)
                     output = SpeechRecognitionResult.Output(source=response['transcription'])
                     model_output_list.append(output)
+                LOGGER.debug(f'removing files {audio_path}')
                 os.remove(audio_path)
 
             except ValueError as e:

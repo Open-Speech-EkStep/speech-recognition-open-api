@@ -14,7 +14,7 @@ from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
 from pydub import AudioSegment
 
-from src import utilities
+from src import utilities, log_setup
 from src.lib.audio_normalization import AudioNormalization
 
 try:
@@ -37,6 +37,7 @@ except:
     LM = object
     LMState = object
 
+LOGGER = log_setup.get_logger(__name__)
 
 class Wav2VecCtc(BaseFairseqModel):
     def __init__(self, cfg: Wav2Vec2CtcConfig, w2v_encoder: BaseFairseqModel):
@@ -323,6 +324,7 @@ def media_conversion(file_name, duration_limit=5):
                     shell=True)
     audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
     utilities.clip_audio(audio_file, dir_name, duration_limit)
+    LOGGER.debug(f'removing files {dir_name}/input_audio.wav')
     utilities.delete_file(dir_name + '/input_audio.wav')
     return dir_name
 
@@ -364,6 +366,7 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     del sample
     torch.cuda.empty_cache()
     # cleanup audio files
+    LOGGER.debug(f'removing files {audio_file} and dir {dir_name}')
     os.remove(audio_file)
     if Path(dir_name).exists():
         Path(dir_name).rmdir()
