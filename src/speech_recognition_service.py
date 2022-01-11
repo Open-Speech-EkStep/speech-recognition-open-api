@@ -161,8 +161,8 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         LOGGER.debug(f'created temp directory {temp_location}')
 
         try:
-            file_name = self.write_wave_to_file(temp_location + "/" + index + ".wav", buffer)
-            result = self.model_service.transcribe(file_name, data.language, False, False)
+            input_audio_file = self.write_wave_to_file(temp_location + "/" + index + ".wav", buffer)
+            result = self.model_service.transcribe(Path(input_audio_file), data.language, False, False)
             if user not in self.client_transcription:
                 self.client_transcription[user] = ""
             transcription = (self.client_transcription[user] + " " + result['transcription']).lstrip()
