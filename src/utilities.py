@@ -1,16 +1,12 @@
 import os
-import subprocess
 import time
 import uuid
 import wave
-from pathlib import Path
 
 import requests
 from mimeparse import parse_mime_type
 
 from src.monitoring import monitor
-from src.srt.subtitle_generator import LOGGER
-from pydub import AudioSegment
 
 
 def validate_content(response, audio_format='wav'):
@@ -100,16 +96,3 @@ def clip_audio(audio_file, dir_name, duration_limit):
         clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
     else:
         audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
-
-
-def media_conversion(file=Path, duration_limit=5):
-    dir_name = file.parent
-    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file, 16000, 1, 16,
-                                                                                        dir_name + '/input_audio.wav')],
-                    shell=True)
-    audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
-    clip_audio(audio_file, dir_name, duration_limit)
-    LOGGER.debug(f'removing files {dir_name}/input_audio.wav')
-    delete_file(dir_name + '/input_audio.wav')
-
-    return dir_name

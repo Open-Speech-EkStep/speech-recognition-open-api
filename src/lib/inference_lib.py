@@ -14,6 +14,7 @@ from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
 from pydub import AudioSegment
 
+import src.media_convertor
 from src import utilities, log_setup
 from src.lib.audio_normalization import AudioNormalization
 
@@ -321,7 +322,7 @@ def post_process(sentence: str, symbol: str):
 def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=None):
     sample = dict()
     net_input = dict()
-    dir_name = utilities.media_conversion(wav_path, duration_limit=15)
+    dir_name = src.media_convertor.media_conversion(wav_path, duration_limit=15)
     audio_file = dir_name + '/clipped_audio.wav'
     normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
     silence = AudioSegment.silent(duration=500)

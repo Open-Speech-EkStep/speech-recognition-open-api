@@ -6,7 +6,7 @@ import torch
 
 from src import log_setup
 from src.srt.infer import generate_srt
-from src.utilities import media_conversion
+from src.media_convertor import media_conversion
 
 LOGGER = log_setup.get_logger(__name__)
 
