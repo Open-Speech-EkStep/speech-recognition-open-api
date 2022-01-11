@@ -115,7 +115,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 return SpeechRecognitionResult(status='ERROR',
                                                status_text="An unknown error has occurred.Please try again.")
             finally:
-                # cleanup temp lodation
+                # cleanup temp location
                 LOGGER.debug(f'removing directory {temp_location}')
                 delete_directory(temp_location)
 
@@ -156,28 +156,40 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
     def transcribe(self, buffer, count, data, append_result, local_file_name):
         index = data.user + count
         user = data.user
-        file_name = self.write_wave_to_file(index + ".wav", buffer)
+        temp_location = create_temp_dir()
+        LOGGER.debug(f'created temp directory {temp_location}')
 
-        result = self.model_service.transcribe(file_name, data.language, False, False)
-        if user not in self.client_transcription:
-            self.client_transcription[user] = ""
-        transcription = (self.client_transcription[user] + " " + result['transcription']).lstrip()
-        result['transcription'] = transcription
-        if append_result:
-            self.client_transcription[user] = transcription
-            if local_file_name is not None:
-                with open(local_file_name.replace(".wav", ".txt"), 'w') as local_file:
-                    local_file.write(result['transcription'])
-        result["id"] = index
-        LOGGER.debug("Responded for user %s language: %s transcription: %s and result %s", user, data.language,
-                     transcription, result)
+        try:
+            file_name = self.write_wave_to_file(temp_location + "/" + index + ".wav", buffer)
 
-        os.remove(file_name)
+            result = self.model_service.transcribe(file_name, data.language, False, False)
+            if user not in self.client_transcription:
+                self.client_transcription[user] = ""
+            transcription = (self.client_transcription[user] + " " + result['transcription']).lstrip()
+            result['transcription'] = transcription
+            if append_result:
+                self.client_transcription[user] = transcription
+                if local_file_name is not None:
+                    with open(local_file_name.replace(".wav", ".txt"), 'w') as local_file:
+                        local_file.write(result['transcription'])
+            result["id"] = index
+            LOGGER.debug("Responded for user %s language: %s transcription: %s and result %s", user, data.language,
+                         transcription, result)
 
-        if result['status'] != "OK":
+            os.remove(file_name)
+
+            if result['status'] != "OK":
+                result["success"] = False
+            else:
+                result["success"] = True
+        except Exception as e:
+            LOGGER.error(e)
             result["success"] = False
-        else:
-            result["success"] = True
+        finally:
+            # cleanup temp location
+            LOGGER.debug(f'removing directory {temp_location}')
+            delete_directory(temp_location)
+
         return json.dumps(result)
 
     def write_wave_to_file(self, file_name, audio):
