@@ -82,13 +82,13 @@ class ModelService:
         }
 
     @monitor
-    def get_srt(self, file_name, language, punctuate, itn):
+    def get_srt(self, file, language, punctuate, itn):
         model_item = self.model_items[language]
         model = model_item.get_model()
         generator = model_item.get_generator()
         dict_file_path = model_item.get_dict_file_path()
         result = {}
-        response = get_srt(file_name, model, generator, dict_file_path,
+        response = get_srt(file, model, generator, dict_file_path,
                            os.path.dirname(__file__) + '/denoiser', audio_threshold=15,
                            language=language, half=self.half)
         response = [i.replace('\n', ' ') for i in list(itertools.chain(*response)) if type(i) != bool]

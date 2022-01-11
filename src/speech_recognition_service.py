@@ -15,7 +15,7 @@ from stub import speech_recognition_open_api_pb2_grpc
 from stub.speech_recognition_open_api_pb2 import SpeechRecognitionResult, Language, RecognitionConfig, Response, \
     PunctuateResponse
 from src.utilities import download_from_url_to_file, create_wav_file_using_bytes, get_current_time_in_millis, \
-    get_env_var
+    get_env_var, create_temp_dir
 
 LOGGER = log_setup.get_logger(__name__)
 
@@ -75,12 +75,15 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         LOGGER.info(
             f"The request parameters are (language:{language},output_format:{out_format},audio_format:{audio_format},punctuation :{punctuate},enableInverseTextNormalization:{itn})")
         for audio_obj in request.audio:
-            file_name = 'audio_input_{}.{}'.format(str(get_current_time_in_millis()), audio_format.lower())
+            # create temp location for audio processing
+            temp_location = create_temp_dir()
+            audio_path = Path(temp_location + '/audio_input_{}.{}'.format(str(get_current_time_in_millis()),
+                                                                    audio_format.lower()))
             try:
                 if len(audio_obj.audioUri) != 0:
-                    audio_path = download_from_url_to_file(file_name, audio_obj.audioUri, audio_format)
+                    audio_path = download_from_url_to_file(audio_path, audio_obj.audioUri, audio_format)
                 elif len(audio_obj.audioContent) != 0:
-                    audio_path = create_wav_file_using_bytes(file_name, audio_obj.audioContent)
+                    audio_path = create_wav_file_using_bytes(audio_path, audio_obj.audioContent)
                 if out_format == 'srt':
                     response = self.model_service.get_srt(audio_path, language, punctuate, itn)
                     output = SpeechRecognitionResult.Output(source=response['srt'])
@@ -90,8 +93,6 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     response = self.model_service.transcribe(audio_path, language, punctuate, itn)
                     output = SpeechRecognitionResult.Output(source=response['transcription'])
                     model_output_list.append(output)
-                LOGGER.debug(f'removing files {audio_path}')
-                os.remove(audio_path)
 
             except ValueError as e:
                 LOGGER.error(str(e))
@@ -112,6 +113,12 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 return SpeechRecognitionResult(status='ERROR',
                                                status_text="An unknown error has occurred.Please try again.")
+            finally:
+                # cleanup temp lodation
+                LOGGER.debug(f'removing directory {temp_location}')
+                if Path(temp_location).exists():
+                    Path(temp_location).rmdir()
+
         result = SpeechRecognitionResult(status='SUCCESS', output=model_output_list)
         return result
 

@@ -1,12 +1,16 @@
 import os
+import subprocess
 import time
 import uuid
 import wave
+from pathlib import Path
 
 import requests
 from mimeparse import parse_mime_type
 
 from src.monitoring import monitor
+from src.srt.subtitle_generator import LOGGER
+from pydub import AudioSegment
 
 
 def validate_content(response, audio_format='wav'):
@@ -35,22 +39,22 @@ def validate_content(response, audio_format='wav'):
 
 
 @monitor
-def download_from_url_to_file(file_name, url, audio_format):
+def download_from_url_to_file(file, url, audio_format):
     response = requests.get(url, allow_redirects=True)
     response.raise_for_status()
     validate_content(response, audio_format.lower())
-    with open(file_name, 'wb') as f:
+    with open(file, 'wb') as f:
         f.write(response.content)
-    return os.path.join(os.getcwd(), file_name)
+    return file
 
 
-def create_wav_file_using_bytes(file_name, audio):
-    with wave.open(file_name, 'wb') as file:
+def create_wav_file_using_bytes(file, audio):
+    with wave.open(file, 'wb') as file:
         file.setnchannels(1)
         file.setsampwidth(2)
         file.setframerate(16000.0)
         file.writeframes(audio)
-    return os.path.join(os.getcwd(), file_name)
+    return file
 
 
 @monitor
@@ -96,3 +100,16 @@ def clip_audio(audio_file, dir_name, duration_limit):
         clipped_audio.export(dir_name + '/clipped_audio.wav', format='wav')
     else:
         audio_file.export(dir_name + '/clipped_audio.wav', format='wav')
+
+
+def media_conversion(file=Path, duration_limit=5):
+    dir_name = file.parent
+    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file, 16000, 1, 16,
+                                                                                        dir_name + '/input_audio.wav')],
+                    shell=True)
+    audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
+    clip_audio(audio_file, dir_name, duration_limit)
+    LOGGER.debug(f'removing files {dir_name}/input_audio.wav')
+    delete_file(dir_name + '/input_audio.wav')
+
+    return dir_name

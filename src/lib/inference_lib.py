@@ -316,23 +316,12 @@ def post_process(sentence: str, symbol: str):
     return sentence
 
 
-def media_conversion(file_name, duration_limit=5):
-    dir_name = utilities.create_temp_dir()
-
-    subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file_name, 16000, 1, 16,
-                                                                                        dir_name + '/input_audio.wav')],
-                    shell=True)
-    audio_file = AudioSegment.from_wav(dir_name + '/input_audio.wav')
-    utilities.clip_audio(audio_file, dir_name, duration_limit)
-    LOGGER.debug(f'removing files {dir_name}/input_audio.wav')
-    utilities.delete_file(dir_name + '/input_audio.wav')
-    return dir_name
 
 
 def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=None):
     sample = dict()
     net_input = dict()
-    dir_name = media_conversion(wav_path, duration_limit=15)
+    dir_name = utilities.media_conversion(wav_path, duration_limit=15)
     audio_file = dir_name + '/clipped_audio.wav'
     normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
     silence = AudioSegment.silent(duration=500)
@@ -365,11 +354,6 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     text = post_process(hyp_pieces, 'letter')
     del sample
     torch.cuda.empty_cache()
-    # cleanup audio files
-    LOGGER.debug(f'removing files {audio_file} and dir {dir_name}')
-    os.remove(audio_file)
-    if Path(dir_name).exists():
-        Path(dir_name).rmdir()
 
     return text
 
