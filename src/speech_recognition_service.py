@@ -78,7 +78,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             # create temp location for audio processing
             temp_location = create_temp_dir()
             LOGGER.debug(f'created temp directory {temp_location}')
-            audio_path = Path(temp_location + 'audio_input_{}.{}'.format(str(get_current_time_in_millis()),
+            audio_path = Path(temp_location + '/audio_input_{}.{}'.format(str(get_current_time_in_millis()),
                                                                     audio_format.lower()))
             try:
                 if len(audio_obj.audioUri) != 0:
