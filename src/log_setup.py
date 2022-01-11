@@ -12,6 +12,7 @@ LOG_FILE = f"inference_" + socket.gethostname() + ".log"
 
 _FILE_LOGGER_HANDLER = None
 _CONSOLE_LOGGER_HANDLER = None
+_LOGGING_DEBUG = os.environ.get('log_level', 'DEBUG')
 
 
 def get_console_handler():
@@ -38,7 +39,7 @@ def get_file_handler():
 
 def get_logger(logger_name):
     logger = logging.getLogger(logger_name)
-    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.setLevel(_LOGGING_DEBUG)  # better to have too much log than not enough
     logger.addHandler(get_console_handler())
     logger.addHandler(get_file_handler())
     # with this pattern, it's rarely necessary to propagate the error up to parent
