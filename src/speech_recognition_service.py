@@ -182,7 +182,7 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
             else:
                 result["success"] = True
         except Exception as e:
-            LOGGER.error('Error in realtime streaming', e)
+            LOGGER.exception('Error in realtime streaming %s', e)
             result["success"] = False
         finally:
             # cleanup temp location
