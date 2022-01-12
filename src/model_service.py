@@ -42,6 +42,7 @@ class ModelService:
         self.punc_models_dict = {}
         self.enabled_itn_lang_dict = {}
         self.supported_languages = list(model_config.keys())
+        self.denoiser_path = os.environ.get('UTILITIES_FILES_PATH') + 'denoiser'
         get_gpu_info(self.cuda)
         for language_code, lang_config in model_config.items():
             if language_code in languages or 'all' in languages:
@@ -89,7 +90,7 @@ class ModelService:
         dict_file_path = model_item.get_dict_file_path()
         result = {}
         response = get_srt(file, model, generator, dict_file_path,
-                           os.path.dirname(__file__) + '/denoiser', audio_threshold=15,
+                           self.denoiser_path, audio_threshold=15,
                            language=language, half=self.half)
         response = [i.replace('\n', ' ') for i in list(itertools.chain(*response)) if type(i) != bool]
         result['srt'] = ''.join(response)

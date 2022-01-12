@@ -10,6 +10,7 @@ ENV base_path=/opt/speech_recognition_open_api/
 ENV models_base_path=/opt/speech_recognition_open_api/deployed_models/
 ENV model_logs_base_path=/opt/speech_recognition_open_api/deployed_models/logs/
 ENV TRANSFORMERS_CACHE=/opt/speech_recognition_open_api/deployed_models/model_data/transformers_cache/
+ENV UTILITIES_FILES_PATH=/opt/files/
 COPY requirements.txt /opt/speech_recognition_open_api/
 RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/lib" >> ~/.bashrc
 RUN pip3 install --no-cache-dir -r /opt/speech_recognition_open_api/requirements.txt
