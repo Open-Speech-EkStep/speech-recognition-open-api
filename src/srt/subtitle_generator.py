@@ -14,9 +14,10 @@ def noise_suppression(dir_name: str, denoiser_path):
     cwd = os.getcwd()
     os.chdir(denoiser_path)
     LOGGER.debug(f'Calling noise suppression from denoiser_path {denoiser_path} on directory {dir_name}')
-    subprocess.call([
-        "python -m denoiser.enhance --dns48 --noisy_dir {} --out_dir {} --sample_rate {} --num_workers {} --device cpu".format(
-            dir_name, dir_name, 16000, 1)], shell=True)
+    denoiser_command = "python -m denoiser.enhance --dns48 --noisy_dir {} --out_dir {} --sample_rate {} --num_workers {} --device cpu".format(
+        dir_name, dir_name, 16000, 1)
+    LOGGER.debug(f'Calling denoiser command {denoiser_command}')
+    subprocess.call([denoiser_command], shell=True)
     LOGGER.debug(f'denoiser done')
     os.chdir(cwd)
 
