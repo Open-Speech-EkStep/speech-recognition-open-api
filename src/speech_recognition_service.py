@@ -56,12 +56,12 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
         try:
             handle_request(request, self.model_service.supported_languages)
         except NotImplementedError as e:
-            LOGGER.error(str(e))
+            LOGGER.exception('Validation failed %s', e)
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))
         except ValueError as e:
-            LOGGER.error(str(e))
+            LOGGER.exception('Value error %s', e)
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return SpeechRecognitionResult(status='ERROR', status_text=str(e))
@@ -96,20 +96,20 @@ class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServ
                     model_output_list.append(output)
 
             except ValueError as e:
-                LOGGER.error(str(e))
+                LOGGER.exception('Recognize failed %s', e)
                 context.set_details(str(e))
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
                 return SpeechRecognitionResult(status='ERROR',
                                                status_text=str(e))
 
             except requests.exceptions.RequestException as e:
-                LOGGER.error(str(e))
+                LOGGER.exception('Request exception %s', e)
                 context.set_details("Audio file url is incorrect or can't be accessed")
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
                 return SpeechRecognitionResult(status='ERROR',
                                                status_text="Audio file url is incorrect or can't be accessed")
             except Exception as e:
-                LOGGER.error(str(e))
+                LOGGER.exception('Exception %s', e)
                 context.set_details("An unknown error has occurred.Please try again.")
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 return SpeechRecognitionResult(status='ERROR',
