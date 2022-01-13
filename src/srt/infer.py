@@ -4,6 +4,7 @@ from pydub import AudioSegment
 from fairseq import utils
 from fairseq.data import Dictionary
 
+from src.monitoring import monitor
 from src.srt.timestamp_generator import extract_time_stamps
 from tqdm import tqdm
 from src.lib.inference_lib import W2lViterbiDecoder, get_feature_for_bytes, post_process
@@ -57,6 +58,7 @@ def response_alignment(response, num_words_per_line=25):
     return aligned_response
 
 
+@monitor
 def generate_srt(wav_path, language, model, generator, cuda, dict_path, half=False):
     start_time, end_time = extract_time_stamps(wav_path)
     original_file_path = wav_path.replace('clipped_audio_enhanced', 'clipped_audio')
