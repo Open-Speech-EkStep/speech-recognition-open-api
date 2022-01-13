@@ -26,7 +26,7 @@ def get_srt(file, model, generator, dict_path, denoiser_path, audio_threshold=5,
     dir_name = media_conversion(file, duration_limit=audio_threshold)
     LOGGER.debug(f'Media conversion done for file {file}')
     noise_suppression(str(dir_name), denoiser_path)
-    audio_file = dir_name / 'clipped_audio_enhanced.wav'
+    audio_file = str(dir_name / 'clipped_audio_enhanced.wav')
     LOGGER.debug(f'Requesting generate_srt on audio file {audio_file}')
     result = generate_srt(wav_path=audio_file, language=language, model=model, generator=generator,
                           cuda=torch.cuda.is_available(), dict_path=dict_path, half=half)
