@@ -40,6 +40,7 @@ except:
 
 LOGGER = log_setup.get_logger(__name__)
 
+
 class Wav2VecCtc(BaseFairseqModel):
     def __init__(self, cfg: Wav2Vec2CtcConfig, w2v_encoder: BaseFairseqModel):
         super().__init__()
@@ -317,13 +318,11 @@ def post_process(sentence: str, symbol: str):
     return sentence
 
 
-
-
 def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=None):
     sample = dict()
     net_input = dict()
     dir_name = src.media_convertor.media_conversion(wav_path, duration_limit=15)
-    audio_file = dir_name /'clipped_audio.wav'
+    audio_file = dir_name / 'clipped_audio.wav'
     normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
     silence = AudioSegment.silent(duration=500)
     sound = silence + normalized_audio + silence
@@ -398,8 +397,16 @@ def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi"
     else:
         model = load_model(model_path)
 
+    for parameter in model.parameters():
+        LOGGER.info('Before half', parameter.dtype)
+        break
+
     if half:
         model.half()
+
+    for parameter in model.parameters():
+        LOGGER.info('After half', parameter.dtype)
+        break
 
     result = get_results(wav_path=wav_path, dict_path=dict_path, generator=generator, use_cuda=cuda, model=model,
                          half=half)
