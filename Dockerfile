@@ -10,7 +10,7 @@ ENV base_path=/opt/speech_recognition_open_api/
 ENV models_base_path=/opt/speech_recognition_open_api/deployed_models/
 ENV model_logs_base_path=/opt/speech_recognition_open_api/deployed_models/logs/
 ENV TRANSFORMERS_CACHE=/opt/speech_recognition_open_api/deployed_models/model_data/transformers_cache/
-ENV DENOISER_MODEL_PATH=/opt/speech_recognition_open_api/deployed_models/model_data/denoiser/
+ENV DENOISER_MODEL_PATH=/opt/speech_recognition_open_api/deployed_models/model_data/denoiser/denoiser_dns48.pth
 ENV UTILITIES_FILES_PATH=/opt/files/
 COPY requirements.txt /opt/speech_recognition_open_api/
 RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/lib" >> ~/.bashrc

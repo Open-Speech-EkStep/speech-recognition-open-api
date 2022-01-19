@@ -96,7 +96,7 @@ class ModelService:
         result['srt'] = ''.join(response)
         result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
         result['srt'] = self.apply_itn(result['srt'], language, itn)
-        LOGGER.info("*** The model SRT is *** ", result['srt'])
+        LOGGER.info('*** The model SRT is *** %s', result['srt'])
         return result
 
     @monitor
