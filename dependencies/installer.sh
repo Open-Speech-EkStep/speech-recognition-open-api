@@ -48,7 +48,7 @@ pip3 install nemo_toolkit[all]==v1.0.2
 pip3 install git+https://github.com/Open-Speech-EkStep/fairseq.git@v2-hydra
 
 if [ ! -d denoiser ]; then
-  git clone https://github.com/facebookresearch/denoiser.git
+  git clone https://github.com/Open-Speech-EkStep/denoiser.git
 fi
 
 apt install -y graphviz
