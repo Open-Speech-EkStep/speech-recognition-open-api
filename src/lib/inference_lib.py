@@ -433,10 +433,19 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     if cuda:
         model = load_model(model_path)
         model.cuda()
+        for parameter in model.parameters():
+            LOGGER.info('Before half', parameter.dtype)
+            break
+
         if half:
             model.half()
+
+        for parameter in model.parameters():
+            LOGGER.info('After half', parameter.dtype)
+            break
+
         ln_code = model_item.get_language_code()
-        print(f"{ln_code} Model initialized with GPU successfully")
+        LOGGER.info(f"{ln_code} Model initialized with GPU successfully")
 
     else:
         model = load_model(model_path)
