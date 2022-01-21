@@ -45,8 +45,8 @@ def download_from_url_to_file(file, url, audio_format):
     return file
 
 
-def create_wav_file_using_bytes(file, audio):
-    with wave.open(file, 'wb') as file:
+def create_wav_file_using_bytes(file_path, audio):
+    with wave.open(str(file_path), 'wb') as file:
         file.setnchannels(1)
         file.setsampwidth(2)
         file.setframerate(16000.0)
