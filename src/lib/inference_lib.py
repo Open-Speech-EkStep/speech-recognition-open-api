@@ -397,16 +397,8 @@ def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi"
     else:
         model = load_model(model_path)
 
-    for parameter in model.parameters():
-        LOGGER.info('Before half', parameter.dtype)
-        break
-
     if half:
         model.half()
-
-    for parameter in model.parameters():
-        LOGGER.info('After half', parameter.dtype)
-        break
 
     result = get_results(wav_path=wav_path, dict_path=dict_path, generator=generator, use_cuda=cuda, model=model,
                          half=half)
@@ -434,14 +426,14 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
         model = load_model(model_path)
         model.cuda()
         for parameter in model.parameters():
-            LOGGER.info('Before half', parameter.dtype)
+            LOGGER.info('Before half %s', parameter.dtype)
             break
 
         if half:
             model.half()
 
         for parameter in model.parameters():
-            LOGGER.info('After half', parameter.dtype)
+            LOGGER.info('After half %s', parameter.dtype)
             break
 
         ln_code = model_item.get_language_code()
