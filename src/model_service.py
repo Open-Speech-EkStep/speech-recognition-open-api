@@ -51,6 +51,7 @@ class ModelService:
                 model_file_name = path_split[-1]
                 model_item = ModelItem(base_path, model_file_name, language_code)
                 model, generator = load_model_and_generator(model_item, self.cuda, decoder=decoder_type, half=self.half)
+                model.eval()
                 model_item.set_model(model)
                 model_item.set_generator(generator)
                 self.model_items[language_code] = model_item

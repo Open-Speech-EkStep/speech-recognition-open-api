@@ -335,8 +335,6 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     feature = get_feature_for_bytes(wav, 16000)
     target_dict = Dictionary.load(dict_path)
 
-    model.eval()
-
     if half:
         net_input["source"] = feature.unsqueeze(0).half()
     else:

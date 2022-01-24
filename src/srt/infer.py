@@ -16,8 +16,6 @@ def get_results_from_chunks(wav_data, dict_path, generator, use_cuda=False, w2v_
     feature = wav_data
     target_dict = Dictionary.load(dict_path)
 
-    model.eval()
-
     if half:
         net_input["source"] = feature.unsqueeze(0).half()
     else:
