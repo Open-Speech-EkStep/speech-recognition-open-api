@@ -51,7 +51,7 @@ def create_wav_file_using_bytes(file_path, audio):
         file.setsampwidth(2)
         file.setframerate(16000.0)
         file.writeframes(audio)
-    return file
+    return file_path
 
 
 @monitor
