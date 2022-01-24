@@ -8,7 +8,7 @@ from src.lib.inference_lib import Wav2VecCtc
 
 
 def run():
-    workers = get_env_var('max_workers', 10)
+    workers = int(get_env_var('max_workers', 10))
     print('Using server workers:', workers)
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=workers),
