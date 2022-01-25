@@ -17,6 +17,7 @@ from pydub import AudioSegment
 import src.media_convertor
 from src import utilities, log_setup
 from src.lib.audio_normalization import AudioNormalization
+from src.monitoring import monitor
 
 try:
     from flashlight.lib.text.dictionary import create_word_dict, load_words
@@ -318,6 +319,7 @@ def post_process(sentence: str, symbol: str):
     return sentence
 
 
+@monitor
 def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, model=None, half=None):
     sample = dict()
     net_input = dict()

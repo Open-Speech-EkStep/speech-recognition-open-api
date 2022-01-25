@@ -2,9 +2,11 @@ import subprocess
 from pathlib import Path
 from pydub import AudioSegment
 
+from src.monitoring import monitor
 from src.utilities import clip_audio
 
 
+@monitor
 def media_conversion(file=Path, duration_limit=5):
     dir_name = file.parent
     subprocess.call(["ffmpeg -i {} -ar {} -ac {} -bits_per_raw_sample {} -vn {}".format(file, 16000, 1, 16,
