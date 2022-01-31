@@ -47,7 +47,7 @@ def test_should_throw_language_not_implemented_error_on_handle():
     with pytest.raises(NotImplementedError) as e:
         handle_request(request)
 
-    assert e.value.args[0] == 'Language not implemented yet'
+    assert e.value.args[0] == 'Language mr not implemented yet'
 
 
 def test_should_not_throw_language_not_implemented_error_on_handle():

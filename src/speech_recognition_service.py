@@ -24,9 +24,9 @@ LOGGER = log_setup.get_logger(__name__)
 # handle grpc thrown error from server
 # move default field of Model field to 0 from 3
 class SpeechRecognizer(speech_recognition_open_api_pb2_grpc.SpeechRecognizerServicer):
-    LOGGER.info('Initializing realtime and batch inference service')
 
     def __init__(self):
+        LOGGER.info('Initializing realtime and batch inference service')
         self.MODEL_BASE_PATH = get_env_var('models_base_path')
         self.BASE_PATH = get_env_var('base_path')
 

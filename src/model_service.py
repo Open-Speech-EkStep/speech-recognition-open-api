@@ -30,12 +30,15 @@ class ModelService:
 
     def __init__(self, model_base_path, decoder_type, cuda, half):
         languages = utilities.get_env_var('languages', ['all'])
+        LOGGER.info(f'environment requested languages {languages}')
         model_config_file_path = model_base_path + 'model_dict.json'
         if os.path.exists(model_config_file_path):
             with open(model_config_file_path, 'r') as f:
                 model_config = json.load(f)
         else:
             raise Exception(f'Model configuration file is missing at {model_config_file_path}')
+
+        LOGGER.info(f'configuration from model_dict.json is {model_config}')
         self.model_items = {}
         self.cuda = cuda
         self.half = half
