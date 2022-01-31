@@ -27,10 +27,10 @@ message Message {
 }
 
 message Response {
-    string transcription = 1;
-    string user = 2;
-    string language = 3;
-    string action = 4;
+  string transcription = 1;
+  string user = 2;
+  string language = 3;
+  string action = 4;
 }
 
 
@@ -130,6 +130,7 @@ message Language {
     raj = 30;
     bho = 31;
     en_bio = 32;
+    hi_en = 33;
   }
   optional string name = 1;
   LanguageCode sourceLanguage = 2;
