@@ -331,13 +331,15 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     LOGGER.debug('Appending silence')
     sound = silence + normalized_audio + silence
     sound.export('test_sil.wav', format='wav')
-    LOGGER.debug("The sound object is : ", sound)
+    LOGGER.debug(f"The sound object is : {sound}")
     wav = np.array(sound.get_array_of_samples()).astype('float64')
-    LOGGER.debug("The shape of the audio is ", wav.shape)
+    LOGGER.debug(f"The shape of the audio is {wav.shape}")
     # wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
     feature = get_feature_for_bytes(wav, 16000)
+    LOGGER.debug(f"feature : {feature}")
     target_dict = Dictionary.load(dict_path)
+    LOGGER.debug(f"target_dict : {target_dict}")
 
     if half:
         net_input["source"] = feature.unsqueeze(0).half()
@@ -356,7 +358,7 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     text = post_process(hyp_pieces, 'letter')
     del sample
     torch.cuda.empty_cache()
-
+    LOGGER.debug(f"infer completed {text}")
     return text
 
 
