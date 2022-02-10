@@ -121,7 +121,9 @@ class W2lDecoder(object):
         encoder_input = {
             k: v for k, v in sample["net_input"].items() if k != "prev_output_tokens"
         }
+        LOGGER.debug(f'encoder_input {encoder_input}')
         emissions = self.get_emissions(models, encoder_input)
+        LOGGER.debug(f'emission {emissions}')
         return self.decode(emissions)
 
     def get_emissions(self, models, encoder_input):
@@ -250,6 +252,7 @@ class W2lKenLMDecoder(W2lDecoder):
             )
 
     def decode(self, emissions):
+        LOGGER.debug('Decoder from W2lKenLMDecoder')
         B, T, N = emissions.size()
         hypos = []
         for b in range(B):
@@ -257,6 +260,7 @@ class W2lKenLMDecoder(W2lDecoder):
             results = self.decoder.decode(emissions_ptr, T, N)
 
             nbest_results = results[: self.nbest]
+            LOGGER.debug(f'Decoder from W2lKenLMDecoder nbest_results {nbest_results}')
             hypos.append(
                 [
                     {
@@ -269,6 +273,7 @@ class W2lKenLMDecoder(W2lDecoder):
                     for result in nbest_results
                 ]
             )
+            LOGGER.debug(f'returning hypos {hypos}')
         return hypos
 
 
@@ -339,7 +344,7 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     feature = get_feature_for_bytes(wav, 16000)
     LOGGER.debug(f"feature : {feature}")
     target_dict = Dictionary.load(dict_path)
-    LOGGER.debug(f"target_dict : {target_dict}")
+    LOGGER.debug(f"target_dict : {target_dict} from path: {dict_path}")
 
     if half:
         net_input["source"] = feature.unsqueeze(0).half()
