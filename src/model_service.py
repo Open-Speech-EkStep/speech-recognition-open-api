@@ -21,6 +21,7 @@ def get_gpu_info(gpu):
     if gpu:
         no_gpus = torch.cuda.device_count()
         LOGGER.info(f"*** Total number of gpus allocated are {no_gpus} ***")
+        LOGGER.info(f"*** Cuda Version {torch.version.cuda} ***")
         LOGGER.info("*** The gpu device info : ***")
         for gpu in range(0, no_gpus):
             LOGGER.info(f"GPU {str(gpu)} - {str(torch.cuda.get_device_name(gpu))}")
