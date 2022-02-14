@@ -16,7 +16,7 @@ parameters:
     default: "4.3"
   build_dependency:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   sonar-scan:
