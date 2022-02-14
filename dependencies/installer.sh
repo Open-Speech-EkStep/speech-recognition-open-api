@@ -74,7 +74,6 @@ bash install.sh
 python3 setup.py bdist_wheel
 pip3 install -e .
 
-pip3 install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio==0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 cd ..
 
 
