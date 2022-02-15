@@ -51,7 +51,7 @@ def get_cuda_device():
     LOGGER.info(f'selected_gpus: {selected_gpus}')
     LOGGER.info(f'Going for GPU ID: {selected_gpus[0]}')
     LOGGER.info(f'Going for selecting gpu: {selected_gpus[0]}')
-    if len(selected_gpus[0]) > 0:
+    if len(selected_gpus) > 0:
         selected_gpu_index = selected_gpus[0]
     else:
         selected_gpu_index = 0
