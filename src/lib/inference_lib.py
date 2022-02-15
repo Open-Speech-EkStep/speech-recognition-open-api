@@ -13,6 +13,7 @@ from fairseq.data import Dictionary
 from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
 from pydub import AudioSegment
+import GPUtil
 
 import src.media_convertor
 from src import utilities, log_setup
@@ -40,6 +41,26 @@ except:
     LMState = object
 
 LOGGER = log_setup.get_logger(__name__)
+
+
+def get_cuda_device():
+    LOGGER.info('### GPU Utilization ###')
+    GPUtil.showUtilization()
+    selected_gpus = GPUtil.getFirstAvailable(order='first', maxLoad=0.5, maxMemory=0.50, attempts=1, interval=900,
+                                             verbose=False)
+    LOGGER.info(f'selected_gpus: {selected_gpus}')
+    LOGGER.info(f'Going for GPU ID: {selected_gpus[0]}')
+    LOGGER.info(f'Going for selecting gpu: {selected_gpus[0]}')
+    if len(selected_gpus[0]) > 0:
+        selected_gpu_index = selected_gpus[0]
+    else:
+        selected_gpu_index = 0
+    selected_gpu = torch.device("cuda", 5)
+    LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device {selected_gpu}')
+    return selected_gpu
+
+
+SELECTED_DEVICE = get_cuda_device()
 
 
 class Wav2VecCtc(BaseFairseqModel):
@@ -341,7 +362,9 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     LOGGER.debug(f"The shape of the audio is {wav.shape}")
     # wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
-    feature = get_feature_for_bytes(wav, 16000)
+    LOGGER.info(f'using current device: {torch.cuda.current_device()}')
+
+    feature = get_feature_for_bytes(wav, 16000).to(SELECTED_DEVICE)
     LOGGER.debug(f"feature : {feature}")
     target_dict = Dictionary.load(dict_path)
     LOGGER.debug(f"target_dict : {target_dict} from path: {dict_path}")
@@ -360,7 +383,7 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     sample["net_input"] = net_input
 
     LOGGER.debug(f"moving to cuda")
-    sample = utils.move_to_cuda(sample) if use_cuda else sample
+    sample = utils.move_to_cuda(sample, SELECTED_DEVICE) if use_cuda else sample
     LOGGER.debug(f"moved to cuda")
 
     with torch.no_grad():
@@ -376,11 +399,6 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     torch.cuda.empty_cache()
     LOGGER.debug(f"infer completed {text}")
     return text
-
-
-def load_model(model_path):
-    print('Loading model from ', model_path)
-    return torch.load(model_path)  # ,map_location=torch.device("cuda"))
 
 
 def get_args(lexicon_path, lm_path, BEAM=128, LM_WEIGHT=2, WORD_SCORE=-1):
@@ -399,33 +417,6 @@ def get_args(lexicon_path, lm_path, BEAM=128, LM_WEIGHT=2, WORD_SCORE=-1):
     return args
 
 
-def parse_transcription(model_path, dict_path, wav_path, cuda, decoder="viterbi", lexicon_path=None, lm_path=None,
-                        half=None):
-    target_dict = Dictionary.load(dict_path)
-    args = get_args(lexicon_path, lm_path)
-
-    if decoder == "viterbi":
-        generator = W2lViterbiDecoder(args, target_dict)
-    else:
-        generator = W2lKenLMDecoder(args, target_dict)
-
-    result = ''
-
-    if cuda:
-        model = load_model(model_path)
-        model.cuda()
-    else:
-        model = load_model(model_path)
-
-    if half:
-        model.half()
-
-    result = get_results(wav_path=wav_path, dict_path=dict_path, generator=generator, use_cuda=cuda, model=model,
-                         half=half)
-
-    return result
-
-
 def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     model_path = model_item.get_model_path()
     dict_path = model_item.get_dict_file_path()
@@ -441,10 +432,14 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
         generator = W2lKenLMDecoder(args, target_dict)
 
     result = ''
+    LOGGER.info(f'Loading model from {model_path} cuda {cuda}')
 
     if cuda:
-        model = load_model(model_path)
-        model.cuda()
+        with torch.cuda.device(SELECTED_DEVICE):
+            LOGGER.info(f'using current device: {torch.cuda.current_device()}')
+            model = torch.load(model_path, map_location=SELECTED_DEVICE)
+            model.cuda()
+
         for parameter in model.parameters():
             LOGGER.info('Before half %s', parameter.dtype)
             break
@@ -460,24 +455,6 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
         LOGGER.info(f"{ln_code} Model initialized with GPU successfully")
 
     else:
-        model = load_model(model_path)
+        model = torch.load(model_path)
 
     return model, generator
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Run')
-    parser.add_argument('-m', '--model', type=str, help="Custom model path")
-    parser.add_argument('-d', '--dict', type=str, help="Dict path")
-    parser.add_argument('-w', '--wav', type=str, help="Wav file path")
-    parser.add_argument('-c', '--cuda', default=False, type=bool, help="CUDA True or False")
-    parser.add_argument('-D', '--decoder', type=str, help="Which decoder to use kenlm or viterbi")
-    parser.add_argument('-l', '--lexicon', default=None, type=str, help="Lexicon path if decoder is kenlm")
-    parser.add_argument('-L', '--lm-path', default=None, type=str, help="Language mode path if decoder is kenlm")
-    parser.add_argument('-H', '--half', default=False, type=bool, help="Half True or False")
-
-    args_local = parser.parse_args()
-
-    result = parse_transcription(args_local.model, args_local.dict, args_local.wav, args_local.cuda, args_local.decoder,
-                                 args_local.lexicon, args_local.lm_path, args_local.half)
-    print(result)
