@@ -62,8 +62,8 @@ def get_cuda_device():
         available_devices = get_env_var('CUDA_VISIBLE_DEVICES', '0').split(',')
         all_gpu = [g.id for g in GPUtil.getGPUs()]
         req_gpu = [int(a) for a in available_devices]
-        req_gpu = req_gpu[1:]
-        excluded_gpus = list(set(all_gpu) - set(req_gpu))
+        excluded_gpus = list(set(all_gpu) - set(req_gpu[1:]))
+        LOGGER.info(f'available GPUs {available_devices}, all GPUs {all_gpu}, excluded GPUs {excluded_gpus}')
         #  env se CUDA_VISIBLE_DEVICES = 2,5
         # excludes=[] - 2,5 = 0,1,3,4,6,7
         # cuda [0,1] - 10, 2 ->
