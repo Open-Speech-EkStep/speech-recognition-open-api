@@ -46,11 +46,18 @@ LOGGER = log_setup.get_logger(__name__)
 def get_cuda_device():
     LOGGER.info('### GPU Utilization ###')
     GPUtil.showUtilization()
+    available_devices = os.environ.get('CUDA_VISIBLE_DEVICES', '0').split(',')
+    all_gpu = [g.id for g in GPUtil.getGPUs()]
+    req_gpu = [int(a) for a in available_devices]
+    excluded_gpus = list(set(all_gpu) - set(req_gpu))
+    #  env se CUDA_VISIBLE_DEVICES = 2,5
+    # excludes=[] - 2,5 = 0,1,3,4,6,7
+    # cuda [0,1] - 10, 2 ->
     # we are skipping 0th GPUs as punctuation model be default goes on 0th GPU
-    selected_gpus = GPUtil.getAvailable(order='load', limit=1, maxLoad=0.8, maxMemory=0.75, excludeID=[0])
+    selected_gpus = GPUtil.getAvailable(order='memory', limit=1, maxLoad=0.8, maxMemory=0.75, excludeID=excluded_gpus)
     LOGGER.info(f'Available GPUs: {selected_gpus}')
     if len(selected_gpus) > 0:
-        selected_gpu_index = selected_gpus[0]
+        selected_gpu_index = req_gpu.index(selected_gpus[0])
         selected_gpu = torch.device("cuda", selected_gpu_index)
     else:
         selected_gpu = torch.device("cuda", None)
@@ -59,7 +66,7 @@ def get_cuda_device():
     return selected_gpu
 
 
-SELECTED_DEVICE = get_cuda_device()
+SELECTED_DEVICE = None
 
 
 class Wav2VecCtc(BaseFairseqModel):
@@ -363,7 +370,11 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
 
     LOGGER.info(f'using current device: {torch.cuda.current_device()}')
 
-    feature = get_feature_for_bytes(wav, 16000).to(SELECTED_DEVICE)
+    if use_cuda:
+        feature = get_feature_for_bytes(wav, 16000).to(SELECTED_DEVICE)
+    else:
+        feature = get_feature_for_bytes(wav, 16000)
+
     LOGGER.debug(f"feature : {feature}")
     target_dict = Dictionary.load(dict_path)
     LOGGER.debug(f"target_dict : {target_dict} from path: {dict_path}")
@@ -434,10 +445,11 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     LOGGER.info(f'Loading model from {model_path} cuda {cuda}')
 
     if cuda:
+        global SELECTED_DEVICE
+        SELECTED_DEVICE = get_cuda_device()
         with torch.cuda.device(SELECTED_DEVICE):
             LOGGER.info(f'using current device: {torch.cuda.current_device()}')
             model = torch.load(model_path, map_location=SELECTED_DEVICE)
-            model.cuda()
 
         for parameter in model.parameters():
             LOGGER.info('Before half %s', parameter.dtype)
