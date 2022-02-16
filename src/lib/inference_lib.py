@@ -46,17 +46,16 @@ LOGGER = log_setup.get_logger(__name__)
 def get_cuda_device():
     LOGGER.info('### GPU Utilization ###')
     GPUtil.showUtilization()
-    selected_gpus = GPUtil.getFirstAvailable(order='first', maxLoad=0.5, maxMemory=0.50, attempts=1, interval=900,
-                                             verbose=False)
+    selected_gpus = GPUtil.getAvailable(order='load', limit=1, maxLoad=0.8, maxMemory=0.75, excludeID=[0])
     LOGGER.info(f'selected_gpus: {selected_gpus}')
-    LOGGER.info(f'Going for GPU ID: {selected_gpus[0]}')
-    LOGGER.info(f'Going for selecting gpu: {selected_gpus[0]}')
+    LOGGER.info(f'Going for GPU ID: {selected_gpus[1]}')
     if len(selected_gpus) > 0:
         selected_gpu_index = selected_gpus[0]
+        selected_gpu = torch.device("cuda", selected_gpu_index)
     else:
-        selected_gpu_index = 0
-    selected_gpu = torch.device("cuda", 5)
-    LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device {selected_gpu}')
+        selected_gpu = torch.device("cuda", None)
+
+    LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device: {selected_gpu}')
     return selected_gpu
 
 
