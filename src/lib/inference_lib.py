@@ -19,6 +19,7 @@ import src.media_convertor
 from src import utilities, log_setup
 from src.lib.audio_normalization import AudioNormalization
 from src.monitoring import monitor
+from src.utilities import get_env_var
 
 try:
     from flashlight.lib.text.dictionary import create_word_dict, load_words
@@ -44,29 +45,45 @@ LOGGER = log_setup.get_logger(__name__)
 
 
 def get_cuda_device():
-    LOGGER.info('### GPU Utilization ###')
-    GPUtil.showUtilization()
-    available_devices = os.environ.get('CUDA_VISIBLE_DEVICES', '0').split(',')
-    all_gpu = [g.id for g in GPUtil.getGPUs()]
-    req_gpu = [int(a) for a in available_devices]
-    excluded_gpus = list(set(all_gpu) - set(req_gpu))
-    #  env se CUDA_VISIBLE_DEVICES = 2,5
-    # excludes=[] - 2,5 = 0,1,3,4,6,7
-    # cuda [0,1] - 10, 2 ->
-    # we are skipping 0th GPUs as punctuation model be default goes on 0th GPU
-    selected_gpus = GPUtil.getAvailable(order='memory', limit=1, maxLoad=0.8, maxMemory=0.75, excludeID=excluded_gpus)
-    LOGGER.info(f'Available GPUs: {selected_gpus}')
-    if len(selected_gpus) > 0:
-        selected_gpu_index = req_gpu.index(selected_gpus[0])
-        selected_gpu = torch.device("cuda", selected_gpu_index)
+    gpu = get_env_var('gpu', 'false')
+    if gpu == 'true' or gpu == 'True':
+        gpu = True
     else:
-        selected_gpu = torch.device("cuda", None)
+        gpu = False
 
-    LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device: {selected_gpu}')
-    return selected_gpu
+    gpu_present = torch.cuda.is_available()
+    LOGGER.info(f'User has provided gpu as {gpu} gpu_present {gpu_present}')
+
+    gpu = gpu & gpu_present
+
+    if gpu:
+        LOGGER.info('### GPU Utilization ###')
+        GPUtil.showUtilization()
+        available_devices = get_env_var('CUDA_VISIBLE_DEVICES', '0').split(',')
+        all_gpu = [g.id for g in GPUtil.getGPUs()]
+        req_gpu = [int(a) for a in available_devices]
+        req_gpu = req_gpu[1:]
+        excluded_gpus = list(set(all_gpu) - set(req_gpu))
+        #  env se CUDA_VISIBLE_DEVICES = 2,5
+        # excludes=[] - 2,5 = 0,1,3,4,6,7
+        # cuda [0,1] - 10, 2 ->
+        # we are skipping 0th GPUs as punctuation model be default goes on 0th GPU
+        selected_gpus = GPUtil.getAvailable(order='memory', limit=1, maxLoad=0.8, maxMemory=0.75,
+                                            excludeID=excluded_gpus)
+        LOGGER.info(f'Available GPUs: {selected_gpus}')
+        if len(selected_gpus) > 0:
+            selected_gpu_index = req_gpu.index(selected_gpus[0])
+            selected_gpu = torch.device("cuda", selected_gpu_index)
+        else:
+            selected_gpu = torch.device("cuda", None)
+
+        LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device: {selected_gpu}')
+        return selected_gpu
+    else:
+        return None
 
 
-SELECTED_DEVICE = None
+SELECTED_DEVICE = get_cuda_device()
 
 
 class Wav2VecCtc(BaseFairseqModel):
@@ -445,8 +462,6 @@ def load_model_and_generator(model_item, cuda, decoder="viterbi", half=None):
     LOGGER.info(f'Loading model from {model_path} cuda {cuda}')
 
     if cuda:
-        global SELECTED_DEVICE
-        SELECTED_DEVICE = get_cuda_device()
         with torch.cuda.device(SELECTED_DEVICE):
             LOGGER.info(f'using current device: {torch.cuda.current_device()}')
             model = torch.load(model_path, map_location=SELECTED_DEVICE)
