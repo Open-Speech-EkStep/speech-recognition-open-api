@@ -64,19 +64,20 @@ def get_cuda_device():
         req_gpu = [int(a) for a in available_devices]
         excluded_gpus = list(set(all_gpu) - set(req_gpu[1:]))
         LOGGER.info(f'available GPUs {available_devices}, all GPUs {all_gpu}, excluded GPUs {excluded_gpus}')
-        #  env se CUDA_VISIBLE_DEVICES = 2,5
-        # excludes=[] - 2,5 = 0,1,3,4,6,7
-        # cuda [0,1] - 10, 2 ->
+        # Example:  env gives CUDA_VISIBLE_DEVICES = 2,5
+        # mapped GPU on pod will be {0: 2, 1:5}
+        # all_gpu = 0,1,2,3,4,5,6,7 then we will exclude 0,2,5
+        # excluded_gpus will be 0,1,3,4,6,7
         # we are skipping 0th GPUs as punctuation model be default goes on 0th GPU
         selected_gpus = GPUtil.getAvailable(order='memory', limit=1, maxLoad=0.8, maxMemory=0.75,
                                             excludeID=excluded_gpus)
         LOGGER.info(f'Available GPUs: {selected_gpus}')
         if len(selected_gpus) > 0:
             selected_gpu_index = req_gpu.index(selected_gpus[0])
-            selected_gpu = torch.device("cuda", selected_gpu_index)
         else:
-            selected_gpu = torch.device("cuda", None)
+            selected_gpu_index = None
 
+        selected_gpu = torch.device("cuda", selected_gpu_index)
         LOGGER.info(f'selected gpu index: {selected_gpu_index} selecting device: {selected_gpu}')
         return selected_gpu
     else:
