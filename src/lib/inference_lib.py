@@ -71,8 +71,8 @@ def get_cuda_device():
         # we are skipping 0th GPUs as punctuation model be default goes on 0th GPU
         selected_gpus = GPUtil.getAvailable(order='memory', limit=1, maxLoad=0.8, maxMemory=0.75,
                                             excludeID=excluded_gpus)
-        LOGGER.info(f'Available GPUs: {selected_gpus}')
-        if len(selected_gpus) > 0:
+        LOGGER.info(f'Selected GPUs: {selected_gpus} requested GPUs {req_gpu}')
+        if len(selected_gpus) > 0 and selected_gpus[0] in req_gpu:
             selected_gpu_index = req_gpu.index(selected_gpus[0])
         else:
             selected_gpu_index = None
