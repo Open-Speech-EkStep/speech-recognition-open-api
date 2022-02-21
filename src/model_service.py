@@ -98,10 +98,11 @@ class ModelService:
         response = get_srt(file, model, generator, dict_file_path,
                            self.denoiser_path, audio_threshold=15,
                            language=language, half=self.half)
-        response = [i.replace('\n', ' ') for i in list(itertools.chain(*response)) if type(i) != bool]
+        response = [i.replace('\n', '\\n') for i in list(itertools.chain(*response)) if type(i) != bool]
         result['srt'] = ''.join(response)
-        result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
+        # result['srt'] = self.apply_punctuation(result['srt'], language, punctuate)
         result['srt'] = self.apply_itn(result['srt'], language, itn)
+        result['srt'] = result['srt'].replace('\\n','\n')
         LOGGER.info('*** The model SRT is *** %s', result['srt'])
         return result
 
