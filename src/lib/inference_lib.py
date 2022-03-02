@@ -377,9 +377,8 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     dir_name = src.media_convertor.media_conversion(wav_path, duration_limit=15)
     audio_file = dir_name / 'clipped_audio.wav'
 
-    start_time, end_time = extract_time_stamps(str(audio_file))
-    original_file_path = wav_path.replace('clipped_audio_enhanced', 'clipped_audio')
-    original_chunk = AudioSegment.from_wav(original_file_path)
+    start_time, end_time = extract_time_stamps(audio_file)
+    original_chunk = AudioSegment.from_wav(audio_file)
     silence = AudioSegment.silent(duration=500)
     chunked_audio = AudioSegment.silent(duration=500)
     for i in tqdm(range(len(start_time))):

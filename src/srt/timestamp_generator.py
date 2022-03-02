@@ -132,7 +132,7 @@ def vad_collector(sample_rate, frame_duration_ms,
 def extract_time_stamps(wav_file):
     start_time = []
     end_time = []
-    audio, sample_rate = read_wave(wav_file)
+    audio, sample_rate = read_wave(str(wav_file))
     vad = webrtcvad.Vad(3)
     frames = frame_generator(30, audio, sample_rate)
     frames = list(frames)

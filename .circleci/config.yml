@@ -7,7 +7,7 @@ parameters:
     default: speech_recognition_model_api
   package_version:
     type: string
-    default: "3.2.35"
+    default: "3.2.36"
   dependency_image_name:
     type: string
     default: speech-recognition-open-api-dependency
