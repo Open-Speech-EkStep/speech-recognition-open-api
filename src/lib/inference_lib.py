@@ -3,22 +3,23 @@ import itertools as it
 import os
 import subprocess
 from pathlib import Path
-
 import numpy as np
 import soundfile as sf
 import torch
 import torch.nn.functional as F
+from tqdm import tqdm
 from fairseq import utils
 from fairseq.data import Dictionary
 from fairseq.models import BaseFairseqModel
 from fairseq.models.wav2vec.wav2vec2_asr import Wav2VecEncoder, Wav2Vec2CtcConfig
-from pydub import AudioSegment
+from pydub import AudioSegment, effects
 import GPUtil
 
 import src.media_convertor
 from src import utilities, log_setup
 from src.lib.audio_normalization import AudioNormalization
 from src.monitoring import monitor
+from src.srt.timestamp_generator import extract_time_stamps
 from src.utilities import get_env_var
 
 try:
@@ -375,14 +376,21 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     net_input = dict()
     dir_name = src.media_convertor.media_conversion(wav_path, duration_limit=15)
     audio_file = dir_name / 'clipped_audio.wav'
-    normalized_audio = AudioNormalization(audio_file).loudness_normalization_effects()
-    LOGGER.debug('Audio normalization done')
+
+    start_time, end_time = extract_time_stamps(audio_file)
+    original_file_path = wav_path.replace('clipped_audio_enhanced', 'clipped_audio')
+    original_chunk = AudioSegment.from_wav(original_file_path)
     silence = AudioSegment.silent(duration=500)
-    LOGGER.debug('Appending silence')
-    sound = silence + normalized_audio + silence
-    sound.export('test_sil.wav', format='wav')
-    LOGGER.debug(f"The sound object is : {sound}")
-    wav = np.array(sound.get_array_of_samples()).astype('float64')
+    chunked_audio = AudioSegment.silent(duration=500)
+    for i in tqdm(range(len(start_time))):
+        chunked_audio = chunked_audio + original_chunk[start_time[i] * 1000: end_time[i] * 1000] + silence
+
+    normalized_audio = effects.normalize(chunked_audio)
+    LOGGER.debug('Audio normalization done')
+
+    normalized_audio.export('test_sil.wav', format='wav')
+    LOGGER.debug(f"The sound object is : {normalized_audio}")
+    wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
     LOGGER.debug(f"The shape of the audio is {wav.shape}")
     # wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
