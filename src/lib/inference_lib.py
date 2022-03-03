@@ -379,8 +379,8 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
 
     start_time, end_time = extract_time_stamps(audio_file)
     original_chunk = AudioSegment.from_wav(audio_file)
-    silence = AudioSegment.silent(duration=500)
-    chunked_audio = AudioSegment.silent(duration=500)
+    silence = AudioSegment.silent(duration=200)
+    chunked_audio = AudioSegment.silent(duration=200)
     for i in tqdm(range(len(start_time))):
         chunked_audio = chunked_audio + original_chunk[start_time[i] * 1000: end_time[i] * 1000] + silence
 
