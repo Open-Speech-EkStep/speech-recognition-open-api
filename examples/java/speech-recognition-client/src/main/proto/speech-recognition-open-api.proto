@@ -9,10 +9,30 @@ option java_package = "com.ekstep.endpoints.speech_recognition";
 import "google/api/annotations.proto";
 
 service SpeechRecognizer {
+  rpc recognize_audio(stream Message) returns (stream Response) {}
+  rpc punctuate(PunctuateRequest) returns (PunctuateResponse) {
+    option (google.api.http) = {post: "/v1/punctuate/{language}", body: "*"};
+  }
   rpc recognize (SpeechRecognitionRequest) returns (SpeechRecognitionResult) {
     option (google.api.http) = {post: "/v1/recognize/{config.language.sourceLanguage}", body: "*"};
   }
 }
+
+message Message {
+  bytes audio = 1;
+  string user = 2;
+  string language = 3;
+  bool speaking = 4;
+  bool isEnd = 5;
+}
+
+message Response {
+  string transcription = 1;
+  string user = 2;
+  string language = 3;
+  string action = 4;
+}
+
 
 message SpeechRecognitionRequest {
   RecognitionConfig config = 1;
@@ -107,7 +127,9 @@ message Language {
     grt = 28;
     sa = 29;
     raj = 30;
-    bo = 31;
+    bho = 31;
+    en_bio = 32;
+    hi_en = 33;
   }
   optional string name = 1;
   LanguageCode sourceLanguage = 2;
@@ -147,4 +169,15 @@ message Alternative {
   string word = 1;
   string startTime = 2;
   string endTime = 3;
+}
+
+message PunctuateRequest {
+  string text = 1;
+  string language = 2;
+  bool enabledItn = 3;
+}
+
+message PunctuateResponse {
+  string text = 1;
+  string language = 2;
 }

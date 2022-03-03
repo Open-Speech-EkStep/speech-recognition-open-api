@@ -2,6 +2,7 @@ package com.ekstep.endpoints.speech_recognition;
 
 import com.google.protobuf.ByteString;
 import io.grpc.*;
+import io.grpc.netty.shaded.io.netty.util.internal.StringUtil;
 import io.grpc.stub.MetadataUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -47,25 +48,37 @@ public class SpeechRecognitionClient {
         }
     }
 
-    public static ByteString getAudioBytes() {
+    public static ByteString getAudioBytes(String file) {
         AudioFiles audioFiles = new AudioFiles();
-        String file = "/Users/nireshkumarr/Documents/ekstep/speech-recognition-open-api/examples/python/speech-recognition/changed.wav";
         byte[] data2 = audioFiles.readAudioFileData(file);
         ByteString byteString = ByteString.copyFrom(data2);
         return byteString;
     }
 
-    public static void main(String[] args) throws Exception {
-        String target = "test-model-api.vakyansh.in:50051";
+    private PunctuateResponse getPunctuate(String text, String language) {
+        return blockingStub.punctuate(PunctuateRequest.newBuilder().setLanguage(language).clearEnabledItn().setText(text).build());
+    }
 
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+    public static void main(String[] args) throws Exception {
+        String targetGRPCServer = "<GRPC Server>";
+        String audioFile = "<wav audio file path>";
+        Language.LanguageCode languageCode = Language.LanguageCode.hi;
+
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(targetGRPCServer)
                 .usePlaintext()
                 .build();
         try {
             SpeechRecognitionClient client = new SpeechRecognitionClient(channel);
-            ByteString audioBytes = getAudioBytes();
-            SpeechRecognitionResult result = client.transcribeAudioBytes(audioBytes, Language.LanguageCode.en, RecognitionConfig.AudioFormat.wav, RecognitionConfig.TranscriptionFormatEnum.transcript);
-            System.out.println(result.toString());
+            ByteString audioBytes = getAudioBytes(audioFile);
+            SpeechRecognitionResult result = client.transcribeAudioBytes(audioBytes, languageCode, RecognitionConfig.AudioFormat.wav, RecognitionConfig.TranscriptionFormatEnum.transcript);
+            System.out.println("#### Output ####");
+            for (SpeechRecognitionResult.Output out : result.getOutputList()) {
+                if (!StringUtil.isNullOrEmpty(out.getSource())) {
+                    System.out.println("Text: " + out.getSource());
+                    System.out.println("Punctuated Text: " + client.getPunctuate(out.getSource(), languageCode.name()).getText());
+                }
+            }
+
 
         } finally {
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
