@@ -71,7 +71,7 @@ if __name__ == '__main__':
         trusted_certs = f.read()
     # create credentials
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
-    host = "model-api.vakyansh.in"
+    host = "model-api-host.in"
     port = 443
     with grpc.secure_channel('{}:{}'.format(host, port), credentials) as channel:
         stub = SpeechRecognizerStub(channel)
