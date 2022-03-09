@@ -91,19 +91,6 @@ For eg, if the asr models are placed in the directory /asr-models/,then model_di
 
 #### With docker
 
-
-**Build Docker image:**
-
-```shell
-docker build -t speech_recognition_model_api .
-```
-
-**Build Docker image:**
-
-```shell
-docker run -itd -p <<host_port>>:50051 --name speech_recognition_model_api -v <<host_model_path>>/deployed_models:/opt/speech_recognition_open_api/deployed_models/  speech_recognition_model_api
-```
-
 **Using pre-built docker image:**
 
 We have pre-built images hosted on `gcr.io/ekstepspeechrecognition/speech_recognition_model_api`. You can use these images directly to run on docker. 
@@ -114,7 +101,7 @@ Note: We do not follow `latest` tag, so you have to specify exact version.
 docker run -itd -p 50051:50051  --env gpu=True --env languages=['en','hi']  --gpus all -v <Location for deployed_models directory>:/opt/speech_recognition_open_api/deployed_models/ gcr.io/ekstepspeechrecognition/speech_recognition_model_api:3.2.33
 ```
 
-### Using example to test:
+### Using example to test
 
 We have python and java client [examples](examples) available in this repo which can be used to test.
 
@@ -226,7 +213,7 @@ EOM
 
 Realtime streaming can be supported directly using GRPC. If you need something to work on browser, we have a socket.io based implementation. Refer the [documentation](https://open-speech-ekstep.github.io/asr_streaming_service/)
 
-### Updating the endpoint
+### Generating stubs form proto
 
 As this is a GRPC service, all the endpoints are defined in proto file. Once you made changes into proto file you need to generate stubs for it.
 
@@ -260,7 +247,8 @@ We build this app in two steps to expedite the process of changes in the main so
 
 Using dependency image, we build the main images which are published. Docker file for this step is available [here](Dockerfile). You can use these steps to recreate the bundle. We recommend using some environment manager like [conda](https://github.com/conda/conda).
 
-### Running on local
+
+### Running with source code
 
 You can follow the steps from dependency docker image [dependencies/Dockerfile](dependencies/Dockerfile) and main docker image [file](Dockerfile). After setup the directory and installing all the prerequisites, yu can run `server.py` file to start grpc server. Default port of the GRPC server is 50051 which can be changed from [server.py](server.py).
 
