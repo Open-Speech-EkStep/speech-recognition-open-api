@@ -53,7 +53,7 @@ All the open-source language models are available at bucket https://console.clou
 
 **Punctuation models:**
 
-Punctuation models are stored inside `model_data` directory of `deployed_models` directory and then download all punc models. Open sourced punctuation models are available https://github.com/Open-Speech-EkStep/vakyansh-models#punctuation-models.
+Punctuation models are stored inside `model_data` directory of `deployed_models` directory and then download all punc models. Details of open sourced punctuation models are available https://github.com/Open-Speech-EkStep/vakyansh-models#punctuation-models.
 
 ```
 gu/:
@@ -66,7 +66,9 @@ wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/
 wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.pt .
 wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi_dict.json .
 ```
-model_dict(same hierarchy as deployed_models directory) file should be updated with relative paths to the asr model artifacts:
+
+Once all the required models are placed `model_dict.json` file should be updated with relative paths to the asr model artifacts.
+
 For eg, if the asr models are placed in the directory /asr-models/,then model_dict.json would be like,
 ```
 {
@@ -86,11 +88,7 @@ For eg, if the asr models are placed in the directory /asr-models/,then model_di
 
 
 
-5. Start the server at port 50051:
 
-```shell
-python server.py
-```
 #### With docker
 
 
@@ -137,6 +135,9 @@ Proto file for the GRPC service is available at [proto/speech-recognition-open-a
 * [Grpcurl](https://github.com/fullstorydev/grpcurl)
 * Postman
 
+API supported two transcription formats:
+* transcript
+* srt
 
 **Sample request for ASR with audio URL**
 ```json
@@ -225,7 +226,9 @@ EOM
 
 Realtime streaming can be supported directly using GRPC. If you need something to work on browser, we have a socket.io based implementation. Refer the [documentation](https://open-speech-ekstep.github.io/asr_streaming_service/)
 
-### Generating stubs from proto
+### Updating the endpoint
+
+As this is a GRPC service, all the endpoints are defined in proto file. Once you made changes into proto file you need to generate stubs for it.
 
 To generate stub files from .proto file, using the following command:
 
@@ -251,3 +254,27 @@ python3 -m grpc_tools.protoc \
 py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
 ```
 
+### Building your own docker image
+
+We build this app in two steps to expedite the process of changes in the main source. We build a dependency image for which you can find dependency docker image file at [dependencies/Dockerfile](dependencies/Dockerfile). 
+
+Using dependency image, we build the main images which are published. Docker file for this step is available [here](Dockerfile). You can use these steps to recreate the bundle. We recommend using some environment manager like [conda](https://github.com/conda/conda).
+
+### Running on local
+
+You can follow the steps from dependency docker image [dependencies/Dockerfile](dependencies/Dockerfile) and main docker image [file](Dockerfile). After setup the directory and installing all the prerequisites, yu can run `server.py` file to start grpc server. Default port of the GRPC server is 50051 which can be changed from [server.py](server.py).
+
+```shell
+python server.py
+```
+
+
+### Supported environment variables
+
+| **Variable Name**    | **Default Value**                                                                       | **Description**                                                           |
+|----------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| log_level            | DEBUG                                                                                   | Log level for application logs                                            |
+| gpu                  | True                                                                                    | True: Load the models on GPU,  False: Use CPU                             |
+| model_logs_base_path | /opt/speech_recognition_open_api/deployed_models/logs/                                  | Location for language model folders.                                      |
+| TRANSFORMERS_CACHE   | /opt/speech_recognition_open_api/deployed_models/model_data/transformers_cache/         | Transformers cache location for punctuation                               |
+| DENOISER_MODEL_PATH  | /opt/speech_recognition_open_api/deployed_models/model_data/denoiser/denoiser_dns48.pth | Denoiser checkpoint. Refer https://github.com/Open-Speech-EkStep/denoiser |
