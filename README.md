@@ -2,26 +2,17 @@
 
 ## Getting started guide:
 
-### Setup the grpc server:
-#### Without docker
-1. Create and activate a new environment :
+This is a [GRPC](https://grpc.io/) based service which also supports streaming for realtime inferencing. Proto file for grpc is available at [proto/speech-recognition-open-api.proto](proto/speech-recognition-open-api.proto). It has tree endpoints 
 
-    ```conda create --name <env> python=3.8 && conda activate <env>```
+| Endpoint        | Purpose                                |
+|-----------------|----------------------------------------|
+| recognize_audio | Streaming Endpoint.                    |
+| punctuate       | Punctuation endpoint for a given text. |
+| recognize       | Inferencing from a audio URL or bytes. |
 
-2. Install required libraries using the following command:
+### Setup models
 
-    ```
-    pip install -r requirements.txt
-    ```
-
-3. Bootstrap the model code and other models as pre requisites:
-
-    ```
-    sh model_bootstrap.sh
-    ```
-4. Download asr models and punc models.Thereafter, update the right asr model paths in model_dict.json.
-**Asr models:**
-Create deployed_models directory and download the models inside it.
+Download asr models and punctuation models. Thereafter, update the right asr model paths in model_dict.json. Docker image expects all the models and config to be available at directory `/opt/speech_recognition_open_api/deployed_models/`.
 
 **Sample `deployed_models` directory structure**
 
@@ -56,13 +47,13 @@ Create deployed_models directory and download the models inside it.
 |   |   `-- denoiser_dns48.pth  #Denoiser checkout details are https://github.com/Open-Speech-EkStep/denoiser
 ```
 
-**Language Models**
+**ASR Models**
 
-All the opensourced language models are available at https://console.cloud.google.com/storage/browser/vakyansh-open-models/models/. Find all the details in https://github.com/Open-Speech-EkStep/vakyansh-models#language-models-works-with-finetuned-asr-models.
+All the open-source language models are available at bucket https://console.cloud.google.com/storage/browser/vakyansh-open-models/models/. You can find more details about the same at https://github.com/Open-Speech-EkStep/vakyansh-models#language-models-works-with-finetuned-asr-models.
 
 **Punctuation models:**
 
-Create a directory called `model_data` inside deployed_models directory and then download all punc models. Open sourced punctuation models are available https://github.com/Open-Speech-EkStep/vakyansh-models#punctuation-models.
+Punctuation models are stored inside `model_data` directory of `deployed_models` directory and then download all punc models. Open sourced punctuation models are available https://github.com/Open-Speech-EkStep/vakyansh-models#punctuation-models.
 
 ```
 gu/:
@@ -112,7 +103,7 @@ docker build -t speech_recognition_model_api .
 **Build Docker image:**
 
 ```shell
-docker run -itd -p <<host_port>>:50051 --name speech_recognition_model_api -v <<host_model_path>>/deployed_models:<<container_model_path>>/deployed_models/ -i -t speech_recognition_model_api
+docker run -itd -p <<host_port>>:50051 --name speech_recognition_model_api -v <<host_model_path>>/deployed_models:/opt/speech_recognition_open_api/deployed_models/  speech_recognition_model_api
 ```
 
 **Using pre-built docker image:**
@@ -138,7 +129,16 @@ python examples/python/speech-recognition/main.py
 
 This is a GRPC service you can call it using any GRPC supported client. Complete details of request/response schema can be found in [ULCA Schema](https://github.com/ULCA-IN/ulca/blob/master/specs/model-schema.yml).
 
-**Sample request with Audio URL**
+Proto file for the GRPC service is available at [proto/speech-recognition-open-api.proto] (proto/speech-recognition-open-api.proto)
+
+**Popular GRPC Clients**
+
+* [BloomRPC](https://github.com/bloomrpc/bloomrpc)
+* [Grpcurl](https://github.com/fullstorydev/grpcurl)
+* Postman
+
+
+**Sample request for ASR with audio URL**
 ```json
 {
     "config": {
@@ -160,7 +160,7 @@ This is a GRPC service you can call it using any GRPC supported client. Complete
 }
 ```
 
-**Sample request with Audio bytes**
+**Sample request for ASR with Audio bytes**
 ```json
 {
     "config": {
@@ -183,7 +183,7 @@ This is a GRPC service you can call it using any GRPC supported client. Complete
 ```
 
 
-**Sample Response**
+**Sample ASR Response**
 
 ```json
 {
@@ -196,11 +196,38 @@ This is a GRPC service you can call it using any GRPC supported client. Complete
 }
 ```
 
-### Developer Guide
+**Sample request in grpcurl**
 
-The api, protobuf are taken from google folder from the below repo: `https://github.com/googleapis/googleapis`
+```shell
+grpcurl -import-path <directory to proto file> -proto speech-recognition-open-api.proto -plaintext -d @ localhost:50051 ekstep.speech_recognition.SpeechRecognizer.recognize <<EOM
+{
+    "config": {
+      "language": {
+      "sourceLanguage": "hi"
+    },
+        "transcriptionFormat": {
+            "value": "transcript"
+        },
+        "audioFormat": "wav",
+        "punctuation": true,
+        "enableInverseTextNormalization": true
+    },
+    "audio": [
+        {
+            "audioUri": "https://storage.googleapis.com/test_public_bucket/srt_test.wav"
+        }
+    ]
+}
+EOM
+```
 
-Generated stub files from .proto file, using the following command:
+### Realtime Streaming
+
+Realtime streaming can be supported directly using GRPC. If you need something to work on browser, we have a socket.io based implementation. Refer the [documentation](https://open-speech-ekstep.github.io/asr_streaming_service/)
+
+### Generating stubs from proto
+
+To generate stub files from .proto file, using the following command:
 
 ```shell
 python3 -m grpc_tools.protoc \
@@ -218,10 +245,9 @@ python3 -m grpc_tools.protoc \
 ```
 
 
-To run tests, use the following command:
+### To run tests
 
 ```shell
 py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
 ```
 
-`DOC: https://cloud.google.com/api-gateway/docs/get-started-cloud-run-grpc#before_you_begin`
