@@ -105,10 +105,18 @@ docker run -itd -p 50051:50051  --env gpu=True --env languages=['en','hi']  --gp
 
 We have python and java client [examples](examples) available in this repo which can be used to test.
 
-Pyhton example can be run as
+pyhton secure example can be run from [examples/python/speech-recognition](examples/python/speech-recognition)
+
 ```shell
-python examples/python/speech-recognition/main.py
+python main.py
 ```
+
+For insecure example
+
+```shell
+python main-insecure.py
+```
+
 
 ### Using GRPC clients:
 
