@@ -39,8 +39,8 @@ class GrpcAuth(grpc.AuthMetadataPlugin):
 #         return method(request_or_iterator, new_details)
 
 
-def read_audio():
-    with wave.open('changed.wav', 'rb') as f:
+def read_audio(audio_path):
+    with wave.open(audio_path, 'rb') as f:
         return f.readframes(f.getnframes())
 
 
@@ -77,7 +77,6 @@ if __name__ == '__main__':
         stub = SpeechRecognizerStub(channel)
         language = 'hi'
         audio_url = 'https://storage.googleapis.com/test_public_bucket/download.mp3'
-        audio_bytes = read_audio()
 
         response = transcribe_url(stub, audio_url, language, 'mp3', 'transcript')
         print(response.output[0].source)
@@ -85,6 +84,7 @@ if __name__ == '__main__':
         response = transcribe_url(stub, audio_url, language, 'mp3', 'srt')
         print(response.output[0].source)
 
+        audio_bytes = read_audio('changed.wav')
         response = transcribe_audio_bytes(stub, audio_bytes, language, 'wav', 'transcript')
         print(response.output[0].source)
 
