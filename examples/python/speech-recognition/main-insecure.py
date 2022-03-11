@@ -5,7 +5,7 @@ from stub.speech_recognition_open_api_pb2_grpc import SpeechRecognizerStub
 from main import read_audio, transcribe_url, transcribe_audio_bytes
 
 if __name__ == '__main__':
-    host = "34.121.100.224"
+    host = "<ip to grpc>"
     port = 50051
     with grpc.insecure_channel('{}:{}'.format(host, port)) as channel:
         stub = SpeechRecognizerStub(channel)
