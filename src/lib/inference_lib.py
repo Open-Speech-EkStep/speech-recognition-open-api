@@ -393,8 +393,6 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     LOGGER.debug(f"The shape of the audio is {wav.shape}")
     # wav = np.array(normalized_audio.get_array_of_samples()).astype('float64')
 
-    LOGGER.info(f'using current device: {torch.cuda.current_device()}')
-
     if use_cuda:
         feature = get_feature_for_bytes(wav, 16000).to(SELECTED_DEVICE)
     else:
@@ -409,29 +407,22 @@ def get_results(wav_path, dict_path, generator, use_cuda=False, w2v_path=None, m
     else:
         net_input["source"] = feature.unsqueeze(0)
 
-    LOGGER.debug(f"net input")
-
     padding_mask = torch.BoolTensor(net_input["source"].size(1)).fill_(False).unsqueeze(0)
-    LOGGER.debug(f"padding_mask")
 
     net_input["padding_mask"] = padding_mask
     sample["net_input"] = net_input
 
-    LOGGER.debug(f"moving to cuda")
     sample = utils.move_to_cuda(sample, SELECTED_DEVICE) if use_cuda else sample
-    LOGGER.debug(f"moved to cuda")
 
     with torch.no_grad():
-        LOGGER.debug(f"generator starting...")
         hypo = generator.generate(model, sample, prefix_tokens=None)
-        LOGGER.debug(f"generated...")
     hyp_pieces = target_dict.string(hypo[0][0]["tokens"].int().cpu())
-    LOGGER.debug(f"hyp_pieces...")
     text = post_process(hyp_pieces, 'letter')
     LOGGER.debug(f"deleting sample...")
     del sample
-    LOGGER.debug(f"clearing cuda cache...")
-    torch.cuda.empty_cache()
+    if use_cuda:
+        LOGGER.debug(f"clearing cuda cache...")
+        torch.cuda.empty_cache()
     LOGGER.debug(f"infer completed {text}")
     return text
 
