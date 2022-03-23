@@ -82,7 +82,7 @@ def test_punctuation(mocker):
 
     model = ModelService(model_dict_path, "viterbi", False, False)
     # file_name = 'test.wav'
-    language = 'en'
+    language = 'hi'
     punctuate = True
     result = model.apply_punctuation(text_to_punctuate, language, punctuate)
 
@@ -106,7 +106,7 @@ def test_itn(mocker):
 
     model = ModelService(model_dict_path, "viterbi", False, False)
     # file_name = 'test.wav'
-    language = 'en'
+    language = 'hi'
     itn = True
     result = model.apply_itn(text_to_itn, language, itn)
 
