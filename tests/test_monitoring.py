@@ -1,3 +1,5 @@
+from path_setter import set_root_folder_path
+set_root_folder_path()
 from src.monitoring import monitor
 
 

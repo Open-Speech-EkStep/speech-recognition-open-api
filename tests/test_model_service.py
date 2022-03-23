@@ -1,19 +1,33 @@
+from path_setter import set_root_folder_path
+set_root_folder_path()
 from src.model_service import ModelService
+import os
+import unittest.mock as mock
 
+def mock_load_model_and_generator(model_item, cuda, decoder, half):
+    return mock.MagicMock(), mock.MagicMock()
+    
+def mock_get_results(wav_path,
+        dict_path,
+        generator,
+        use_cuda,
+        model,
+        half):
+    return 'hello'
+
+def mock_monitor():
+    pass
 
 def test_transcribe(mocker):
-    res = {'transcription': 'hello'}
+    res = {'status':'OK', 'transcription': 'hello'}
 
-    class MockInference:
-        def __init__(self, model_dict):
-            self.model_dict = model_dict
+    mocker.patch('src.model_service.load_model_and_generator', mock_load_model_and_generator)
+    mocker.patch('src.model_service.get_results', mock_get_results)
+    mocker.patch('src.model_service.monitor', mock_monitor)
+    os.environ["UTILITIES_FILES_PATH"] = ""
 
-        def get_inference(self, file_name, language):
-            return res
-
-    mocker.patch('model_service.InferenceService', MockInference)
-    model_dict_path = 'model_dict.json'
-    model = ModelService(model_dict_path)
+    model_dict_path = 'tests/resources/'
+    model = ModelService(model_dict_path, "viterbi", False, False)
     file_name = 'test.wav'
     language = 'hi'
     result = model.transcribe(file_name, language,punctuate=False, itn=False)
@@ -22,23 +36,27 @@ def test_transcribe(mocker):
 
 
 def test_srt(mocker):
-    res = {'srt': '1\n00:00:01,29 --> 00:00:04,88\nHello how are you\n\n'}
+    srt_string = '1\n00:00:01,29 --> 00:00:04,88\nHello how are you\n\n'
+    res = {'srt': srt_string}
 
-    class MockInference:
-        def __init__(self, model_dict):
-            self.model_dict = model_dict
+    def mock_get_srt(file, model, generator, dict_file_path,
+                           denoiser_path, audio_threshold,
+                           language, half):
+        return srt_string
 
-        denoiser_path = "/denoiser"
 
-        def get_srt(self, file_name, language, denoiser_path):
-            return res
+    mocker.patch('src.model_service.load_model_and_generator', mock_load_model_and_generator)
+    mocker.patch('src.model_service.get_results', mock_get_results)
+    mocker.patch('src.model_service.monitor', mock_monitor)
+    mocker.patch('src.model_service.get_srt', mock_get_srt)
 
-    mocker.patch('model_service.InferenceService', MockInference)
-    model_dict_path = 'model_dict.json'
-    model = ModelService(model_dict_path)
+    os.environ["UTILITIES_FILES_PATH"] = ""
+
+    model_dict_path = 'tests/resources/'
+    model = ModelService(model_dict_path, "viterbi", False, False)
     file_name = 'test.wav'
-    language = 'en-IN'
-    result = model.get_srt(file_name, language,punctuate=False, itn=False)
+    language = 'hi'
+    result = model.get_srt(file_name, language, punctuate=False, itn=False)
 
     assert result == res
 
@@ -54,18 +72,15 @@ def test_punctuation(mocker):
         def punctuate_text(self, text_to_punctuate):
             return res
 
-    class MockInference:
-        def __init__(self, model_dict):
-            self.model_dict = model_dict
+    mocker.patch('src.model_service.Punctuation', MockPunctuation)
+    mocker.patch('src.model_service.load_model_and_generator', mock_load_model_and_generator)
+    mocker.patch('src.model_service.get_results', mock_get_results)
+    mocker.patch('src.model_service.monitor', mock_monitor)
+    os.environ["UTILITIES_FILES_PATH"] = ""
 
-        def get_inference(self, file_name, language):
-            return res
+    model_dict_path = 'tests/resources/'
 
-    mocker.patch('model_service.InferenceService', MockInference)
-    mocker.patch('model_service.Punctuation', MockPunctuation)
-    
-    model_dict_path = 'model_dict.json'
-    model = ModelService(model_dict_path)
+    model = ModelService(model_dict_path, "viterbi", False, False)
     # file_name = 'test.wav'
     language = 'en'
     punctuate = True
@@ -78,21 +93,18 @@ def test_itn(mocker):
     text_to_itn = "Four Hundred Dollars"
     res = ["400 Dollars"]
 
-
-    class MockInference:
-        def __init__(self, model_dict):
-            self.model_dict = model_dict
-
-        def get_inference(self, file_name, language):
-            return res
     def mock_inverse_normalize_text(text_to_itn,language):
         return res
 
-    mocker.patch('model_service.InferenceService', MockInference)
-    mocker.patch('model_service.inverse_normalize_text', mock_inverse_normalize_text)
+    mocker.patch('src.model_service.load_model_and_generator', mock_load_model_and_generator)
+    mocker.patch('src.model_service.get_results', mock_get_results)
+    mocker.patch('src.model_service.monitor', mock_monitor)
+    os.environ["UTILITIES_FILES_PATH"] = ""
 
-    model_dict_path = 'model_dict.json'
-    model = ModelService(model_dict_path)
+    model_dict_path = 'tests/resources/'
+    mocker.patch('src.model_service.inverse_normalize_text', mock_inverse_normalize_text)
+
+    model = ModelService(model_dict_path, "viterbi", False, False)
     # file_name = 'test.wav'
     language = 'en'
     itn = True
