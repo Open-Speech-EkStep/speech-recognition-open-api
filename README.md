@@ -249,6 +249,11 @@ python3 -m grpc_tools.protoc \
 py.test --grpc-fake-server --ignore=wav2letter --ignore=wav2vec-infer --ignore=kenlm
 ```
 
+#### Test Coverage
+
+1. Install coverage library using the following command: `pip3 install pytest-cov`
+2. Run the following command to get coverage report: `pytest --cov=src tests/ --grpc-fake-server`
+
 ### Building your own docker image
 
 We build this app in two steps to expedite the process of changes in the main source. We build a dependency image for which you can find dependency docker image file at [dependencies/Dockerfile](dependencies/Dockerfile). 
