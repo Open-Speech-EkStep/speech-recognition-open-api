@@ -18,5 +18,5 @@ RUN pip3 install --no-cache-dir -r /opt/speech_recognition_open_api/requirements
 WORKDIR /opt/speech_recognition_open_api/
 COPY . /opt/speech_recognition_open_api
 RUN cp -r /opt/files/denoiser /opt/speech_recognition_open_api/denoiser
-CMD ["python3","/opt/speech_recognition_open_api/server.py"]
+
 
