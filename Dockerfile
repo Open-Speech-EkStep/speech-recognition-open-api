@@ -2,6 +2,10 @@ FROM gcr.io/ekstepspeechrecognition/speech-recognition-open-api-dependency:4.4
 
 
 ARG DEBIAN_FRONTEND=noninteractive
+
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y sudo wget python3-pip
 
