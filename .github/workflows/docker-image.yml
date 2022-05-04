@@ -23,7 +23,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/navana-tech/e2e-speechapi
+          images: ghcr.io/ashish-navana/e2e-speechapi
           tag-sha: true
           tag-edge: false
           tag-latest: true
