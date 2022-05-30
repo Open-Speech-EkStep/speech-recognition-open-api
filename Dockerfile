@@ -23,4 +23,4 @@ WORKDIR /opt/speech_recognition_open_api/
 COPY . /opt/speech_recognition_open_api
 RUN cp -r /opt/files/denoiser /opt/speech_recognition_open_api/denoiser
 
-
+CMD [ "python3", "inference_server.py" ]
