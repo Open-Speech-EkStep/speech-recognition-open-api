@@ -57,14 +57,14 @@ Punctuation models are stored inside `model_data` directory of `deployed_models`
 
 ```
 gu/:
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu.json .
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu.pt .
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/gu/gu_dict.json .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/gu/gu.json .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/gu/gu.pt .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/gu/gu_dict.json .
 
 hi/:
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.json .
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.pt .
-wget https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi_dict.json .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/hi/hi.json .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/hi/hi.pt .
+wget https://storage.googleapis.com/vakyansh-open-models/punctuation_models/hi/hi_dict.json .
 ```
 
 Once all the required models are placed `model_dict.json` file should be updated with relative paths to the asr model artifacts.
